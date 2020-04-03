@@ -7,7 +7,7 @@ import java.lang.reflect.Array;
 public class PrintSpiralArray {
   String[][] spiralArr;
   StringBuilder result;
-
+  final static String RESULT_SEP  = ", ";
 
   public PrintSpiralArray(String[][] inputArr) {
     spiralArr = inputArr;
@@ -54,7 +54,7 @@ public class PrintSpiralArray {
     // StringBuilder result = new StringBuilder();
     for (int j = 0; j < numChars; j++) {
       result.append(this.spiralArr[row][col]);
-      result.append(", ");
+      result.append(RESULT_SEP);
 
       col++;
     }
@@ -73,7 +73,7 @@ public class PrintSpiralArray {
     // StringBuilder result = new StringBuilder();
     for (int j = 0; j < numChars; j++) {
       result.append(this.spiralArr[row][col]);
-      result.append(", ");
+      result.append(RESULT_SEP);
 
       row++;
     }
@@ -92,7 +92,7 @@ public class PrintSpiralArray {
     // StringBuilder result = new StringBuilder();
     for (int j = 0; j < numChars; j++) {
       result.append(this.spiralArr[row][col]);
-      result.append(", ");
+      result.append(RESULT_SEP);
 
       col--;
     }
@@ -111,7 +111,7 @@ public class PrintSpiralArray {
     StringBuilder result = new StringBuilder();
     for (int j = 0; j < numChars; j++) {
       result.append(this.spiralArr[row][col]);
-      result.append(", ");
+      result.append(RESULT_SEP);
 
       row--;
     }
