@@ -17,6 +17,4 @@ public class SpiralArray {
 
     System.out.println(result);
   }
-
-
 }
