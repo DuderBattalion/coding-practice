@@ -1,9 +1,5 @@
 package com.misc.spiralarray;
 
-import com.util.HelperMethods;
-
-import java.lang.reflect.Array;
-
 public class PrintSpiralArray {
   String[][] spiralArr;
   StringBuilder result;
@@ -15,25 +11,11 @@ public class PrintSpiralArray {
   }
 
   public String run() {
-    int colSize = getColSize();
     recurseSpiralArray(0, 0, 4);
-
-    return result.toString().substring(0, result.length() - 2); // Exclude trailing comma
+    return result.toString()
+        .substring(0, result.length() - RESULT_SEP.length()); // Exclude trailing separator
   }
 
-  public int getRowSize() {
-    return this.spiralArr.length;
-  }
-
-  public int getColSize() {
-    return this.spiralArr[0].length;
-  }
-
-  public ArrayPosition getDefaultPosition() {
-    return new ArrayPosition(0, 0);
-  }
-
-  // Subproblem: JColR IRowD JColL IRowU
   private void recurseSpiralArray(int startRow, int startCol,
                                   int numChars) {
     ArrayPosition nextPosition = printRowRight(startRow, startCol, numChars);
@@ -48,10 +30,9 @@ public class PrintSpiralArray {
 
   private ArrayPosition printRowRight(int row, int col, int numChars) {
     if (numChars <= 0) {
-      return null;
+      return null; // End recursion
     }
 
-    // StringBuilder result = new StringBuilder();
     for (int j = 0; j < numChars; j++) {
       result.append(this.spiralArr[row][col]);
       result.append(RESULT_SEP);
@@ -60,8 +41,6 @@ public class PrintSpiralArray {
     }
 
     col--; // The last col++ call is not needed
-    // HelperMethods.printNoLineBreak(result.toString());
-
     return new ArrayPosition(row + 1, col);
   }
 
@@ -70,7 +49,6 @@ public class PrintSpiralArray {
       return null;
     }
 
-    // StringBuilder result = new StringBuilder();
     for (int j = 0; j < numChars; j++) {
       result.append(this.spiralArr[row][col]);
       result.append(RESULT_SEP);
@@ -79,8 +57,6 @@ public class PrintSpiralArray {
     }
 
     row--; // The last row-- call is not needed
-    // HelperMethods.printNoLineBreak(result.toString());
-
     return new ArrayPosition(row, col - 1);
   }
 
@@ -89,7 +65,6 @@ public class PrintSpiralArray {
       return null;
     }
 
-    // StringBuilder result = new StringBuilder();
     for (int j = 0; j < numChars; j++) {
       result.append(this.spiralArr[row][col]);
       result.append(RESULT_SEP);
@@ -98,8 +73,6 @@ public class PrintSpiralArray {
     }
 
     col++;
-    // HelperMethods.printNoLineBreak(result.toString());
-
     return new ArrayPosition(row - 1, col);
   }
 
@@ -117,8 +90,6 @@ public class PrintSpiralArray {
     }
 
     row++;
-    // HelperMethods.printNoLineBreak(result.toString());
-
     return new ArrayPosition(row, col + 1);
   }
 }
