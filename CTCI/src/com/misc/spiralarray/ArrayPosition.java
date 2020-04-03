@@ -1,5 +1,8 @@
 package com.misc.spiralarray;
 
+/**
+ * Data structure to represent a position in the spiral array
+ */
 public class ArrayPosition {
   public int row;
   public int col;
