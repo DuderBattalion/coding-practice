@@ -1,9 +1,9 @@
 package com.misc.spiralarray;
 
 public class PrintSpiralArray {
-  String[][] spiralArr;
-  StringBuilder result;
-  final static String RESULT_SEP  = ", ";
+  private String[][] spiralArr;
+  private StringBuilder result;
+  private final static String RESULT_SEP  = ", ";
 
   public PrintSpiralArray(String[][] inputArr) {
     spiralArr = inputArr;
@@ -14,6 +14,9 @@ public class PrintSpiralArray {
    * Runs through the 2D array and returns a string with the spiral array characters.
    */
   public String run() {
+    result = new StringBuilder(); // Clear out old results, if any
+
+    int colSize = spiralArr[0].length;
     recurseSpiralArray(0, 0, 4);
     return result.toString()
         .substring(0, result.length() - RESULT_SEP.length()); // Exclude trailing separator
@@ -48,7 +51,7 @@ public class PrintSpiralArray {
   // Note: the printRow<Direction>() functions below can be further optimized into a single printChars()
   // function to eliminate some code redundancy, but with a trade-off having reduced readability. The
   // code as such is easier to read and reduces complexity with the minor trade-off of some extra lines
-  // of code. This cab a good point of architectural discussion in a Pull Request with the team.
+  // of code. This can be a good point of architectural discussion in a Pull Request with the team.
 
   /**
    * @return Returns the upcoming array position that is passed to the next operation (printColDown)
