@@ -2,6 +2,8 @@ package com.codejam2020.qualifier.nesteddepth;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Solution {
@@ -14,6 +16,11 @@ public class Solution {
     int numTestCases = in.nextInt();
     in.nextLine();
 
+    List<String> lines = new ArrayList<>();
+    for (int i = 0; i < numTestCases; i++) {
+      lines.add(in.nextLine());
+    }
+
     String input = "";
     int delta = 0;
     for (int i = 0; i < numTestCases; i++) {
@@ -21,7 +28,7 @@ public class Solution {
       result.append(i + 1);
       result.append(": ");
 
-      input = in.nextLine();
+      input = lines.get(i);
       int[] nums = app.getNumArr(input);
 
       for (int j = 0; j < nums.length; j++) {
