@@ -41,8 +41,10 @@ public class HelperMethods {
 
   public static<T> void printCollection(Collection<T> coll) {
     for (T elem: coll) {
-      print(elem.toString());
+      println(elem.toString());
     }
+
+    println("");
   }
 
   public static<T> void print2DArray(T[][] arr) {

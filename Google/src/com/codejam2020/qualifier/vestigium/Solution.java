@@ -1,4 +1,4 @@
-package com.codejam2020.qualifier.Vestigium;
+package com.codejam2020.qualifier.vestigium;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
