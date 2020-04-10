@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -35,6 +36,12 @@ public class HelperMethods {
   public static<T> void printList(List<T> someList) {
     for (T member: someList) {
       println(member.toString());
+    }
+  }
+
+  public static<T> void printCollection(Collection<T> coll) {
+    for (T elem: coll) {
+      print(elem.toString());
     }
   }
 
