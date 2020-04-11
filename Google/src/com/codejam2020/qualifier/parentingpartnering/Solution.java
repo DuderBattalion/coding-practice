@@ -1,18 +1,60 @@
 package com.codejam2020.qualifier.parentingpartnering;
 
+import com.util.HelperMethods;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
 public class Solution {
+
+  static class Schedule {
+    public int id;
+    public int startTime;
+    public int endTime;
+    public String person;
+
+    public Schedule(int id, int start, int end) {
+      this.id = id;
+      this.startTime = start;
+      this.endTime = end;
+      this.person = "";
+    }
+
+    public int getStartTime() {
+      return startTime;
+    }
+
+    public int getId() {
+      return id;
+    }
+
+    @Override
+    public String toString() {
+      return "Schedule{" +
+          "startTime=" + startTime +
+          ", endTime=" + endTime +
+          '}';
+    }
+  }
+
   static class TestCase {
-    public List<String> schedules;
+    public List<Schedule> schedules;
 
     public TestCase() {
       schedules = new ArrayList<>();
+    }
+
+    public void sortSchedulesByStartTime() {
+      this.schedules.sort(Comparator.comparing(Schedule::getStartTime));
+    }
+
+    public void sortSchedulesById() {
+      this.schedules.sort(Comparator.comparing(Schedule::getId));
     }
   }
 
@@ -40,9 +82,13 @@ public class Solution {
       result.append(": ");
       count++;
 
+      // Assign scheduling in ascending order
+      // testCase.sortSchedulesByStartTime();
+      // HelperMethods.printCollection(testCase.schedules);
+
       String resultStr;
       try {
-        resultStr = findPersonsForIntervals(minuteMap, testCase.schedules);
+        resultStr = findPersonsForIntervals(minuteMap, testCase);
       } catch (TooManyPeopleException e) {
         resultStr = ("IMPOSSIBLE");
       }
@@ -55,17 +101,26 @@ public class Solution {
     }
   }
 
-  private static String findPersonsForIntervals(String[] map, List<String> schedules) throws TooManyPeopleException {
+  private static String findPersonsForIntervals(String[] map, TestCase testCase) throws TooManyPeopleException {
+    testCase.sortSchedulesByStartTime(); // Tox assign schedules in ASC order
+
+    // StringBuilder result = new StringBuilder();
+    for (Schedule schedule: testCase.schedules) {
+      String person = findPersonForInterval(map, schedule.startTime, schedule.endTime);
+      updateMinuteMap(map, schedule.startTime, schedule.endTime, person);
+      schedule.person = person;
+
+      // result.append(person);
+    }
+
+    // return result.toString();
+
+    // Restore original input sequence before printing output
+    testCase.sortSchedulesById();
+
     StringBuilder result = new StringBuilder();
-    for (String schedule: schedules) {
-      String[] times = schedule.split(" ");
-      int startMin = Integer.parseInt(times[0]);
-      int endMin = Integer.parseInt(times[1]);
-
-      String person = findPersonForInterval(map,startMin, endMin);
-      updateMinuteMap(map, startMin, endMin, person);
-
-      result.append(person);
+    for (Schedule schedule: testCase.schedules) {
+      result.append(schedule.person);
     }
 
     return result.toString();
@@ -163,8 +218,12 @@ public class Solution {
       int numSchedules = Integer.parseInt(in.nextLine());
       testCase = new TestCase();
       for (int j = 0; j < numSchedules; j++) {
-        String schedule = in.nextLine();
-        testCase.schedules.add(schedule);
+        String scheduleStr = in.nextLine();
+        String[] scheduleTokens = scheduleStr.split(" ");
+        int startTime = Integer.parseInt(scheduleTokens[0]);
+        int endTime = Integer.parseInt(scheduleTokens[1]);
+
+        testCase.schedules.add(new Schedule(j, startTime, endTime));
       }
 
       testCases.add(testCase);
