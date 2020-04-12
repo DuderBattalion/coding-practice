@@ -1,7 +1,5 @@
 package com.codejam2020.qualifier.parentingpartnering;
 
-import com.util.HelperMethods;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -10,6 +8,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Algorithm
+ * Create an array representing each minute in day (24 hours * 60 mins = 1440 minutes).
+ * Sort schedules in ascending order.
+ * For each schedule, try assigning a person in the minute array for all minutes in the interval.
+ * "C" for Cameron, "J" for Jamie, and "CJ" if both Cameron and Jamie are busy in that minute.
+ * If we have to assign a minute with a person that already has "CJ" assigned, the test case becomes IMPOSSIBLE.
+ *
+ * Note: We can further optimize this solution by removing the extra minute array reducing both time and
+ * space complexity, but this works well within the computing constraints specified for the Google Code Jam problem.
+ */
 public class Solution {
 
   static class Schedule {
@@ -74,6 +83,7 @@ public class Solution {
 
     List<TestCase> testCases = parseTestCases(app, in, numTestCases);
 
+    // An array representing all minutes in a day
     String[] minuteMap = new String[24 * 60];
     int count = 0;
     for (TestCase testCase: testCases) {
@@ -81,10 +91,6 @@ public class Solution {
       result.append(count + 1);
       result.append(": ");
       count++;
-
-      // Assign scheduling in ascending order
-      // testCase.sortSchedulesByStartTime();
-      // HelperMethods.printCollection(testCase.schedules);
 
       String resultStr;
       try {
@@ -101,21 +107,21 @@ public class Solution {
     }
   }
 
+  /**
+   * Assigns persons "C" (Cameron) or "J" (Jamie) for a list of time intervals.
+   * @throws TooManyPeopleException If both Cameron and Jamie are already busy during an interval
+   */
   private static String findPersonsForIntervals(String[] map, TestCase testCase) throws TooManyPeopleException {
-    testCase.sortSchedulesByStartTime(); // Tox assign schedules in ASC order
+    // Sorting so we assign schedules in ASC order
+    testCase.sortSchedulesByStartTime();
 
-    // StringBuilder result = new StringBuilder();
     for (Schedule schedule: testCase.schedules) {
       String person = findPersonForInterval(map, schedule.startTime, schedule.endTime);
       updateMinuteMap(map, schedule.startTime, schedule.endTime, person);
       schedule.person = person;
-
-      // result.append(person);
     }
 
-    // return result.toString();
-
-    // Restore original input sequence before printing output
+    // Unsort the schedules, so we output assignments in the correct order
     testCase.sortSchedulesById();
 
     StringBuilder result = new StringBuilder();
@@ -126,6 +132,10 @@ public class Solution {
     return result.toString();
   }
 
+  /**
+   * Find a suitable person (Cameron or Jamie) for a given interval
+   * @throws TooManyPeopleException If both Cameron and Jamie are already busy during an interval
+   */
   private static String findPersonForInterval(String[] map, int startMin, int endMin) throws TooManyPeopleException {
     String result;
     String people = getPeopleInInterval(map, startMin, endMin);
@@ -147,6 +157,10 @@ public class Solution {
     return result;
   }
 
+  /**
+   * Checks if a person is already busy within a time interval
+   * @return Returns Cameron, Jamie or Both (C, J or CJ)
+   */
   private static String getPeopleInInterval(String[] map, int startMin, int endMin) {
     boolean isC = false;
     boolean isJ = false;
