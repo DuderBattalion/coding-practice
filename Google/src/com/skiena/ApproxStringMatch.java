@@ -1,5 +1,10 @@
 package com.skiena;
 
+import javafx.util.Pair;
+
+import java.util.Deque;
+import java.util.LinkedList;
+
 public class ApproxStringMatch {
 
   public static void main(String[] args) {
@@ -14,7 +19,13 @@ public class ApproxStringMatch {
 
     System.out.println("Min cost = " + cache[source.length() - 1][target.length() - 1]);
 
+    // DEBUG
     printCache(cache, source.length(), target.length());
+
+    String reconstructedOps = getReconstructedOps(cache, source.length(), target.length());
+    System.out.println("Operations: " + reconstructedOps);
+
+
   }
 
   private static int[][] calcEditDistance(String source, String target) {
@@ -34,16 +45,7 @@ public class ApproxStringMatch {
         match = cache[i-1][j-1] + getMatchCost(sourceChars[i], targetChars[j]);
         insert = cache[i][j-1] + 1;
         delete = cache[i-1][j] + 1;
-
-        // Refactor and optimize
-        minCost = match;
-        if (insert < minCost) {
-          minCost = insert;
-        }
-
-        if (delete < minCost) {
-          minCost = delete;
-        }
+        minCost = getMinCost(match, insert, delete);
 
         cache[i][j] = minCost;
       }
@@ -80,6 +82,22 @@ public class ApproxStringMatch {
     return source == target ? 0 : 1;
   }
 
+  private static int getMinCost(int match, int insert, int delete) {
+    int minCost;
+    minCost = match;
+    if (insert < minCost) {
+      minCost = insert;
+    }
+
+    if (delete < minCost) {
+      minCost = delete;
+    }
+    return minCost;
+  }
+
+  /**
+   * Helper function. Prints the contents of the cache.
+   */
   private static void printCache(int[][] cache, int sourceLength, int targetLength) {
     System.out.println("=======Cache======");
     final String SPACE = " ";
@@ -95,5 +113,74 @@ public class ApproxStringMatch {
 
       System.out.println();
     }
+  }
+
+  private static String getReconstructedOps(int[][] cache, int sourceLength, int targetLength) {
+    Deque<Character> reconstructPath = new LinkedList<>();
+    int i = sourceLength - 1;
+    int j = targetLength - 1;
+
+    int match, insert, delete, nextI, nextJ;
+    while (i != 0 && j != 0) {
+      match = cache[i-1][j-1];
+      insert = cache[i][j-1];
+      delete = cache[i-1][j];
+
+      char minOp = getMinOp(match, insert, delete);
+      reconstructPath.push(minOp);
+
+      Pair<Integer, Integer> nextPos = getNextPosition(i, j, minOp);
+      i = nextPos.getKey();
+      j = nextPos.getValue();
+    }
+
+    StringBuilder result = new StringBuilder();
+    while (!reconstructPath.isEmpty()) {
+      result.append(reconstructPath.removeLast());
+    }
+
+    return result.toString();
+  }
+
+  // TODO - Refactor this into getMinCost
+  private static char getMinOp(int match, int insert, int delete) {
+    char op = 'M';
+    int minCost = match;
+
+    if (insert < minCost) {
+      op = 'I';
+      minCost = insert;
+    }
+
+    if (delete < minCost) {
+      op = 'D';
+      minCost = delete;
+    }
+
+    return op;
+  }
+
+  private static Pair<Integer, Integer> getNextPosition(int i, int j, int minOp) {
+    if (minOp == 'M') {
+      i = i - 1;
+      j = j - 1;
+    } else if (minOp == 'I') {
+      j = i - 1;
+    } else if (minOp == 'D') {
+      i = i - 1;
+    } else {
+      throw new RuntimeException("[Error]: Invalid operation.");
+    }
+
+    if (i < 0) {
+      i = 0;
+    }
+
+    if (j < 0) {
+      j = 0;
+    }
+
+    System.out.println(String.format("i: %d, j: %d", i, j)); // TODO - debug remove
+    return new Pair<>(i, j);
   }
 }
