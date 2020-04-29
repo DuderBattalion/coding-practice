@@ -19,13 +19,11 @@ public class ApproxStringMatch {
 
     System.out.println("Min cost = " + cache[source.length() - 1][target.length() - 1]);
 
-    // DEBUG
-    printCache(cache, source.length(), target.length());
-
     String reconstructedOps = getReconstructedOps(cache, source.length(), target.length());
     System.out.println("Operations: " + reconstructedOps);
 
-
+    // DEBUG
+    // printCache(cache, source.length(), target.length());
   }
 
   private static int[][] calcEditDistance(String source, String target) {
@@ -41,7 +39,8 @@ public class ApproxStringMatch {
     for (int i = 1; i < sourceChars.length; i++) {
       for (int j = 1; j < targetChars.length; j++) {
         // Remember how char pointers are moving in source and target in prev iteration
-        // which determine where cache value is coming from
+        // based on operations (match, insert, delete) which determine where cache value
+        // is coming from
         match = cache[i-1][j-1] + getMatchCost(sourceChars[i], targetChars[j]);
         insert = cache[i][j-1] + 1;
         delete = cache[i-1][j] + 1;
@@ -67,7 +66,7 @@ public class ApproxStringMatch {
     }
 
     // Pre-seed cache for base case - target = empty string
-    // Converting " " to source would require target.length changes
+    // Converting " " to source would require source.length changes
     for (int i = 0; i < targetLength; i++) {
       cache[0][i] = i;
     }
@@ -115,28 +114,53 @@ public class ApproxStringMatch {
     }
   }
 
+  /**
+   * Start from the end of cache (bottom right), and make way up through minimum costs.
+   * Push operations identified into a Stack. Pop out stack to get reconstructed path for ops.
+   */
   private static String getReconstructedOps(int[][] cache, int sourceLength, int targetLength) {
     Deque<Character> reconstructPath = new LinkedList<>();
     int i = sourceLength - 1;
     int j = targetLength - 1;
 
-    int match, insert, delete, nextI, nextJ;
-    while (i != 0 && j != 0) {
-      match = cache[i-1][j-1];
-      insert = cache[i][j-1];
-      delete = cache[i-1][j];
+    Pair<Integer, Integer> firstOpPos = new Pair<>(-1, -1); // Required to print out very first operation
+    int match, insert, delete;
+    while (i != 0 || j != 0) {
+      match = Integer.MAX_VALUE;
+      insert = Integer.MAX_VALUE;
+      delete = Integer.MAX_VALUE;
+
+      if (i > 0 && j > 0) {
+        match = cache[i-1][j-1];
+      }
+
+      if (j > 0) {
+        insert = cache[i][j-1];
+      }
+
+      if (i > 0) {
+        delete = cache[i-1][j];
+      }
 
       char minOp = getMinOp(match, insert, delete);
+      if (minOp == 'M' && cache[i-1][j-1] != cache[i][j]) {
+        minOp = 'S'; // Substitution instead of Match
+      }
+
       reconstructPath.push(minOp);
 
       Pair<Integer, Integer> nextPos = getNextPosition(i, j, minOp);
+      if (nextPos.getKey() == 0 && nextPos.getValue() == 0) {
+        firstOpPos = new Pair<>(i, j);
+      }
+
       i = nextPos.getKey();
       j = nextPos.getValue();
     }
 
     StringBuilder result = new StringBuilder();
     while (!reconstructPath.isEmpty()) {
-      result.append(reconstructPath.removeLast());
+      result.append(reconstructPath.pop());
     }
 
     return result.toString();
@@ -161,7 +185,7 @@ public class ApproxStringMatch {
   }
 
   private static Pair<Integer, Integer> getNextPosition(int i, int j, int minOp) {
-    if (minOp == 'M') {
+    if (minOp == 'M' || minOp == 'S') {
       i = i - 1;
       j = j - 1;
     } else if (minOp == 'I') {
@@ -169,7 +193,8 @@ public class ApproxStringMatch {
     } else if (minOp == 'D') {
       i = i - 1;
     } else {
-      throw new RuntimeException("[Error]: Invalid operation.");
+      throw new RuntimeException(
+          String.format("[Error]: Invalid operation. i: %d, j: %d, minOp: %s", i, j, String.valueOf(minOp)));
     }
 
     if (i < 0) {
@@ -180,7 +205,6 @@ public class ApproxStringMatch {
       j = 0;
     }
 
-    System.out.println(String.format("i: %d, j: %d", i, j)); // TODO - debug remove
     return new Pair<>(i, j);
   }
 }
