@@ -9,20 +9,9 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Solution {
+  private static final int DEFAULT_INIT_BIT = -1;
 
   public static void main(String[] args) {
-    Solution solution = new Solution();
-
-    // Debug messages into a file
-    FileWriter fileWriter = null;
-    try {
-      fileWriter = new FileWriter("DebugLog.txt");
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    PrintWriter writer = new PrintWriter(fileWriter);
-
     Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
 
     int t = in.nextInt();
@@ -31,43 +20,54 @@ public class Solution {
 
     int[] result = new int[b];
     for (int i = 0; i < t; i++) {
-      Arrays.fill(result, -1); // Default uninitialized value
+      resetArr(result);
 
       int position = 0;
-      printLn(position + 1); // Position is 1 indexed, instead of 0 (as is for arrays)
-      flushStdOut();
+      printLn(position + 1); // Position is 1 indexed, instead of 0 (as for arrays)
 
-      result[position] = in.nextInt();
-      in.nextLine();
-      writer.print(result[position]); // DEBUG
-      position++;
-      ;
+      // result[position] = readInt(in);
+      // position++;
+      //
+      // for (int j = position; j < b; j++) {
+      //   printLn(j + 1);
+      //   result[j] = readInt(in);
+      // }
 
-      for (int j = position; j < b; j++) {
-        printLn(j + 1);
-        flushStdOut();
-
-        result[j] = in.nextInt();
-        in.nextLine();
-        writer.print(result[j]); // DEBUG
-      }
 
       printArr(result);
-      flushStdOut();
 
       String judgeSays = in.nextLine();
       if (judgeSays.equals("N")) {
         break;
       }
+    }
+  }
 
-      writer.println();
+  private static void resetArr(int[] arr) {
+    Arrays.fill(arr, DEFAULT_INIT_BIT); // Default uninitialized value
+  }
+
+  private static String getNumBits(int[] bits, Scanner in, int num, int start) {
+    int position = start;
+    printLn(position + 1); // Position is 1 indexed, instead of 0 (as for arrays)
+
+    bits[position] = readInt(in);
+    position++;
+
+    for (int j = position; j < num; j++) {
+      printLn(j + 1);
+      bits[j] = readInt(in);
     }
 
-    writer.close();
+    StringBuilder result = new StringBuilder();
+    Arrays.stream(bits).forEach(result::append);
+
+    return result.toString();
   }
 
   private static<T> void printLn(T msg) {
     System.out.println(msg.toString());
+    flushStdOut();
   }
 
   private static<T> void print(T msg) {
@@ -84,5 +84,13 @@ public class Solution {
     }
 
     printLn("");
+    flushStdOut();
+  }
+
+  private static int readInt(Scanner in) {
+    int token = in.nextInt();
+    in.nextLine();
+
+    return token;
   }
 }
