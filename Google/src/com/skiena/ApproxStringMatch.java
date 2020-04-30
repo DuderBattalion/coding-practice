@@ -184,6 +184,10 @@ public class ApproxStringMatch {
     return op;
   }
 
+  /**
+   * Used when reconstructing operations from cache. Takes a position char and tells
+   * which position to go to next in the cache.
+   */
   private static Pair<Integer, Integer> getNextPosition(int i, int j, int minOp) {
     if (minOp == 'M' || minOp == 'S') {
       i = i - 1;
