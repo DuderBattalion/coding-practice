@@ -3,6 +3,9 @@ package com.skiena;
 import java.util.Collections;
 import java.util.PriorityQueue;
 
+/**
+ * Find median in an array in O(N) time. Using two heaps.
+ */
 public class MedianWithHeaps {
 
   public static void main(String[] args) {
