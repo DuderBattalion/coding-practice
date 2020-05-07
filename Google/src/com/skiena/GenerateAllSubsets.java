@@ -7,7 +7,7 @@ import java.util.List;
 public class GenerateAllSubsets {
 
   public static void main(String[] args) {
-    int[] numArr = { 1, 2, 3, 4, 5};
+    int[] numArr = { 1, 2, 3, 4, 5 };
 
     List<BitSet> greyCode = generateGreyCode(numArr.length);
     StringBuilder set = new StringBuilder();
