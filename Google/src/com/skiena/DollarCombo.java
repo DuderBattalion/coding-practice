@@ -35,9 +35,9 @@ public class DollarCombo {
     }
 
     for (int denom: denominations) {
-      List<Integer> newcombo = new ArrayList<>(currCombo);
-      newcombo.add(denom);
-      calcTotalCombinations(target, denominations, currTotal + denom, newcombo, results);
+      List<Integer> newCombo = new ArrayList<>(currCombo);
+      newCombo.add(denom);
+      calcTotalCombinations(target, denominations, currTotal + denom, newCombo, results);
     }
   }
 }
