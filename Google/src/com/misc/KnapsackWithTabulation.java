@@ -25,7 +25,7 @@ public class KnapsackWithTabulation {
   /**
    * Calculates DP cache array and returns final max value.
    * Note indexes for value[] and weight[] have to be reduced by 1 since
-   * the i loop starts with 1 instead of 0.
+   * the item and wt loop starts with 1 instead of 0.
    */
   private static int calcKnapsack(int[] value, int[] wt, int W, int[][] dp) {
     for (int item = 1; item <= value.length; item++) {
