@@ -1,5 +1,7 @@
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class LongestSubstringWithoutRepeaterChars {
@@ -16,21 +18,26 @@ public class LongestSubstringWithoutRepeaterChars {
     int maxLen = 0;
     char[] sChars = s.toCharArray();
 
-    Set<Character> charCache = new HashSet<>();
+    //  <K,V> = <Char, Previous index>
+    Map<Character, Integer> charCache = new HashMap<>();
     int subStrLen = 0;
-    for (char sChar: sChars) {
-      if (charCache.contains(sChar)) {
+    int i = 0;
+
+    while (i < sChars.length) {
+      if (charCache.containsKey(sChars[i])) {
         if (subStrLen > maxLen) {
           maxLen = subStrLen;
         }
 
-        // Reset char cache and add current character
+        // Rewind back to index where repeated char was encountered + 1
+        // Example string: "dvdf", expected output: 3 (vdf)
+        i = charCache.get(sChars[i]) + 1;
+        subStrLen = 0;
         charCache.clear();
-        charCache.add(sChar);
-        subStrLen = 1;
       } else {
-        charCache.add(sChar);
+        charCache.put(sChars[i], i);
         subStrLen++;
+        i++;
       }
     }
 
