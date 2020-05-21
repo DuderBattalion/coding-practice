@@ -5,10 +5,15 @@ public class ZigZagConversion {
 
   public static void main(String[] args) {
     String text = "PAYPALISHIRING";
+    // String text = "ABCD";
     System.out.println(convert(text, 4));
   }
 
   public static String convert(String s, int numRows) {
+    if (numRows == 1) {
+      return s;
+    }
+
     List<List<Character>> skipLists = createSkipLists(numRows);
 
     // Block of text to be processed in one pass
@@ -18,9 +23,14 @@ public class ZigZagConversion {
 
     int start = 0;
     int end = blockSize;
+    if (end > s.length()) {
+      end = s.length();
+    }
+
     String block;
     while (start < sChars.length) {
-      block = s.substring(start, end) + "$"; // Sentinel added for easing algorithm
+      block = s.substring(start, end);
+      block = padBlock(block, blockSize);
       fillSkipLists(skipLists, block.toCharArray());
 
       start += blockSize;
@@ -44,6 +54,22 @@ public class ZigZagConversion {
     return skipLists;
   }
 
+  /**
+   * Pads block with $ if block is less than expected size
+   */
+  private static String padBlock(String block, int blockSize) {
+    StringBuilder padding = new StringBuilder();
+    if (block.length() < blockSize) {
+      int diff = blockSize - block.length();
+      for (int i = 0; i < diff; i++) {
+        padding.append("$");
+      }
+    }
+
+    padding.append("$"); // One extra at the end of the block needed
+    return block + padding.toString();
+  }
+
   private static void fillSkipLists(List<List<Character>> skipLists, char[] block) {
     int skipListIndex = 0;
     int start = 0;
@@ -53,8 +79,12 @@ public class ZigZagConversion {
     while(start < block.length && start <= end) {
       skipList = skipLists.get(skipListIndex);
 
-      skipList.add(block[start]);
-      if (start != end && block[end] != '$') { // Ignore sentinel
+      // Ignore sentinel
+      if (block[start] != '$') {
+        skipList.add(block[start]);
+      }
+
+      if (start != end && block[end] != '$') {
         skipList.add(block[end]);
       }
 
