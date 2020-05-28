@@ -61,6 +61,7 @@ public class FaultyKeyboard {
   private static void printValidSentences(String sentence, String currWord, int i,
                                           String s, Set<String> dict) {
     if (i == s.length()) {
+      sentence += currWord;
       System.out.println(sentence);
       return;
     }
