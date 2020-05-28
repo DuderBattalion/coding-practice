@@ -32,6 +32,8 @@ public class RegularExpressions {
 
     TextNode textNode = textNodeList.get(0);
     PatternNode pNode = patternNodeList.get(0);
+
+    boolean isMatching = true;
     while (pNode != null) {
       // Add any char any number of times
       Modified modifier = getModifier(pNode);
@@ -44,20 +46,39 @@ public class RegularExpressions {
       }
       // Case (a, *)
       else if (modifier.equals("MULTIPLY")) {
+        TextNode nextTextNode = textNode.next();
+        if (pNode.token == textNode.token) {
+          while (pNode != null && pNode.token != nextTextNode.token) {
+            pNode = pNode.next();
+          }
 
+          textNode = nextTextNode;
+        } else {
+          isMatching = false;
+          break;
+        }
       }
       // Case (a, .)
       else if (modifier.equals("SUB")) {
-
+        pNode = pNode.next();
+        textNode = textNode.next();
       }
       // Case (a)
       else if (modifier.equals("NONE")){
+        if (pNode.token != textNode.token) {
+          isMatching = false;
+          break;
+        }
 
+        pNode = pNode.next();
+        textNode = textNode.next();
       }
       // This shouldn't happen
       else {
         throw new RuntimeException("[Error]: Invalid modifier detected.");
       }
     }
+
+    return isMatching;
   }
 }
