@@ -17,10 +17,10 @@ public class Solution {
     random = new Random();
     pickIndexDistributor = new ArrayList<>();
 
-    for (int i = 0; i < w.length; i++) {
-      for (int j = 0; j < w[i]; j++) {
-       pickIndexDistributor.add(i);
-      }
+    int runningWeight = 0;
+    for (int weight : w) {
+      runningWeight += weight;
+      pickIndexDistributor.add(runningWeight);
     }
   }
 
@@ -30,7 +30,16 @@ public class Solution {
    * random pick will represent similar weight distribution
    */
   public int pickIndex() {
-    int randomIndex = random.nextInt(pickIndexDistributor.size());
-    return pickIndexDistributor.get(randomIndex);
+    int randomIndex = random.nextInt(pickIndexDistributor.get(pickIndexDistributor.size() - 1));
+
+    int pickIndex = 0;
+    for (int i = 0; i < pickIndexDistributor.size(); i++) {
+      if (randomIndex < pickIndexDistributor.get(i)) {
+        pickIndex = i;
+        break;
+      }
+    }
+
+    return pickIndex;
   }
 }
