@@ -1,9 +1,12 @@
 package com.leetcode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.sun.tools.javac.jvm.ByteCodes.pop;
 
@@ -13,7 +16,7 @@ public class ThreeSum {
     int[] nums = { -1, 0, 1, 2, -1, -4 };
     List<List<Integer>> results = threeSum(nums);
 
-    StringBuffer output = new StringBuffer();
+    StringBuilder output = new StringBuilder();
     for (List<Integer> result: results) {
       output.setLength(0);
       for (int num: result) {
@@ -27,6 +30,7 @@ public class ThreeSum {
 
   public static List<List<Integer>> threeSum(int[] nums) {
     List<List<Integer>> results = new ArrayList<>();
+    Set<String> distinctResults = new HashSet<>();
 
     Map<Integer, Integer> numCountMap = createNumCountMap(nums);
     List<NumPair> numPairs = getAllNumPairs(nums);
@@ -35,11 +39,6 @@ public class ThreeSum {
     for (NumPair pair: numPairs) {
       a = pop(numCountMap, pair.first);
       b = pop(numCountMap, pair.second);
-
-      if (a == null || b == null) {
-        throw new RuntimeException("Error: NumPair should not be null.");
-      }
-
       c = -(a + b);
 
       if (numCountMap.containsKey(c)) {
@@ -48,7 +47,11 @@ public class ThreeSum {
         newResult.add(b);
         newResult.add(c);
 
-        results.add(newResult);
+        String resultSignature = generateResultSignature(newResult);
+        if (!distinctResults.contains(resultSignature)) {
+          distinctResults.add(resultSignature);
+          results.add(newResult);
+        }
       }
 
       push(numCountMap, a);
@@ -124,6 +127,15 @@ public class ThreeSum {
     } else {
       numCountMap.put(num, 1);
     }
+  }
+
+  private static String generateResultSignature(List<Integer> result) {
+    Collections.sort(result);
+
+    StringBuilder signature = new StringBuilder();
+    result.forEach(num -> signature.append(num).append(","));
+
+    return signature.toString();
   }
 
 }
