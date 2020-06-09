@@ -70,14 +70,16 @@ public class ThreeSum {
     return map;
   }
 
+  /**
+   * Takes a pair of numbers a,b and figures out if there's another number c
+   * that adds to zero.
+   * Verifies that a,b,c all exist in the nums array (via the numCountMap)
+   * Also verifies that a,b,c form a distinct result.
+   */
   private static void processPair(
       Map<Integer, Integer> numCountMap, Set<String> distinctResults,
       List<List<Integer>> results,
       int a, int b) {
-    // Integer a = pop(numCountMap, first);
-    // Integer b = pop(numCountMap, second);
-    // Integer c = -(a + b);
-
     int c = -(a + b);
 
     if (numCountMap.containsKey(c)) {
@@ -102,42 +104,6 @@ public class ThreeSum {
           results.add(newResult);
         }
       }
-    }
-
-    // push(numCountMap, a);
-    // push(numCountMap, b);
-  }
-
-  private static Integer pop(Map<Integer, Integer> numCountMap, int num) {
-    Integer result = null;
-
-    if (numCountMap.containsKey(num)) {
-      result = num;
-
-      int count = numCountMap.get(num);
-      count--;
-
-      if (count < 0) {
-        throw new RuntimeException(
-            String.format("Error: NumcountMap in invalid state. %d count is %d", num, result));
-      }
-
-      if (count == 0) {
-        numCountMap.remove(num);
-      } else {
-        numCountMap.put(num, count);
-      }
-    }
-
-    return num;
-  }
-
-  private static void push(Map<Integer, Integer> numCountMap, int num) {
-    if (numCountMap.containsKey(num)) {
-      int count = numCountMap.get(num);
-      numCountMap.put(num, count + 1);
-    } else {
-      numCountMap.put(num, 1);
     }
   }
 
