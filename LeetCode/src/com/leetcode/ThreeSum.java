@@ -32,7 +32,6 @@ public class ThreeSum {
     }
 
     long end = System.currentTimeMillis();
-    System.out.println("Time taken: " + (end - start) + "ms.");
   }
 
   // Disclosure: Optimized previous solution using discussions in:
