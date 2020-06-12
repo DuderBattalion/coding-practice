@@ -1,62 +1,57 @@
-// import java.lang.reflect.Modifier;
-// import java.util.regex.Pattern;
-//
-// public class RegularExpressions {
-//   public static void main(String[] args) {
-//     String s = "aabbbccc";
-//     String p = "a*b*c*";
-//
-//     System.out.println(isMatch(s, p));
-//   }
-//
-//   public static boolean isMatch(String s, String p) {
-//     int sIndex = 0;
-//     int pIndex = 0;
-//
-//     boolean isMatching = true;
-//     char prevChar;
-//     while (sIndex < s.length()) {
-//       if (s.charAt(sIndex) == p.charAt(pIndex)) {
-//         prevChar = s.charAt(sIndex);
-//         sIndex++;
-//         pIndex++;
-//
-//         continue;
-//       }
-//
-//       // Check if char sub possible
-//       if (p.charAt(pIndex) == '.') {
-//         prevChar = '.';
-//
-//         pIndex++;
-//         sIndex++;
-//
-//         continue;
-//       }
-//
-//       // If doesn't match, isMatching fails if next char is
-//       // 1) End of sIndex
-//       // 2) Not wildcard
-//       if (sIndex + 1 >= s.length() || s.charAt(sIndex + 1) != '*') {
-//         isMatching = false;
-//         break;
-//       }
-//
-//       // Wildcard
-//       if (prevChar == '.') {
-//         // Some special stuff here
-//         continue;
-//       } else {
-//         if (s.charAt(sIndex) == prevChar) {
-//
-//         }
-//       }
-//
-//
-//
-//
-//     }
-//   }
-//
-//
-// }
+public class RegularExpressions {
+
+  public static void main(String[] args) {
+    String s = "aab";
+    String p = "dc*a*b";
+
+    System.out.println(isMatch(s, p));
+  }
+
+  public static boolean isMatch(String s, String p) {
+    if (s.length() == 0 && p.length() == 0) {
+      return true;
+    }
+
+    Character pChar = getLastChar(p);
+    Character sChar = getLastChar(s);
+
+    // CASE - SUBSTITUTE
+    if (pChar != null && pChar == '.') {
+      if (pChar == sChar) {
+        return isMatch(s.substring(0, s.length() - 1), p.substring(0, p.length() - 1));
+      } else {
+        return false;
+      }
+    }
+
+    // CASE - REPLACE
+    if (pChar != null && pChar == '*') {
+      char pNextChar = p.charAt(p.length() - 2);
+
+      // If char match, keep pattern and shorten s string
+      if (sChar != null && pNextChar == sChar) {
+        return isMatch(s.substring(0, s.length() - 1), p);
+      }
+      // No match - remove pattern and move on
+      else {
+        return isMatch(s, p.substring(0, p.length() - 2)); // - 2 because removing 'a*'
+      }
+    }
+
+    // CASE - CHARACTER MATCH
+    if (pChar == sChar) {
+      return isMatch(s.substring(0, s.length() - 1), p.substring(0, p.length() - 1));
+    } else {
+      return false;
+    }
+  }
+
+  private static Character getLastChar(String s) {
+    if (s.length() == 0) {
+      return null;
+    }
+
+    return s.charAt(s.length() - 1);
+  }
+
+}
