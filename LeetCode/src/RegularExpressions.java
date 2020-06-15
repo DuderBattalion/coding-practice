@@ -1,19 +1,22 @@
 public class RegularExpressions {
 
   public static void main(String[] args) {
-    String s = "aaa";
-    String p = "ab*a*c*a";
+    // String s = "aaa";
+    // String p = "ab*a*c*a";
+
+    String s = "a";
+    String p = ".*..a*";
 
     System.out.println(isMatch(s, p));
   }
 
   public static boolean isMatch(String s, String p) {
-    if (s.length() == 0) {
-      if (p.length() == 0) {
-        return true;  
-      }
-      
-      return processRemainingPattern(p);
+    return isMatch(s, p, null);
+  }
+
+  public static boolean isMatch(String s, String p, Character lastWildcardChar) {
+    if (s.length() == 0 && p.length() == 0) {
+      return true;
     }
 
     Character pChar = getLastChar(p);
@@ -21,7 +24,8 @@ public class RegularExpressions {
 
     // CASE - SUBSTITUTE
     if (pChar != null && pChar == '.') {
-      return isMatch(s.substring(0, s.length() - 1), p.substring(0, p.length() - 1));
+      s = (s.isEmpty() ? s : s.substring(0, s.length() - 1));
+      return isMatch(s, p.substring(0, p.length() - 1), null);
     }
 
     // CASE - REPLACE
@@ -30,17 +34,24 @@ public class RegularExpressions {
 
       // If char match, keep pattern and shorten s string
       if (sChar != null && (pNextChar == sChar || pNextChar == '.')) {
-        return isMatch(s.substring(0, s.length() - 1), p);
+        return isMatch(s.substring(0, s.length() - 1), p, sChar);
       }
       // No match - remove pattern and move on
       else {
-        return isMatch(s, p.substring(0, p.length() - 2)); // - 2 because removing 'a*'
+        return isMatch(s, p.substring(0, p.length() - 2), lastWildcardChar); // - 2 because removing 'a*'
       }
     }
 
     // CASE - CHARACTER MATCH
     if (pChar == sChar) {
-      return isMatch(s.substring(0, s.length() - 1), p.substring(0, p.length() - 1));
+      return isMatch(s.substring(0, s.length() - 1), p.substring(0, p.length() - 1), null);
+    }
+    // Analyze case:
+    // s = aaa
+    // p = ab*a*c*a
+    // p remains after s is exhausted, needing extra processing
+    else if (sChar == null && pChar == lastWildcardChar) {
+      return isMatch(s, p.substring(0, p.length() - 1), null);
     } else {
       return false;
     }
@@ -53,22 +64,4 @@ public class RegularExpressions {
 
     return s.charAt(s.length() - 1);
   }
-
-  /**
-   * Analyse case:
-   * s = aaa
-   * p = ab*a*c*a
-   * which empties out the s, while still leaving a valid pattern behind
-   */
-  private static boolean processRemainingPattern(String p) {
-    if (p.length() < 2) {
-      return false;
-    }
-
-    boolean isMatch = true;
-    while (!p.isEmpty()) {
-      if
-    }
-  }
-
 }
