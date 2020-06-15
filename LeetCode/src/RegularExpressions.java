@@ -1,15 +1,19 @@
 public class RegularExpressions {
 
   public static void main(String[] args) {
-    String s = "aab";
-    String p = "dc*a*b";
+    String s = "aaa";
+    String p = "ab*a*c*a";
 
     System.out.println(isMatch(s, p));
   }
 
   public static boolean isMatch(String s, String p) {
-    if (s.length() == 0 && p.length() == 0) {
-      return true;
+    if (s.length() == 0) {
+      if (p.length() == 0) {
+        return true;  
+      }
+      
+      return processRemainingPattern(p);
     }
 
     Character pChar = getLastChar(p);
@@ -17,11 +21,7 @@ public class RegularExpressions {
 
     // CASE - SUBSTITUTE
     if (pChar != null && pChar == '.') {
-      if (pChar == sChar) {
-        return isMatch(s.substring(0, s.length() - 1), p.substring(0, p.length() - 1));
-      } else {
-        return false;
-      }
+      return isMatch(s.substring(0, s.length() - 1), p.substring(0, p.length() - 1));
     }
 
     // CASE - REPLACE
@@ -29,7 +29,7 @@ public class RegularExpressions {
       char pNextChar = p.charAt(p.length() - 2);
 
       // If char match, keep pattern and shorten s string
-      if (sChar != null && pNextChar == sChar) {
+      if (sChar != null && (pNextChar == sChar || pNextChar == '.')) {
         return isMatch(s.substring(0, s.length() - 1), p);
       }
       // No match - remove pattern and move on
@@ -52,6 +52,23 @@ public class RegularExpressions {
     }
 
     return s.charAt(s.length() - 1);
+  }
+
+  /**
+   * Analyse case:
+   * s = aaa
+   * p = ab*a*c*a
+   * which empties out the s, while still leaving a valid pattern behind
+   */
+  private static boolean processRemainingPattern(String p) {
+    if (p.length() < 2) {
+      return false;
+    }
+
+    boolean isMatch = true;
+    while (!p.isEmpty()) {
+      if
+    }
   }
 
 }
