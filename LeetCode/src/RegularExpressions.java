@@ -30,8 +30,12 @@ public class RegularExpressions {
 
     // CASE - SUBSTITUTE
     if (pChar != null && pChar == '.') {
-      s = (s.isEmpty() ? s : s.substring(0, s.length() - 1));
-      return isMatch(s, p.substring(0, p.length() - 1), null);
+      if (s.isEmpty()) {
+        return false;
+      }
+
+      return isMatch(s.substring(0, s.length() - 1),
+              p.substring(0, p.length() - 1), null);
     }
 
     // CASE - REPLACE
@@ -48,7 +52,7 @@ public class RegularExpressions {
       }
       // No match - remove pattern and move on
       else {
-        return isMatch(s, pShortened, lastWildcardChar); // - 2 because removing 'a*'
+        return isMatch(s, pShortened, lastWildcardChar);
       }
     }
 
