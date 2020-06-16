@@ -4,6 +4,12 @@ public class RegularExpressions {
     // String s = "aaa";
     // String p = "ab*a*c*a";
 
+//    String s = "aasdfasdfasdfasdfas";
+//    String p = "aasdf.*asdf.*asdf.*asdf.*s";
+
+//    String s = "mississippi";
+//    String p = "mis*is*ip*.";
+
     String s = "a";
     String p = ".*..a*";
 
@@ -32,13 +38,17 @@ public class RegularExpressions {
     if (pChar != null && pChar == '*') {
       char pNextChar = p.charAt(p.length() - 2);
 
-      // If char match, keep pattern and shorten s string
+      // If char match, either
+      // a) Keep pattern and shorten s string - Replace
+      // b) Keep string and shorten pattern - No replace
+      String pShortened = p.substring(0, p.length() - 2);
       if (sChar != null && (pNextChar == sChar || pNextChar == '.')) {
-        return isMatch(s.substring(0, s.length() - 1), p, sChar);
+        return (isMatch(s.substring(0, s.length() - 1), p, sChar)
+                || isMatch(s, pShortened, sChar));
       }
       // No match - remove pattern and move on
       else {
-        return isMatch(s, p.substring(0, p.length() - 2), lastWildcardChar); // - 2 because removing 'a*'
+        return isMatch(s, pShortened, lastWildcardChar); // - 2 because removing 'a*'
       }
     }
 
