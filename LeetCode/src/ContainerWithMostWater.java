@@ -34,7 +34,7 @@ public class ContainerWithMostWater {
         if (lMoveArea > rMoveArea) {
             return calcMaxArea(l+1, r, height, lMoveArea, maxArea);
         } else {
-            return calcMaxArea(l+1, r-1, height, rMoveArea, maxArea);
+            return calcMaxArea(l, r-1, height, rMoveArea, maxArea);
         }
     }
 
