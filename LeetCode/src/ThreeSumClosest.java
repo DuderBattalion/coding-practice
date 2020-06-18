@@ -10,27 +10,20 @@ public class ThreeSumClosest {
     public static int threeSumClosest(int[] nums, int target) {
         Arrays.sort(nums);
 
-        int i = 0;
-        int j = getNextUniqueNumIndex(i, nums);
-        if (j == -1) {
-            throw new RuntimeException("Error: j index is invalid!");
-        }
-
-        int k = getNextUniqueNumIndex(j, nums);
-        if (k == -1) {
-            throw new RuntimeException("Error: k index is invalid!");
-        }
-
         int closestSum = 0;
         int minDiff = Integer.MAX_VALUE;
-        int total, diff, nextI, nextJ;
+        int i, j, k, nextI, nextJ, total, diff;
+
+        i = 0;
         while (i != -1 && i < nums.length - 2) {
+            j = getNextUniqueNumIndex(i, nums);
             nextI = j;
 
             while (j != -1 && j < nums.length - 1) {
+                k = getNextUniqueNumIndex(j, nums);
                 nextJ = k;
 
-                while (k != -1 && k < nums.length) {
+                while (k != -1) {
                     System.out.println(
                             String.format("a: %d, b: %d, c: %d",
                                     nums[i], nums[j], nums[k]));
@@ -47,15 +40,9 @@ public class ThreeSumClosest {
                 }
 
                 j = nextJ;
-                if (j != -1) {
-                    k = getNextUniqueNumIndex(j, nums);
-                }
             }
 
             i = nextI;
-            if (i != -1) {
-                j = getNextUniqueNumIndex(nextI, nums);
-            }
         }
 
         return closestSum;
