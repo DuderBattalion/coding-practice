@@ -2,8 +2,9 @@ import java.util.Arrays;
 
 public class ThreeSumClosest {
     public static void main(String[] args) {
-//        int[] nums = { 0,2,1,-3 };
-        int[] nums = { -1,2,1,-4 };
+        int[] nums = { 0,2,1,-3 };
+//        int[] nums = { -1,2,1,-4 };
+//        int[] nums = { 1,1,-1 };
         System.out.println(threeSumClosest(nums, 1));
     }
 
@@ -12,22 +13,11 @@ public class ThreeSumClosest {
 
         int closestSum = 0;
         int minDiff = Integer.MAX_VALUE;
-        int i, j, k, nextI, nextJ, total, diff;
 
-        i = 0;
-        while (i != -1 && i < nums.length - 2) {
-            j = getNextUniqueNumIndex(i, nums);
-            nextI = j;
-
-            while (j != -1 && j < nums.length - 1) {
-                k = getNextUniqueNumIndex(j, nums);
-                nextJ = k;
-
-                while (k != -1) {
-                    System.out.println(
-                            String.format("a: %d, b: %d, c: %d",
-                                    nums[i], nums[j], nums[k]));
-
+        int total, diff;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length - 1; j++) {
+                for (int k = j + 1; k < nums.length; k++) {
                     total = nums[i] + nums[j] + nums[k];
                     diff = Math.abs(target - total);
 
@@ -36,33 +26,18 @@ public class ThreeSumClosest {
                         closestSum = total;
                     }
 
-                    k = getNextUniqueNumIndex(k, nums);
+                    // Skip similar numbers
+                    while (k + 1 < nums.length && nums[k + 1] == nums[k]) {
+                        k++;
+                    }
                 }
 
-                j = nextJ;
+                while (j + 1 < nums.length - 1 && nums[j + 1] == nums[j]) {
+                    j++;
+                }
             }
-
-            i = nextI;
         }
 
         return closestSum;
-    }
-
-    private static int getNextUniqueNumIndex(int i, int[] nums) {
-        int index = -1;
-
-        int currNum = nums[i];
-        i++;
-
-        while (i < nums.length) {
-            if (nums[i] == currNum) {
-                i++;
-            } else {
-                index = i;
-                break;
-            }
-        }
-
-        return index;
     }
 }
