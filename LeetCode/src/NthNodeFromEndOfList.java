@@ -2,7 +2,7 @@ import java.util.List;
 
 public class NthNodeFromEndOfList {
     public static void main(String[] args) {
-        // Test Case - 1
+//        // Test Case - 1
 //        ListNode node1 = new ListNode(1);
 //        ListNode node2 = new ListNode(2);
 //        ListNode node3 = new ListNode(3);
@@ -14,10 +14,10 @@ public class NthNodeFromEndOfList {
 //        node3.next = node4;
 //        node4.next = node5;
 //        node5.next = null;
-
+//
 //        ListNode head = removeNthFromEnd(node1, 2);
 
-        // Test case - 2
+//        // Test case - 2
 //        ListNode node1 = new ListNode(1);
 //        node1.next = null;
 //
@@ -39,16 +39,23 @@ public class NthNodeFromEndOfList {
 
     public static ListNode removeNthFromEnd(ListNode head, int n) {
         ListNode frontRunner = head;
+
+        // Note - n guaranteed to be valid, skipping checks
+        // Stops right before nth node
         for (int i = 0; i < n; i++) {
             frontRunner = frontRunner.next;
         }
 
-        // If list length = 1, and n = 1
+        // Special case - Nth node from end is head
+        // Remove head and return list
         if (frontRunner == null) {
-            return null;
+            ListNode oldHead = head;
+            head = head.next;
+            oldHead.next = null;
+
+            return head;
         }
 
-        // Stops right before nth node
         ListNode slowRunner = head;
         while (frontRunner.next != null) {
             frontRunner = frontRunner.next;
