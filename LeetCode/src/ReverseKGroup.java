@@ -18,7 +18,7 @@ public class ReverseKGroup {
         node4.next = node5;
         node5.next = null;
 
-        ListNode output = reverseKGroup(node1, 2);
+        ListNode output = reverseKGroup(node1, 1);
         while (output != null) {
             System.out.print(output.val + ",");
             output = output.next;
