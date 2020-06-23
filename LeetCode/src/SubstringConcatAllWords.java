@@ -32,7 +32,6 @@ public class SubstringConcatAllWords {
     int i = 0;
     List<String> substrTokens;
     while (i < s.length() - (words.length - 1)) {
-//      substrTokens = getNTokens(i, strTokens, words.length); // TODO - implement cache
       substrTokens = getNTokens(i, s, words.length, tokenLength); // TODO - implement cache
 
       Collections.sort(substrTokens);
@@ -66,23 +65,10 @@ public class SubstringConcatAllWords {
     return isMatch;
   }
 
+
   // TODO - Implement caching to eliminate doing the same list adds
   // Just need to drop the first char, and add to the last char
   // i.e Sliding window algorithm
-  private static List<String> getNTokens(int start, List<String> strTokens, int numTokens) {
-    List<String> tokens = new ArrayList<>();
-    for (int i = 0; i < numTokens; i++) {
-      tokens.add(strTokens.get(start));
-      start++;
-
-      if (start >= strTokens.size()) {
-        break;
-      }
-    }
-
-    return tokens;
-  }
-
   private static List<String> getNTokens(int start, String s, int numTokens, int tokenLength) {
     List<String> tokens = new ArrayList<>();
     if (start >= s.length()) {
@@ -98,31 +84,6 @@ public class SubstringConcatAllWords {
       tokens.add(s.substring(start, start + tokenLength));
       start += tokenLength;
     }
-
-    return tokens;
-  }
-
-  private static List<String> getTokens(String s, int tokenLength) {
-    List<String> tokens = new ArrayList<>();
-
-    if (s.isEmpty()) {
-      return tokens;
-    }
-
-    int i = 0;
-    do {
-      for (int j = 0; j < tokenLength; j++) {
-        int end = i + tokenLength;
-        if (end >= s.length()) {
-          tokens.add(s.substring(i, s.length()));
-          i = s.length(); // break while loop
-          break;
-        }
-
-        tokens.add(s.substring(i, end));
-        i += tokenLength;
-      }
-    } while (i < s.length());
 
     return tokens;
   }
