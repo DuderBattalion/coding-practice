@@ -1,33 +1,49 @@
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class LongestValidParantheses {
     public static void main(String[] args) {
 //        String s = ")()())";
 //        String s = "(()";
 
-        String s = ")(()(()(((())(((((()()))((((()()(()()())())())()))()()()())(())()()(((()))))()((()))(((())()((()()())((())))(())))())((()())()()((()((())))))((()(((((()((()))(()()(())))((()))()))())";
+        String s = "())()()(())((()(()()(((()))((((())((()(())()())(()((((()))()(()))(())()(())(()(((((())((((((()())())(()(()((())()))(()))))))()(()))((((())()()()))()()()(((()(()())(()()(()(()()(((()))))))()()))())())((()()))))))((()))(((()((())()(()()))((())))()()())))))))()))))(()))))()))()))()((())))((()))(()))))))(((()))))))))()(()()()(())((())()))()()(())))()()))(()())()))(((()())()))((())((((()))(()(()(()()()(((())()(((((()))((()(((((())(()()))((((((((()(()(()(()(())))(())(()())())(()((((()(())((()(())))(())))()(((((()(()()(())))))))())(())(())(()()(((())))((()))(((((()))))())))()((()))()))))())))))((())(((((()()))((((())))(((()(()(())())(((()(()(()()()())))())()))((()((())())()()()(((())(((((()((((((()((()())))((((())((()(((((((()(()((()()()(()(()())(()(()()((((())))()(((()())))(()()))()(()()()()(((((())(()))))((()))())))()((((((()))())))()(()))(())))((((()())(((((()()())(((((())(()())(()))))()(()()))()))))))())))(((())(()(()()))(()))()(((())))())((((()(((()))))))()(()(()))()()(()()))))))))((()))))))(())((()((()))()))((((((()())))))(()((())((((()))))(()(()()()()(()))()()(()(()))(()()(((((((()())(())(()())((())())()(()())((())()())())(()())))())))(())())())(())((()())(((()()))()))()()))()(()(())((((((((())))()((())((()((((((((((()))))(()(((((())(()(()())())))((())())))))()))(()((()()))((()((())()()()((()(())())((())())(()()(((())))))())()()(()))()())(()(()((())))((((()()(())))())(())(()(()(())())())(()()())()(())())))(()()(((())))((()()(((())()()(()())((((()()(()())(()((((()(()()(()(()(((()((()())(()()))(()((((()(((((()))))()()))(((()((((((()(()()()()())()))(()(())))))((()(((()())())))(((()()))(()(()(((((((()()))(()(())))())()(())())(())(()))(())(()))()()(()()())))))()))()((())(((()((((((((())()()))())))((()())(";
         System.out.println(longestValidParentheses(s));
     }
 
     public static int longestValidParentheses(String s) {
-        return findLongestValidParantheses(s, 0, s.length());
+        return findLongestValidParantheses(s, 0, s.length(), new HashMap<String, Integer>());
     }
 
-    private static int findLongestValidParantheses(String s, int start, int end) {
+    private static int findLongestValidParantheses(String s, int start, int end,
+                                                   Map<String, Integer> cache) {
         if (start == end) {
             return 0;
         }
 
-        String possibleLongestParans = s.substring(start, end);
-        if (isValidParans(possibleLongestParans)) {
-            return possibleLongestParans.length();
+        int paranLen;
+        String key = start + "," + end;
+
+        if (cache.containsKey(key)) {
+            return cache.get(key);
         }
 
-        int shrinkRightParan = findLongestValidParantheses(s, start + 1, end);
-        int shrinkLeftParan = findLongestValidParantheses(s, start, end - 1);
+        String possibleLongestParans = s.substring(start, end);
+        if (isValidParans(possibleLongestParans)) {
+            paranLen = possibleLongestParans.length();
 
-        return Math.max(shrinkLeftParan, shrinkRightParan);
+            cache.put(key, paranLen);
+            return paranLen;
+        }
+
+        int shrinkRightParan = findLongestValidParantheses(s, start + 1, end, cache);
+        int shrinkLeftParan = findLongestValidParantheses(s, start, end - 1, cache);
+
+        paranLen = Math.max(shrinkLeftParan, shrinkRightParan);
+        cache.put(key, paranLen);
+
+        return paranLen;
     }
 
     private static boolean isValidParans(String parans) {
