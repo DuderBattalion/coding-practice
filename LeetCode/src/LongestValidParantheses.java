@@ -3,8 +3,10 @@ import java.util.LinkedList;
 
 public class LongestValidParantheses {
     public static void main(String[] args) {
-        String s = ")()())";
+//        String s = ")()())";
 //        String s = "(()";
+
+        String s = ")(()(()(((())(((((()()))((((()()(()()())())())()))()()()())(())()()(((()))))()((()))(((())()((()()())((())))(())))())((()())()()((()((())))))((()(((((()((()))(()()(())))((()))()))())";
         System.out.println(longestValidParentheses(s));
     }
 
