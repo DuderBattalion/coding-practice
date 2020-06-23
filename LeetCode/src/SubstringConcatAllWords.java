@@ -25,9 +25,7 @@ public class SubstringConcatAllWords {
     }
 
     Arrays.sort(words);
-
     int tokenLength = words[0].length();
-//    List<String> strTokens = getTokens(s, tokenLength);
 
     int i = 0;
     List<String> substrTokens;
