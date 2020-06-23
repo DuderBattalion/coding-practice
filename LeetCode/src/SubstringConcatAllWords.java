@@ -27,15 +27,17 @@ public class SubstringConcatAllWords {
     Arrays.sort(words);
 
     int tokenLength = words[0].length();
-    List<String> strTokens = getTokens(s, tokenLength);
+//    List<String> strTokens = getTokens(s, tokenLength);
 
     int i = 0;
     List<String> substrTokens;
-    while (i < strTokens.size() - (words.length - 1)) {
-      substrTokens = getNTokens(i, strTokens, words.length); // TODO - implement cache
+    while (i < s.length() - (words.length - 1)) {
+//      substrTokens = getNTokens(i, strTokens, words.length); // TODO - implement cache
+      substrTokens = getNTokens(i, s, words.length, tokenLength); // TODO - implement cache
+
       Collections.sort(substrTokens);
       if (isTokensMatch(substrTokens, words)) {
-        substrings.add(i * tokenLength);
+        substrings.add(i);
       }
 
       i++;
@@ -76,6 +78,25 @@ public class SubstringConcatAllWords {
       if (start >= strTokens.size()) {
         break;
       }
+    }
+
+    return tokens;
+  }
+
+  private static List<String> getNTokens(int start, String s, int numTokens, int tokenLength) {
+    List<String> tokens = new ArrayList<>();
+    if (start >= s.length()) {
+      return tokens;
+    }
+
+    for (int i = 0; i < numTokens; i++) {
+      if (start + tokenLength >= s.length()) {
+        tokens.add(s.substring(start, s.length()));
+        break;
+      }
+
+      tokens.add(s.substring(start, start + tokenLength));
+      start += tokenLength;
     }
 
     return tokens;
