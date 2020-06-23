@@ -6,8 +6,11 @@ import java.util.List;
 
 public class SubstringConcatAllWords {
   public static void main(String[] args) {
-    String s = "barfoothefoobarmanfoo";
-    String[] words = { "foo","bar", "man" };
+//    String s = "barfoothefoobarfoo";
+//    String[] words = { "foo","bar", "foo" };
+
+    String s = "lingmindraboofooowingdingbarrwingmonkeypoundcake";
+    String[] words = { "fooo","barr","wing","ding","wing" };
 
     List<Integer> indices = findSubstring(s, words);
     indices.forEach(index -> {
