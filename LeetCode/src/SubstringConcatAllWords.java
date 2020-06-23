@@ -6,8 +6,8 @@ import java.util.List;
 
 public class SubstringConcatAllWords {
   public static void main(String[] args) {
-    String s = "barfoothefoobarman";
-    String[] words = { "foo","bar" };
+    String s = "barfoothefoobarmanfoo";
+    String[] words = { "foo","bar", "man" };
 
     List<Integer> indices = findSubstring(s, words);
     indices.forEach(index -> {
@@ -88,7 +88,14 @@ public class SubstringConcatAllWords {
     int i = 0;
     do {
       for (int j = 0; j < tokenLength; j++) {
-        tokens.add(s.substring(i, i + tokenLength));
+        int end = i + tokenLength;
+        if (end >= s.length()) {
+          tokens.add(s.substring(i, s.length()));
+          i = s.length(); // break while loop
+          break;
+        }
+
+        tokens.add(s.substring(i, end));
         i += tokenLength;
       }
     } while (i < s.length());
