@@ -3,8 +3,8 @@ import java.util.Arrays;
 public class SearchRotatedArray {
     public static void main(String[] args) {
 //        int[] nums = { 4,5,6,7,0,1,2 };
-        int[] nums = { 1,3 };
-
+//        int[] nums = { 1,3 };
+        int[] nums = { 3, 1 };
         System.out.println(search(nums, 2));
 
 //        System.out.println(Arrays.binarySearch( nums, 4, 7, 2));
@@ -17,6 +17,16 @@ public class SearchRotatedArray {
 
         if (nums.length == 1) {
             return (target == nums[0] ? 0 : -1);
+        }
+
+        if (nums.length == 2) {
+            if (target == nums[0]) {
+                return 0;
+            } else if (target == nums[1]) {
+                return 1;
+            } else {
+                return -1;
+            }
         }
 
         return modifiedBinarySearch(nums, target, 0, nums.length - 1);
