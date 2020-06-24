@@ -2,8 +2,8 @@ import java.util.Arrays;
 
 public class SearchRotatedArray {
     public static void main(String[] args) {
-        int[] nums = { 4,5,6,7,0,1,2 };
-//        int[] nums = { 4,5 };
+//        int[] nums = { 4,5,6,7,0,1,2 };
+        int[] nums = { 1,3 };
 
         System.out.println(search(nums, 2));
 
@@ -27,7 +27,6 @@ public class SearchRotatedArray {
             return (nums[start] == target) ? start : -1 ;
         }
 
-        int index = -1;
         int mid = (start + end)/2;
 
         // Split array in mid point
@@ -46,16 +45,31 @@ public class SearchRotatedArray {
             return mid;
         } else if (nums[start] < nums[mid]) {
             if (nums[start] <= target && target <= nums[mid]) {
-                return Arrays.binarySearch(nums, start, mid + 1, target); // mid + 1 to make include mid
+                // mid + 1 to make include mid
+                int index = Arrays.binarySearch(nums, start, mid + 1, target);
+
+                return fixBinarySearchResult(index);
             } else {
                 return modifiedBinarySearch(nums, target, mid, nums.length - 1);
             }
         } else {
             if (nums[mid] <= target && target <= nums[nums.length - 1]) {
-                return Arrays.binarySearch(nums, mid, nums.length, target);
+                int index = Arrays.binarySearch(nums, mid, nums.length, target);
+
+                return fixBinarySearchResult(index);
             } else {
                 return modifiedBinarySearch(nums, target, start, mid);
             }
         }
+    }
+
+    // For non-zero starting arrays, if not found, gives weird negative index
+    // Re-adjust to -1
+    private static int fixBinarySearchResult(int index) {
+        if (index < -1) {
+            index = -1;
+        }
+
+        return index;
     }
 }
