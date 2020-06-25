@@ -14,7 +14,7 @@ public class FirstLastElementSortedArray {
         range[1] = -1;
 
         int index = Arrays.binarySearch(nums, target);
-        if (index == -1) {
+        if (index <= -1) {
             return range;
         }
 
