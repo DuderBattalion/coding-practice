@@ -2,8 +2,13 @@ import java.util.Arrays;
 
 public class FirstLastElementSortedArray {
     public static void main(String[] args) {
-        int[] nums = { 5,7,7,8,8,10 };
-        int[] range = searchRange(nums, 6);
+//        int[] nums = { 5,7,7,8,8,10 };
+//        int[] nums = {  };
+//        int[] nums = { 0, 1, 2 };
+//        int[] nums = { 1 };
+        int[] nums = { 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 5, 5, 5, 5, 5, 5 };
+
+        int[] range = searchRange(nums, 2);
 
         System.out.println(String.format("[%d, %d]", range[0], range[1]));
     }
@@ -12,6 +17,20 @@ public class FirstLastElementSortedArray {
         int[] range = new int[2];
         range[0] = -1;
         range[1] = -1;
+
+
+        if (nums.length == 0) {
+            return range;
+        }
+
+        if (nums.length == 1) {
+            if (nums[0] == target) {
+                range[0] = 0;
+                range[1] = 0;
+            }
+
+            return range;
+        }
 
         int index = Arrays.binarySearch(nums, target);
         if (index <= -1) {
@@ -28,16 +47,20 @@ public class FirstLastElementSortedArray {
             range[1] = nums.length - 1;
         } else if (nums[index-1] == target && nums[index+1] == target) {
             // Spreads both left and right
-            range[0] = findLeftRange(nums, target, index);
-            range[1] = findLeftRange(nums, target, index);
-        } else if (nums[index-1] == target) {
+            range[0] = findLeftRange(nums, target, index-1);
+            range[1] = findLeftRange(nums, target, index+1);
+        } else if (nums[index-1] == target && nums[index+1] != target) {
             // Spreads only left
             range[0] = findLeftRange(nums, target, index-1);
             range[1] = index;
-        } else {
+        } else if (nums[index-1] != target && nums[index+1] == target){
             // Spreads only right
             range[0] = index;
             range[1] = findRightRange(nums, target, index + 1);
+        } else {
+            // Doesn't spread left or right
+            range[0] = index;
+            range[1] = index;
         }
 
         return range;
