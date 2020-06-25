@@ -6,8 +6,9 @@ public class FirstLastElementSortedArray {
 //        int[] nums = {  };
 //        int[] nums = { 0, 1, 2 };
 //        int[] nums = { 1 };
-        int[] nums = { 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 5, 5, 5, 5, 5, 5 };
+//        int[] nums = { 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 5, 5, 5, 5, 5, 5 };
 
+        int[] nums = { 2, 2 };
         int[] range = searchRange(nums, 2);
 
         System.out.println(String.format("[%d, %d]", range[0], range[1]));
@@ -75,7 +76,7 @@ public class FirstLastElementSortedArray {
             return -1;
         }
 
-        if (index == nums.length) {
+        if (index == nums.length - 1) {
             return index;
         }
 
