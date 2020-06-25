@@ -8,8 +8,10 @@ public class FirstLastElementSortedArray {
 //        int[] nums = { 1 };
 //        int[] nums = { 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 5, 5, 5, 5, 5, 5 };
 
-        int[] nums = { 2, 2 };
-        int[] range = searchRange(nums, 2);
+//        int[] nums = { 2, 2 };
+        int[] nums = { 1, 3 };
+
+        int[] range = searchRange(nums, 1);
 
         System.out.println(String.format("[%d, %d]", range[0], range[1]));
     }
@@ -40,10 +42,20 @@ public class FirstLastElementSortedArray {
         if (index == 0) {
             // Leftmost index
             range[0] = 0;
-            range[1] = findRightRange(nums, target, 1);
+
+            if (nums[1] == target) {
+                range[1] = findRightRange(nums, target, 1);
+            } else {
+                range[1] = 0;
+            }
         } else if (index == nums.length - 1) {
             // Rightmost index
-            range[0] = findLeftRange(nums, target, nums.length - 1);
+            if (nums[nums.length - 2] == target) {
+                range[0] = findLeftRange(nums, target, nums.length - 1);
+            } else {
+                range[0] = nums.length - 1;
+            }
+
             range[1] = nums.length - 1;
         } else if (nums[index-1] == target && nums[index+1] == target) {
             // Spreads both left and right
