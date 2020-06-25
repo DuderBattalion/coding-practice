@@ -2,9 +2,9 @@ public class SearchInsertPosition {
     public static void main(String[] args) {
 //        int[] nums = { 1, 3, 5, 6 };
 //        int[] nums = { };
-        int[] nums = { 1 };
+        int[] nums = { 1, 3 };
 
-        System.out.println(searchInsert(nums, 1));
+        System.out.println(searchInsert(nums, 2));
     }
 
     public static int searchInsert(int[] nums, int target) {
@@ -41,11 +41,11 @@ public class SearchInsertPosition {
                 return end;
             } else {
                 // Base Case - Nothing found
-                return start;
+                return start + 1;
             }
         }
 
-        int mid = (end - start)/2;
+        int mid = (end + start)/2;
         if (target == nums[mid]) {
             return mid;
         }
@@ -53,7 +53,7 @@ public class SearchInsertPosition {
         if (target < nums[mid]) {
             return recurseFindInsertPosition(nums, target, start, mid-1);
         } else {
-            return recurseFindInsertPosition(nums, target, mid+1, end);
+            return recurseFindInsertPosition(nums, target, mid, end);
         }
     }
 }
