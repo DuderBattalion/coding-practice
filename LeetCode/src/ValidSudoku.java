@@ -27,7 +27,21 @@ public class ValidSudoku {
                 {'.','.','.','.','8','.','.','7','9'}
         };
 
+        char[][] testSudoku1 = {
+                {'.','.','.','3','.','.','.','1','.'},
+                {'.','.','.','.','.','7','.','.','.'},
+                {'.','.','.','.','.','.','.','.','.'},
+                {'.','.','.','.','.','8','2','7','.'},
+                {'1','.','.','.','.','.','.','.','.'},
+                {'.','.','.','5','.','.','.','.','.'},
+                {'2','.','.','.','8','.','.','.','7'},
+                {'7','.','.','.','.','.','.','.','.'},
+                {'.','.','.','.','.','.','.','.','.'}
+        };
+
+        System.out.println(isValidSudoku(sudoku));
         System.out.println(isValidSudoku(invalidSudoku));
+        System.out.println(isValidSudoku(testSudoku1));
     }
 
     public static boolean isValidSudoku(char[][] board) {
@@ -138,9 +152,9 @@ public class ValidSudoku {
         Set<Integer> processedNums = new HashSet<Integer>();
         int num;
 
-        for (int i = row; i < 9; i+=3) {
-            for (int j = col; j < 9; j+=3) {
-                num = Character.getNumericValue(board[i][j]);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                num = Character.getNumericValue(board[row+i][col+j]);
 
                 if (num > 0) {
                     if (processedNums.contains(num)) {
