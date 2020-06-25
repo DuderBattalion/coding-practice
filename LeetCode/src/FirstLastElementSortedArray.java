@@ -18,7 +18,6 @@ public class FirstLastElementSortedArray {
         range[0] = -1;
         range[1] = -1;
 
-
         if (nums.length == 0) {
             return range;
         }
@@ -110,53 +109,4 @@ public class FirstLastElementSortedArray {
             return index;
         }
     }
-
-//    private static int findLeftRange(int[] nums, int target, int start, int end) {
-//        if (start > end) {
-//            return -1;
-//        }
-//
-//        if (start < 0 || end >= nums.length) {
-//            throw new RuntimeException(
-//                    String.format(
-//                            "[FindLeftRange]: Unexpected Error: index out of range. start: %d, end: %d",
-//                            start, end));
-//        }
-//
-//        if (end == 0) {
-//            return end;
-//        }
-//
-//        if (nums[end - 1] != target) {
-//            return end;
-//        }
-//
-//        int mid = (end - start)/2;
-//        if (nums[mid] == target) {
-//            // Keep going left
-//            return findLeftRange(nums, target, start, mid);
-//        } else {
-//            // Left range is somewhere between mid and end
-//            return findLeftRange(nums, target, mid, end);
-//        }
-//    }
-//
-//    private static int findRightRange(int[] nums, int target, int start, int end) {
-//        if (start > end) {
-//            return -1;
-//        }
-//
-//        if (start < 0 || end >= nums.length) {
-//            throw new RuntimeException(
-//                    String.format(
-//                            "[FindLeftRange]: Unexpected Error: index out of range. start: %d, end: %d",
-//                            start, end));
-//        }
-//
-//        if (start == nums.length - 1) {
-//            return -1;
-//        }
-//
-//
-//    }
 }
