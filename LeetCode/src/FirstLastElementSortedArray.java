@@ -10,9 +10,9 @@ public class FirstLastElementSortedArray {
 
 //        int[] nums = { 2, 2 };
 //        int[] nums = { 1, 3 };
-        int[] nums = { 1,2,3,3,3,3,4,5,9 };
-
-        int[] range = searchRange(nums, 3);
+//        int[] nums = { 1,2,3,3,3,3,4,5,9 };
+        int[] nums = { 0,0,0,0,0,1,1,2,2,3,4,4,5,5,5,5,6,7 };
+        int[] range = searchRange(nums, 0);
 
         System.out.println(String.format("[%d, %d]", range[0], range[1]));
     }
@@ -118,7 +118,7 @@ public class FirstLastElementSortedArray {
 
         if (nums[index - 1] == target) {
             // Keep looking
-            return findRightRange(nums, target, index - 1);
+            return findLeftRange(nums, target, index - 1);
         } else {
             return index;
         }
