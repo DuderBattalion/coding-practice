@@ -4,8 +4,8 @@ public class SearchRotatedArray {
     public static void main(String[] args) {
 //        int[] nums = { 4,5,6,7,0,1,2 };
 //        int[] nums = { 1,3 };
-        int[] nums = { 3, 1 };
-        System.out.println(search(nums, 2));
+        int[] nums = { 3, 5, 1 };
+        System.out.println(search(nums, 1));
 
 //        System.out.println(Arrays.binarySearch( nums, 4, 7, 2));
     }
@@ -35,6 +35,17 @@ public class SearchRotatedArray {
     private static int modifiedBinarySearch(int[] nums, int target, int start, int end) {
         if (start >= end) {
             return (nums[start] == target) ? start : -1 ;
+        }
+
+        // Base case - If only two left, no more recursion
+        if ((end - start) == 1) {
+            if (nums[start] == target) {
+                return start;
+            } else if (nums[end] == target) {
+                return end;
+            } else {
+                return -1;
+            }
         }
 
         int mid = (start + end)/2;
