@@ -58,39 +58,6 @@ public class SudokuSolver {
         return true;
     }
 
-//    private static void solveBoard(char[][] board, int i, int j) {
-//        if (board.length == 0) {
-//            return;
-//        }
-//
-//        Board nextIndex = getNextIndex(i, j);
-//
-//        // Base case - end of board
-//        if (nextIndex.i > 9) {
-//            return;
-//        }
-//
-//        if (board[i][j] != '.') {
-//            solveBoard(board, nextIndex.i, nextIndex.j);
-//        } else {
-//            boolean rowValid, colValid, gridValid;
-//            for (int num = 0; num < 10; num++) {
-//                char numChar = Character.forDigit(num, 10);
-//                if (!isRowValid(board, numChar, i)
-//                        || !isColValid(board, numChar, j)
-//                        || !isGridValid(board, numChar, i, j)) {
-//                    return;
-//                }
-//
-//                board[i][j] = Character.forDigit(num, 10);
-//                solveBoard(board, nextIndex.i, nextIndex.j);
-//
-//                // Backtrack
-//                board[i][j] = '.';
-//            }
-//        }
-//    }
-//
     private static class Board {
         public int i;
         public int j;
@@ -99,18 +66,6 @@ public class SudokuSolver {
             this.i = i;
             this.j = j;
         }
-    }
-
-    private static Board getNextIndex(int i, int j) {
-        if (i >= 9) {
-            return new Board(-1, -1);
-        }
-
-        if (j + 1 >= 9) {
-            return new Board(i + 1, 0); // New line
-        }
-
-        return new Board(i, j + 1);
     }
 
     private static boolean isRowValid(char[][] board, char num, int i) {
@@ -175,8 +130,8 @@ public class SudokuSolver {
     }
 
     private static List<Character> getGridVals(char[][] board, int row, int col) {
-        row = row/3;
-        col = col/3;
+        row = 3 * (row/3);
+        col = 3 * (col/3);
 
         List<Character> gridVals = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
