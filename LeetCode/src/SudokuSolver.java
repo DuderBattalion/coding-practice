@@ -26,42 +26,71 @@ public class SudokuSolver {
     }
 
     public static void solveSudoku(char[][] board) {
-        solveBoard(board, 0, 0);
+        solveBoard(board);
     }
 
-    private static void solveBoard(char[][] board, int i, int j) {
-        if (board.length == 0) {
-            return;
-        }
-
-        Board nextIndex = getNextIndex(i, j);
-
-        // Base case - end of board
-        if (nextIndex.i > 9) {
-            return;
-        }
-
-        if (board[i][j] != '.') {
-            solveBoard(board, nextIndex.i, nextIndex.j);
-        } else {
-            boolean rowValid, colValid, gridValid;
-            for (int num = 0; num < 10; num++) {
-                char numChar = Character.forDigit(num, 10);
-                if (!isRowValid(board, numChar, i)
-                        || !isColValid(board, numChar, j)
-                        || !isGridValid(board, numChar, i, j)) {
-                    return;
+    private static boolean solveBoard(char[][] board) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                if (board[i][j] != '.') {
+                    continue;
                 }
 
-                board[i][j] = Character.forDigit(num, 10);
-                solveBoard(board, nextIndex.i, nextIndex.j);
+                for (int k = 1; k <= 9; k++) {
+                    char numChar = Character.forDigit(k, 10);
+                    if (isRowValid(board, numChar, i)
+                            && isColValid(board, numChar, j)
+                            && isGridValid(board, numChar, i, j)) {
+                        board[i][j] = numChar;
 
-                // Backtrack
-                board[i][j] = '.';
+                        if (solveBoard(board)) {
+                            return true;
+                        } else {
+                            board[i][j] = '.'; // Backtrack
+                        }
+                    }
+                }
+
+                return false;
             }
         }
+
+        return true;
     }
 
+//    private static void solveBoard(char[][] board, int i, int j) {
+//        if (board.length == 0) {
+//            return;
+//        }
+//
+//        Board nextIndex = getNextIndex(i, j);
+//
+//        // Base case - end of board
+//        if (nextIndex.i > 9) {
+//            return;
+//        }
+//
+//        if (board[i][j] != '.') {
+//            solveBoard(board, nextIndex.i, nextIndex.j);
+//        } else {
+//            boolean rowValid, colValid, gridValid;
+//            for (int num = 0; num < 10; num++) {
+//                char numChar = Character.forDigit(num, 10);
+//                if (!isRowValid(board, numChar, i)
+//                        || !isColValid(board, numChar, j)
+//                        || !isGridValid(board, numChar, i, j)) {
+//                    return;
+//                }
+//
+//                board[i][j] = Character.forDigit(num, 10);
+//                solveBoard(board, nextIndex.i, nextIndex.j);
+//
+//                // Backtrack
+//                board[i][j] = '.';
+//            }
+//        }
+//    }
+//
     private static class Board {
         public int i;
         public int j;
