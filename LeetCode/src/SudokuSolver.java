@@ -8,10 +8,6 @@ public class SudokuSolver {
 //        char[][] board = {{'5','3','.','.','7','.','.','.','.'},{'6','.','.','1','9','5','.','.','.'},{'.','9','8','.','.','.','.','6','.'},{'8','.','.','.','6','.','.','.','3'},{'4','.','.','8','.','3','.','.','1'},{'7','.','.','.','2','.','.','.','6'},{'.','6','.','.','.','.','2','8','.'},{'.','.','.','4','1','9','.','.','5'},{'.','.','.','.','8','.','.','7','9'}};
         char[][] board = {{'.','.','9','7','4','8','.','.','.'},{'7','.','.','.','.','.','.','.','.'},{'.','2','.','1','.','9','.','.','.'},{'.','.','7','.','.','.','2','4','.'},{'.','6','4','.','1','.','5','9','.'},{'.','9','8','.','.','.','3','.','.'},{'.','.','.','8','.','3','.','2','.'},{'.','.','.','.','.','.','.','.','6'},{'.','.','.','2','7','5','9','.','.'}};
 
-        printBoard(board);
-        System.out.println("===================================");
-        System.out.println();
-
         solveSudoku(board);
         printBoard(board);
     }
@@ -59,33 +55,14 @@ public class SudokuSolver {
         return true;
     }
 
-    private static class Board {
-        public int i;
-        public int j;
-
-        public Board(int i, int j) {
-            this.i = i;
-            this.j = j;
-        }
-    }
-
     private static boolean isRowValid(char[][] board, char num, int i) {
         if (i < 0 || i >= board.length) {
             throw new RuntimeException(
                     String.format("Unexpected error [isRowValid]: Row out of bounds. row: %d", i));
         }
 
-        Set<Character> processedNums = new HashSet<>();
-
         boolean isValid = true;
         for (int j = 0; j < board.length; j++) {
-//            if (processedNums.contains(num)) {
-//                isValid = false;
-//                break;
-//            } else {
-//                processedNums.add(board[i][j]);
-//            }
-
             if (board[i][j] == num) {
                 isValid = false;
                 break;
@@ -101,21 +78,8 @@ public class SudokuSolver {
                     String.format("Unexpected error [isColValid]: Col out of bounds. col: %d", j));
         }
 
-//        Set<Character> processedNums = new HashSet<>();
-
         boolean isValid = true;
         for (int i = 0; i < board.length; i++) {
-            if (i == 1 && j == 5) {
-                int temp = 0;
-            }
-
-//            if (processedNums.contains(num)) {
-//                isValid = false;
-//                break;
-//            } else {
-//                processedNums.add(board[i][j]);
-//            }
-
             if (board[i][j] == num) {
                 isValid = false;
                 break;
