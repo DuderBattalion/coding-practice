@@ -31,14 +31,6 @@ public class CombinationSum {
                                                int candidateStartIndex,
                                                List<List<Integer>> output) {
         if (currSum == target) {
-//            List<Integer> results = new ArrayList<>(currList);
-//            String resultHash = getResultHash(results);
-//
-//            if (!processedResultHashes.contains(resultHash)) {
-//                output.add(results);
-//                processedResultHashes.add(resultHash);
-//            }
-
             output.add(new ArrayList<>(currList));
             return output;
         } else if (currSum > target) {
@@ -58,17 +50,5 @@ public class CombinationSum {
         }
 
         return output;
-    }
-
-    private static String getResultHash(List<Integer> results) {
-        Collections.sort(results);
-
-        StringBuilder resultHashBuf = new StringBuilder();
-        results.forEach(num -> {
-            resultHashBuf.append(num);
-            resultHashBuf.append(",");
-        });
-
-        return resultHashBuf.toString();
     }
 }
