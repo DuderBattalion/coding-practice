@@ -2,8 +2,11 @@ import java.util.*;
 
 public class CombinationSum {
     public static void main(String[] args) {
-        int[] candidates = { 2, 3, 6, 7 };
-        int target = 7;
+//        int[] candidates = { 2, 3, 6, 7 };
+//        int target = 7;
+
+        int[] candidates = { 2, 3, 5 };
+        int target = 8;
 
         List<List<Integer>> output = combinationSum(candidates, target);
         output.forEach(results -> {
@@ -20,37 +23,38 @@ public class CombinationSum {
         List<List<Integer>> output = new ArrayList<>();
         Set<String> processedResultHashes = new HashSet<>();
 
-        return generateCombSum(candidates, target, 0, currList, output, processedResultHashes);
+        return generateCombSum(candidates, target, 0, currList, 0, output);
     }
 
     public static List<List<Integer>> generateCombSum(int[] candidates, int target,
                                                int currSum, Deque<Integer> currList,
-                                               List<List<Integer>> output,
-                                               Set<String> processedResultHashes) {
+                                               int candidateStartIndex,
+                                               List<List<Integer>> output) {
         if (currSum == target) {
-            List<Integer> results = new ArrayList<>(currList);
-            String resultHash = getResultHash(results);
+//            List<Integer> results = new ArrayList<>(currList);
+//            String resultHash = getResultHash(results);
+//
+//            if (!processedResultHashes.contains(resultHash)) {
+//                output.add(results);
+//                processedResultHashes.add(resultHash);
+//            }
 
-            if (!processedResultHashes.contains(resultHash)) {
-                output.add(results);
-                processedResultHashes.add(resultHash);
-            }
-
+            output.add(new ArrayList<>(currList));
             return output;
         } else if (currSum > target) {
             return output;
         }
 
-        for (int candidate : candidates) {
+        for (int i = candidateStartIndex; i < candidates.length; i++) {
             // Try each candidate
-            currList.push(candidate);
-            currSum += candidate;
+            currList.push(candidates[i]);
+            currSum += candidates[i];
 
-            output = generateCombSum(candidates, target, currSum, currList, output, processedResultHashes);
+            output = generateCombSum(candidates, target, currSum, currList, i, output);
 
             // Then backtrack
             currList.pop();
-            currSum -= candidate;
+            currSum -= candidates[i];
         }
 
         return output;
