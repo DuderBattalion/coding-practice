@@ -18,15 +18,25 @@ public class CombinationSum {
     public static List<List<Integer>> combinationSum(int[] candidates, int target) {
         Deque<Integer> currList = new LinkedList<>();
         List<List<Integer>> output = new ArrayList<>();
+        Set<String> processedResultHashes = new HashSet<>();
 
-        return generateCombSum(candidates, target, 0, currList, output);
+        return generateCombSum(candidates, target, 0, currList, output, processedResultHashes);
     }
 
     public static List<List<Integer>> generateCombSum(int[] candidates, int target,
                                                int currSum, Deque<Integer> currList,
-                                               List<List<Integer>> output) {
+                                               List<List<Integer>> output,
+                                               Set<String> processedResultHashes) {
         if (currSum == target) {
-            output.add(new ArrayList<>(currList)); // Copy list result
+            List<Integer> results = new ArrayList<>(currList);
+            String resultHash = getResultHash(results);
+
+            if (!processedResultHashes.contains(resultHash)) {
+                output.add(results);
+                processedResultHashes.add(resultHash);
+            }
+
+            return output;
         } else if (currSum > target) {
             return output;
         }
@@ -36,7 +46,7 @@ public class CombinationSum {
             currList.push(candidate);
             currSum += candidate;
 
-            output = generateCombSum(candidates, target, currSum, currList, output);
+            output = generateCombSum(candidates, target, currSum, currList, output, processedResultHashes);
 
             // Then backtrack
             currList.pop();
@@ -44,5 +54,17 @@ public class CombinationSum {
         }
 
         return output;
+    }
+
+    private static String getResultHash(List<Integer> results) {
+        Collections.sort(results);
+
+        StringBuilder resultHashBuf = new StringBuilder();
+        results.forEach(num -> {
+            resultHashBuf.append(num);
+            resultHashBuf.append(",");
+        });
+
+        return resultHashBuf.toString();
     }
 }
