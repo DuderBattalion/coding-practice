@@ -8,7 +8,8 @@ public class FirstMissingPositive {
 //        int[] nums = { 1, 1 };
 //        int[] nums = { 0, 0 };
 //        int[] nums = { -1, -2, -3 };
-        int[] nums = { 1, 1000 };
+//        int[] nums = { 1, 1000 };
+        int[] nums = { 1, 2, 3, 10, 2147483647, 9 };
 
         System.out.println(firstMissingPositive(nums));
     }
@@ -40,15 +41,15 @@ public class FirstMissingPositive {
             return 2;
         }
 
-        BitSet bitSet = new BitSet(max + 1);
+        BitSet bitSet = new BitSet(max);
         for (int num: nums) {
             if (num <= 0) {
                 continue;
             }
 
-            bitSet.set(num);
+            bitSet.set(num-1); // 0 index'd
         }
 
-        return bitSet.nextClearBit(1);
+        return bitSet.nextClearBit(1) + 1; // adjust for zero index
     }
 }
