@@ -16,7 +16,9 @@ public class CombinationSum2 {
     }
 
     public static List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        List<List<Integer>> output = new ArrayList<>();
+            List<List<Integer>> output = new ArrayList<>();
+        Arrays.sort(candidates);
+
         return calcCombSum(candidates, target, output, 0,
                 new ArrayList<Integer>(), 0);
     }
@@ -37,6 +39,12 @@ public class CombinationSum2 {
         }
 
         for (int i = currCandidateIndex; i < candidates.length; i++) {
+            // Skip same numbers following an already processed index
+            // The prev processed index will have included all possible solutions between [currIndex ..... i-1]
+            if (i > currCandidateIndex && candidates[i] == candidates[i-1]) {
+                continue;
+            }
+
             int candidate = candidates[i];
             currList.add(candidate);
             currSum += candidate;
