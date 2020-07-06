@@ -1,16 +1,14 @@
+import java.util.BitSet;
+
 public class FirstMissingPositive {
     public static void main(String[] args) {
 //        int[] nums = { 7, 8, 9, 11, 12 };
-
 //        int[] nums = { 3, 4, -1, 1 };
-
 //        int[] nums = { 1, 2, 0 };
-
 //        int[] nums = { 1, 1 };
-
 //        int[] nums = { 0, 0 };
-
-        int[] nums = { -1, -2, -3 };
+//        int[] nums = { -1, -2, -3 };
+        int[] nums = { 1, 1000 };
 
         System.out.println(firstMissingPositive(nums));
     }
@@ -18,7 +16,6 @@ public class FirstMissingPositive {
     public static int firstMissingPositive(int[] nums) {
         int min = Integer.MAX_VALUE;
         int max = 0;
-        int sum = 0;
 
         for (int num: nums) {
             if (num < 0) {
@@ -32,44 +29,26 @@ public class FirstMissingPositive {
             if (num > max) {
                 max = num;
             }
-
-            sum += num;
         }
 
-        int missingNum;
         if (min > 1) {
-            missingNum = 1;
-        } else if (min == 1) {
-            if (max > 1) {
-                int expectedTotal = calcSeriesTotal(max) - calcSeriesTotal(min - 1);
-                missingNum = expectedTotal - sum;
-            } else {
-                missingNum = 2; // Case: [1, 1]
-            }
-
-        } else { // min == 0
-            if (max == 0) {
-                // All non-positive integers in series
-                missingNum = 1;
-            } else {
-                int expectedTotal = calcSeriesTotal(max);
-                missingNum = expectedTotal - sum;
-            }
+            return 1;
         }
 
-        if (missingNum == 0) {
-            missingNum = max + 1;
+        // min == 0 or 1 from here
+        if (max == 1) {
+            return 2;
         }
 
-        return missingNum;
-    }
+        BitSet bitSet = new BitSet(max + 1);
+        for (int num: nums) {
+            if (num <= 0) {
+                continue;
+            }
 
-    /**
-     * Calculates series total from 0 .. N
-     * @param num
-     * @return
-     */
-    private static int calcSeriesTotal(int num) {
-        return (num * (num+1))/2;
+            bitSet.set(num);
+        }
+
+        return bitSet.nextClearBit(1);
     }
 }
