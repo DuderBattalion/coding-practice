@@ -9,10 +9,10 @@ public class FirstMissingPositive {
 //        int[] nums = { 1, 1 };
 //        int[] nums = { 0, 0 };
 //        int[] nums = { -1, -2, -3 };
-//        int[] nums = { 1, 1000 };
+        int[] nums = { 1, 1000 };
 //        int[] nums = { 1, 2, 3, 10, 2147483647, 9 };
 //        int[] nums = { 0 };
-        int[] nums = { 1 };
+//        int[] nums = { 1 };
 
         System.out.println(firstMissingPositive(nums));
     }
@@ -39,11 +39,11 @@ public class FirstMissingPositive {
         int missingNum = 1;
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] == -2) {
-                if (i + i < nums.length && nums[i+1] != -2) {
+                if (i + 1 < nums.length && nums[i+1] != -2) {
                     missingNum = (i + 1) + 1; // Adjust for zero index
                     break;
                 } else if (i + 1 == nums.length){
-                    missingNum = i + 1;
+                    missingNum = (i + 1) + 1; // Adjust for zero index
                     break;
                 }
             }
