@@ -3,10 +3,10 @@ import java.util.BitSet;
 
 public class FirstMissingPositive {
     public static void main(String[] args) {
-//        int[] nums = { 7, 8, 9, 11, 12 };
+        int[] nums = { 7, 8, 9, 11, 12 };
 //        int[] nums = { 3, 4, -1, 1 };
 //        int[] nums = { 1, 2, 0 };
-        int[] nums = { 1, 1 };
+//        int[] nums = { 1, 1 };
 //        int[] nums = { 0, 0 };
 //        int[] nums = { -1, -2, -3 };
 //        int[] nums = { 1, 1000 };
@@ -14,6 +14,7 @@ public class FirstMissingPositive {
 //        int[] nums = { 0 };
 //        int[] nums = { 1 };
 //        int[] nums = { 2, 2, 2, 2, 2 };
+//        int[] nums = {};
 
         System.out.println(firstMissingPositive(nums));
     }
@@ -25,7 +26,10 @@ public class FirstMissingPositive {
         // Process remaining numbers, for each num[i] - make that index negative
         // The first positive index left is missing number
 
-        final int NUM_NEGATIVE = -2;
+        if (nums.length == 0) {
+            return 1;
+        }
+
         final int NUM_PROCESSED = 0;
         final int NUM_IGNORED = -1;
 
@@ -69,21 +73,31 @@ public class FirstMissingPositive {
 //                }
 //            }
 
-            // Last cell
-            if (i == (nums.length - 1)) {
-                if (nums[i] == NUM_PROCESSED) {
-                    missingNum = (i + 1) + 1; // All indexes are valid, +1 for zero index adjust
-                } else {
-                    missingNum = 1; // All indexes are ignored
-                }
+//            // Last cell
+//            if (i == (nums.length - 1)) {
+//                if (nums[i] == NUM_PROCESSED) {
+//                    missingNum = (i + 1) + 1; // All indexes are valid, +1 for zero index adjust
+//                } else {
+//                    missingNum = 1; // All indexes are ignored
+//                }
+//
+//                break;
+//            }
+//
+//            if (nums[i] == NUM_PROCESSED && nums[i+1] == NUM_IGNORED) {
+//                missingNum = (i + 1) + 1; // Zero index adjust
+//                break;
+//            }
 
+            if (nums[i] != NUM_PROCESSED) {
+                missingNum = i + 1; // Zero index adjust
                 break;
             }
+        }
 
-            if (nums[i] == NUM_PROCESSED && nums[i+1] == NUM_IGNORED) {
-                missingNum = (i + 1) + 1; // Zero index adjust
-                break;
-            }
+        if (missingNum == -1) {
+            // All indexes were valid
+            missingNum = nums.length + 1;
         }
 
         return missingNum;
