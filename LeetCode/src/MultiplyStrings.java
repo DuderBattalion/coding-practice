@@ -3,7 +3,7 @@ import java.util.List;
 
 public class MultiplyStrings {
     public static void main(String[] args) {
-        multiply("123", "456");
+        System.out.println(multiply("123", "456"));
     }
 
     public static String multiply(String num1, String num2) {
@@ -19,9 +19,6 @@ public class MultiplyStrings {
             longString = num1;
             shortString = num2;
         }
-
-//        longString = reverseString(longString);
-//        shortString = reverseString(shortString);
 
         List<String> intermediateResults = new ArrayList<>();
         int i = longString.length() - 1;
@@ -59,19 +56,13 @@ public class MultiplyStrings {
                 result.append(carry);
             }
 
-            intermediateResults.add(result.reverse().toString());
+            intermediateResults.add(result.toString());
 
             i--;
             trailingZeroes++;
         }
 
-        // Debug test
-        intermediateResults.forEach(System.out::println);
-        return "";
-
-//        return calcSumIntermediateResults(intermediateResults);
-
-
+        return calcSumIntermediateResults(intermediateResults);
     }
 
     private static int getDigit(String str, int index) {
@@ -88,5 +79,39 @@ public class MultiplyStrings {
         }
 
         return new StringBuilder(str).reverse().toString();
+    }
+
+    private static String calcSumIntermediateResults(List<String> intermediateResults) {
+        // Last row is longest
+        int maxRowLength = intermediateResults.get(intermediateResults.size() - 1).length();
+
+        StringBuilder output = new StringBuilder();
+        int sum;
+        int carry = 0;
+
+        for (int i = 0; i < maxRowLength; i++) {
+            sum = 0;
+            for (String row: intermediateResults) {
+                // Some rows might be shorter than the index, skip
+                if (i >= row.length()) {
+                    continue;
+                }
+
+                sum += getDigit(row, i);
+            }
+
+            sum += carry;
+
+            if (sum > 0) {
+                output.append(sum % 10);
+                carry = sum/10;
+            }
+        }
+
+        if (carry > 0) {
+            output.append(carry);
+        }
+
+        return output.reverse().toString();
     }
 }
