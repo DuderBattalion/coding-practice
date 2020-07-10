@@ -4,7 +4,7 @@ import java.util.List;
 public class MultiplyStrings {
     public static void main(String[] args) {
 //        System.out.println(multiply("123", "456"));
-        System.out.println(multiply("3", "21"));
+        System.out.println(multiply("3", "0"));
     }
 
     public static String multiply(String num1, String num2) {
@@ -104,9 +104,12 @@ public class MultiplyStrings {
 
             sum += carry;
 
-            if (sum > 0) {
+            if (sum > 9) {
                 output.append(sum % 10);
                 carry = sum/10;
+            } else {
+                output.append(sum);
+                carry = 0;
             }
         }
 
