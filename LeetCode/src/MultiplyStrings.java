@@ -3,7 +3,8 @@ import java.util.List;
 
 public class MultiplyStrings {
     public static void main(String[] args) {
-        System.out.println(multiply("123", "456"));
+//        System.out.println(multiply("123", "456"));
+        System.out.println(multiply("3", "21"));
     }
 
     public static String multiply(String num1, String num2) {
@@ -21,7 +22,7 @@ public class MultiplyStrings {
         }
 
         List<String> intermediateResults = new ArrayList<>();
-        int i = longString.length() - 1;
+        int i = shortString.length() - 1;
 
         int trailingZeroes = 0;
         while (i >= 0) {
@@ -67,7 +68,8 @@ public class MultiplyStrings {
 
     private static int getDigit(String str, int index) {
         if (str.isEmpty() || index >= str.length()) {
-            return -1;
+            throw new RuntimeException(String.format(
+                    "[GetDigit]: invalid inputs. str: %s, index: %d", str, index));
         }
 
         return Character.getNumericValue(str.charAt(index));
