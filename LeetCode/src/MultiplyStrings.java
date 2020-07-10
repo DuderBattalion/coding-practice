@@ -20,38 +20,49 @@ public class MultiplyStrings {
             shortString = num2;
         }
 
-        longString = reverseString(longString);
-        shortString = reverseString(shortString);
+//        longString = reverseString(longString);
+//        shortString = reverseString(shortString);
 
         List<String> intermediateResults = new ArrayList<>();
         int i = longString.length() - 1;
 
+        int trailingZeroes = 0;
         while (i >= 0) {
-            int longDigit = getDigit(longString, i);
+            int shortDigit = getDigit(shortString, i);
             StringBuilder result = new StringBuilder();
 
             // Add trailing zeroes for intermediate results
-            result.append("0".repeat(i));
+            result.append("0".repeat(trailingZeroes));
 
-            int j = shortString.length() - 1;
+            int j = longString.length() - 1;
 
             int sum = 0;
             int carry = 0;
             while (j >= 0) {
-                int shortDigit = getDigit(shortString, j);
+                int longDigit = getDigit(longString, j);
                 int digitMultiply = (longDigit * shortDigit) + carry;
 
                 if (digitMultiply > 9) {
-                    carry = digitMultiply % 10;
-                    sum = digitMultiply/10;
+                    sum = digitMultiply % 10;
+                    carry = digitMultiply/10;
+                } else {
+                    sum = digitMultiply;
+                    carry = 0;
                 }
 
                 result.append(sum);
                 j--;
             }
 
+            // If carry left over at the end of intermediate row
+            if (carry > 0) {
+                result.append(carry);
+            }
+
             intermediateResults.add(result.reverse().toString());
+
             i--;
+            trailingZeroes++;
         }
 
         // Debug test
