@@ -4,11 +4,12 @@ import java.util.List;
 public class MultiplyStrings {
     public static void main(String[] args) {
 //        System.out.println(multiply("123", "456"));
-        System.out.println(multiply("3", "0"));
+//        System.out.println(multiply("9999999999999999999999999", "999999999999999999999999"));
+        System.out.println(multiply("9133", "0"));
     }
 
     public static String multiply(String num1, String num2) {
-        if (num1.length() == 0 || num2.length() == 0) {
+        if (num1.length() == 0 || num2.length() == 0 || num1.charAt(0) == '0' || num2.charAt(0) == '0') {
             return "0";
         }
 
@@ -22,8 +23,9 @@ public class MultiplyStrings {
         }
 
         List<String> intermediateResults = new ArrayList<>();
-        int i = shortString.length() - 1;
 
+        // Tracks short string
+        int i = shortString.length() - 1;
         int trailingZeroes = 0;
         while (i >= 0) {
             int shortDigit = getDigit(shortString, i);
@@ -32,6 +34,7 @@ public class MultiplyStrings {
             // Add trailing zeroes for intermediate results
             result.append("0".repeat(trailingZeroes));
 
+            // Tracks long string digits
             int j = longString.length() - 1;
 
             int sum = 0;
@@ -73,14 +76,6 @@ public class MultiplyStrings {
         }
 
         return Character.getNumericValue(str.charAt(index));
-    }
-
-    private static String reverseString(String str) {
-        if (str.isEmpty()) {
-            return str;
-        }
-
-        return new StringBuilder(str).reverse().toString();
     }
 
     private static String calcSumIntermediateResults(List<String> intermediateResults) {
