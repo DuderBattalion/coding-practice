@@ -1,10 +1,28 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class WildcardMatching {
     public static void main(String[] args) {
 //        System.out.println(isMatch("adceb", "a*b"));
-        System.out.println(isMatch("acdcb", "a*c?cb"));
+//        System.out.println(isMatch("acdcb", "a*c?cb"));
+//        System.out.println(isMatch("", "?"));
+        System.out.println(isMatch("aaaabaaaabbbbaabbbaabbaababbabbaaaababaaabbbbbbaabbbabababbaaabaabaaaaaabbaabbbbaababbababaabbbaababbbba",
+                "*****b*aba***babaa*bbaba***a*aaba*b*aa**a*b**ba***a*a*"));
+
     }
 
     public static boolean isMatch(String s, String p) {
+        return isMatch(s, p, new HashMap<String, Boolean>());
+    }
+
+    public static boolean isMatch(String s, String p, Map<String, Boolean> cache) {
+        String key = s + "," + p;
+        if (cache.containsKey(key)) {
+            return cache.get(key);
+        }
+
+        //        System.out.println(String.format("s: %s, p: %s", s, p));
+
         if (p.isEmpty()) {
             return s.isEmpty();
         }
@@ -12,18 +30,22 @@ public class WildcardMatching {
         Character sChar = s.isEmpty() ? null : s.charAt(0);
         char pChar = p.charAt(0);
 
+        boolean matchResult;
         if (pChar == '*') {
             if (s.isEmpty()) {
-                return isMatch(s, snipString(p));
+                matchResult = isMatch(s, snipString(p), cache);
             } else {
                 // Either use the wildcard, or ignore it
-                return (isMatch(snipString(s), p) || isMatch(s, snipString(p)));
+                matchResult = (isMatch(snipString(s), p, cache) || isMatch(s, snipString(p), cache));
             }
-        } else if (pChar == '?' || (sChar != null && pChar == sChar)) {
-            return isMatch(snipString(s), snipString(p));
+        } else if (sChar != null && (pChar == '?' || pChar == sChar)) {
+            matchResult = isMatch(snipString(s), snipString(p), cache);
         } else {
-            return false;
+            matchResult = false;
         }
+
+        cache.put(key, matchResult);
+        return matchResult;
     }
 
     /**
