@@ -6,34 +6,10 @@ public class JumpGame2 {
         int[] nums = { 2, 3, 1, 1, 4 };
 //        int[] nums = { 0 };
 //        int[] nums = { 1, 2, 1, 1, 1 };
+//        int[] nums = { 1 };
 
         System.out.println(jump(nums));
     }
-
-//    public static int jump(int[] nums) {
-//        if (nums.length == 0) {
-//            return 0;
-//        }
-//
-//        Queue<Integer> frontier = new LinkedList<>();
-//        frontier.offer(0);
-//
-//        boolean isLastIndex = false;
-//        while (!frontier.isEmpty()) {
-//            int index = frontier.poll();
-//
-//            // Check neighbors
-//            for (int jump = 1; jump <= nums[index]; jump++) {
-//                int nextIndex = index + jump;
-//                if (nextIndex == (nums.length - 1)) {
-//                    isLastIndex = true;
-//                    break;
-//                }
-//
-//
-//            }
-//        }
-//    }
 
     /**
      * Searches neighbors if they have last index.
@@ -72,7 +48,9 @@ public class JumpGame2 {
         int maxJumps = nums[index];
         for (int i = 1; i <= maxJumps; i++) {
             int nextIndex = index + i;
-            neighbors.add(nextIndex);
+            if (nextIndex < nums.length) {
+                neighbors.add(nextIndex);
+            }
 
             if (nextIndex == (nums.length - 1)) {
                 // Last index found - stop processing
