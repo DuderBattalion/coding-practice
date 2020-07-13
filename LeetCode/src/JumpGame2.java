@@ -3,53 +3,63 @@ import java.util.Queue;
 
 public class JumpGame2 {
     public static void main(String[] args) {
-//        int[] nums = { 2, 3, 1, 1, 4 };
+        int[] nums = { 2, 3, 1, 1, 4 };
 //        int[] nums = { 0 };
-        int[] nums = { 1, 2, 1, 1, 1 };
+//        int[] nums = { 1, 2, 1, 1, 1 };
 
         System.out.println(jump(nums));
     }
 
-    public static int jump(int[] nums) {
-        if (nums.length == 0) {
-            return 0;
-        }
-
-        Queue<Integer> frontier = new LinkedList<>();
-        frontier.offer(0);
-
-        boolean isLastIndex = false;
-        while (!frontier.isEmpty()) {
-            int index = frontier.poll();
-
-            // Check neighbors
-            for (int jump = 1; jump <= nums[index]; jump++) {
-                int nextIndex = index + jump;
-                if (nextIndex == (nums.length - 1)) {
-                    isLastIndex = true;
-                    break;
-                }
-
-
-            }
-        }
-    }
+//    public static int jump(int[] nums) {
+//        if (nums.length == 0) {
+//            return 0;
+//        }
+//
+//        Queue<Integer> frontier = new LinkedList<>();
+//        frontier.offer(0);
+//
+//        boolean isLastIndex = false;
+//        while (!frontier.isEmpty()) {
+//            int index = frontier.poll();
+//
+//            // Check neighbors
+//            for (int jump = 1; jump <= nums[index]; jump++) {
+//                int nextIndex = index + jump;
+//                if (nextIndex == (nums.length - 1)) {
+//                    isLastIndex = true;
+//                    break;
+//                }
+//
+//
+//            }
+//        }
+//    }
 
     /**
      * Searches neighbors if they have last index.
      * If not, then return the next level of neighbors.
      */
-    private static boolean calcMinJumps(int[] nums, int index, int jumps, Queue<Integer> neighbors) {
-        neighbors = calcNeighbors(nums, index);
-        if (neighbors.isEmpty()) {
-            return false;
+    public static int jump(int[] nums) {
+        int jumps = 0;
+
+        Queue<Integer> neighbors = calcNeighbors(nums, 0);
+        while (!neighbors.isEmpty()) {
+            jumps++;
+
+            // Last index found
+            if (neighbors.contains(nums.length - 1)) {
+                break;
+            }
+
+            Queue<Integer> nextNeighbors = new LinkedList<>();
+            for (int neighbor: neighbors) {
+                nextNeighbors.addAll(calcNeighbors(nums, neighbor));
+            }
+
+            neighbors = nextNeighbors;
         }
 
-        if (isContainLastIndex(neighbors)) {
-            return true;
-        }
-
-
+        return jumps;
     }
 
     private static Queue<Integer> calcNeighbors(int[] nums, int index) {
@@ -71,9 +81,5 @@ public class JumpGame2 {
         }
 
         return neighbors;
-    }
-
-    private static boolean isContainLastIndex(Queue<Integer> neighbors, int lastIndex) {
-        neighbors.contains(lastIndex);
     }
 }
