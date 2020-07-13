@@ -3,8 +3,8 @@ import java.util.Queue;
 
 public class JumpGame2 {
     public static void main(String[] args) {
-//        int[] nums = { 2, 3, 1, 1, 4 };
-        int[] nums = { 2 };
+        int[] nums = { 2, 3, 1, 1, 4 };
+//        int[] nums = { 0 };
 
         System.out.println(jump(nums));
     }
@@ -42,6 +42,7 @@ public class JumpGame2 {
             jumpCount++;
         }
 
-        return jumpCount;
+        // If last index reached, return jumpCount, or return 0
+        return isLastIndex ? jumpCount : 0;
     }
 }
