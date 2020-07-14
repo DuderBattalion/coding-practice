@@ -3,7 +3,7 @@ import java.util.*;
 public class Permutations {
     public static void main(String[] args) {
 //        int[] nums = { 1, 2, 3 };
-        int[] nums = { 1 };
+        int[] nums = { 1, 2, 3, 4 };
 
         List<List<Integer>> output = permute(nums);
 
@@ -12,6 +12,18 @@ public class Permutations {
             System.out.println();
         }
     }
+
+    /**
+     *  Permutations are based on recurrence relation:
+     *  p[i] = num[i] permuted across p[i-1]
+     *  so if num[] = 1, 2, 3, then p[0] = { 1 },
+     *  and p[1] = 2 permuted with p[0]
+     *  i.e p[1] = 2 permuted with { 1 }
+     *  i.e p[1] = { 2, 1 }, { 1, 2 }
+     *  Permutations are just num[i]'s being inserted at each position of p[i-1]
+     * @param nums
+     * @return
+     */
 
     public static List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> output = new ArrayList<>();
@@ -28,13 +40,6 @@ public class Permutations {
             return output;
         }
 
-        // Permutations are based on recurrence relation:
-        // p[i] = num[i] permuted across p[i-1]
-        // so if num[] = 1, 2, 3, then p[0] = { 1 },
-        // and p[1] = 2 permuted with p[0]
-        // i.e p[1] = 2 permuted with { 1 }
-        // i.e p[1] = { 2, 1 }, { 1, 2 }
-        // Permutations are just num[i]'s being inserted at each position of p[i-1]
         Queue<List<Integer>> perms = new LinkedList<>();
         perms.add(result);
 
@@ -81,6 +86,4 @@ public class Permutations {
 
         return perms;
     }
-
-
 }
