@@ -11,10 +11,10 @@ public class JumpGame2 {
 //        int[] nums = { 1 };
         int[] nums = { 8,2,4,4,4,9,5,2,5,8,8,0,8,6,9,1,1,6,3,5,1,2,6,6,0,4,8,6,0,3,2,8,7,6,5,1,7,0,3,4,8,3,5,9,0,4,0,1,0,5,9,2,0,7,0,2,1,0,8,2,5,1,2,3,9,7,4,7,0,0,1,8,5,6,7,5,1,9,9,3,5,0,7,5 };
 
-        System.out.println(jump2(nums));
+        System.out.println(jump(nums));
     }
 
-    public static int jump2(int[] nums) {
+    public static int jump(int[] nums) {
         if (nums.length == 0 || nums.length == 1) {
             return 0;
         }
@@ -28,14 +28,14 @@ public class JumpGame2 {
         neighborIndices.add(0);
 
         // Modified BFS
-        // Process each level. If last index found, then break and return jump count.
-        // If not, then increment jump by 1 AFTER the entire level has been processed
+        // Process each level of neighboring indices that are in jump range.
+        // If last index found in BFS level, then break and return jump count.
+        // If not, then increment jump by 1 AFTER the entire level has been processed and continue searching.
         boolean isLastIndexFound = false;
         while (!neighborIndices.isEmpty()) {
-            isLastIndexFound = processBFSLevel(nums, neighborIndices,
-                    visitedNodes);
-
+            isLastIndexFound = processBFSLevel(nums, neighborIndices, visitedNodes);
             jumps++;
+
             if (isLastIndexFound) {
                 break;
             }
@@ -44,6 +44,10 @@ public class JumpGame2 {
         return isLastIndexFound ? jumps : 0;
     }
 
+    /**
+     * Takes a level in the BFS tree for nums as a queue and checks if the last index exists on this level.
+     * If so, returns true. If not, then fills the queue with the next level candidates and returns false.
+     */
     private static boolean processBFSLevel(int[] nums, Queue<Integer> neighborIndices,
                                            Set<Integer> visitedNodes) {
         boolean isLastIndexFound = false;
@@ -78,6 +82,10 @@ public class JumpGame2 {
         return isLastIndexFound;
     }
 
+    /**
+     * Given an index in nums, calculates neihgbors based on jump range. If last index is detected,
+     * stops processing immediately and returns to save on CPU cycles.
+     */
     private static boolean addNextNeighbors(int[] nums, Queue<Integer> neighborIndices,
                                             Set<Integer> visitedNodes, int neighborIndex) {
         boolean isLastIndexFound = false;
