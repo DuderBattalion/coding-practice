@@ -47,7 +47,7 @@ public class Permutations {
             calcPermutations(nums[i], perms);
         }
 
-        perms.forEach(perm -> output.add(perm));
+        output.addAll(perms);
         return output;
     }
 
