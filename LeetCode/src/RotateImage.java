@@ -38,7 +38,7 @@ public class RotateImage {
 
         // Spiral arm 1
         // First going right, Second going down
-        for (int k = 0; k < n; k++) {
+        for (int k = 0; k < (n-1); k++) {
             int first = matrix[i][j+k];
             int second = matrix[i+k][n-1];
 
@@ -53,7 +53,7 @@ public class RotateImage {
 
         // Spiral arm 2
         // First going down, Second going left
-        for (int k = 0; k < n; k++) {
+        for (int k = 0; k < (n-1); k++) {
             int first = matrix[i+k][n-1];
             int second = matrix[n-1][(n-1)-k];
 
@@ -68,7 +68,7 @@ public class RotateImage {
 
         // Spiral arm 3
         // First going left, second going up
-        for (int k = 0; k < n; k++) {
+        for (int k = 0; k < (n-1); k++) {
             int first = matrix[n-1][(n-1)-k];
             int second = matrix[(n-1)-k][j];
 
