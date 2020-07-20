@@ -33,23 +33,25 @@ public class RotateImage {
         int j = 0;
 
         int numLoop = (n/2);
+        int armLength = n;
         for (int k = 0; k < numLoop; k++) {
-            doSwapSpiral(matrix, i, j, n);
+            doSwapSpiral(matrix, i, j, n, armLength);
 
-            n = n - 2;
+            n--;
             i++;
             j++;
+            armLength = armLength - 2;
         }
     }
 
     // Inner spirals indexes are not being set correctly
     // Assumes start from 0,0 to n-1 right border
-    private static void doSwapSpiral(int[][] matrix, int i, int j, int n) {
+    private static void doSwapSpiral(int[][] matrix, int i, int j, int n, int armLength) {
         if (n <= 0) {
             return;
         }
 
-        for (int k = 0; k < (n - 1); k++) {
+        for (int k = 0; k < armLength; k++) {
             // Consider swapQ as a circular Queue that stores
             // indices to be swapped around the 2D array
             // Indices lie in the same layer, and we go swapping
