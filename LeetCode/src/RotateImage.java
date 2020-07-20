@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class RotateImage {
     public static void main(String[] args) {
         int[][] matrix = {
@@ -36,49 +39,23 @@ public class RotateImage {
             return;
         }
 
-        // Spiral arm 1
-        // First going right, Second going down
-        for (int k = 0; k < (n-1); k++) {
-            int first = matrix[i][j+k];
-            int second = matrix[i+k][n-1];
+        for (int k = 0; k < (n - 1); k++) {
+            // Consider swapQ as a circular Queue that stores
+            // indices to be swapped around the 2D array
+            // Indices lie in the same layer, and we go swapping
+            // layers inward - like an onion
+            Queue<Integer> swapQ = new LinkedList<>();
+            swapQ.add(matrix[(n-1)-k][j]); // Spiral arm LEFT
+            swapQ.add(matrix[i][j+k]); // arm TOP
+            swapQ.add(matrix[i+k][n-1]); // arm RIGHT
+            swapQ.add(matrix[n-1][(n-1)-k]); // arm BOTTOM
 
-            // Swap first and second
-            int temp = first;
-            first = second;
-            second = temp;
-
-            matrix[i][j+k] = first;
-            matrix[i+k][n-1] = second;
-        }
-
-        // Spiral arm 2
-        // First going down, Second going left
-        for (int k = 0; k < (n-1); k++) {
-            int first = matrix[i+k][n-1];
-            int second = matrix[n-1][(n-1)-k];
-
-            // Swap first and second
-            int temp = first;
-            first = second;
-            second = temp;
-
-            matrix[i+k][n-1] = first;
-            matrix[n-1][(n-1)-k] = second;
-        }
-
-        // Spiral arm 3
-        // First going left, second going up
-        for (int k = 0; k < (n-1); k++) {
-            int first = matrix[n-1][(n-1)-k];
-            int second = matrix[(n-1)-k][j];
-
-            // Swap first and second
-            int temp = first;
-            first = second;
-            second = temp;
-
-            matrix[n-1][(n-1)-k] = first;
-            matrix[(n-1)-k][j] = second;
+            // Now that's everything been swapped right by
+            // one swap position, reassign queue values to indices
+            matrix[i][j+k] = swapQ.remove();
+            matrix[i+k][n-1] = swapQ.remove();
+            matrix[n-1][(n-1)-k] = swapQ.remove();
+            matrix[(n-1)-k][j] = swapQ.remove();
         }
     }
 }
