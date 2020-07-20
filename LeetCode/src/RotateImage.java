@@ -51,7 +51,8 @@ public class RotateImage {
             return;
         }
 
-        for (int k = 0; k < armLength; k++) {
+        // Note: Only armLength - 1 loops required.
+        for (int k = 0; k < (armLength - 1); k++) {
             // Consider swapQ as a circular Queue that stores
             // indices to be swapped around the 2D array
             // Indices lie in the same layer, and we go swapping
