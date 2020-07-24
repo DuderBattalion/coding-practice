@@ -1,11 +1,13 @@
 public class PowXN {
     public static void main(String[] args) {
         System.out.println(myPow(2, 10));
+        System.out.println(myPow(2.1, 3));
+        System.out.println(myPow(2, -2));
     }
 
     public static double myPow(double x, int n) {
         if (n < 0) {
-            return (1 / myPowRecurse(x, n));
+            return (1 / myPowRecurse(x, n * -1));
         } else {
             return myPowRecurse(x, n);
         }
