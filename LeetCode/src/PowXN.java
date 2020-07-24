@@ -16,7 +16,7 @@ public class PowXN {
         }
 
         if (x == -1) {
-            return (n % 2) == 0 ? 1 : 0;
+            return (n % 2) == 0 ? 1 : -1;
         }
 
         if (n == Integer.MIN_VALUE) {
