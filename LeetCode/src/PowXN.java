@@ -3,6 +3,8 @@ public class PowXN {
         System.out.println(myPow(2, 10));
         System.out.println(myPow(2.1, 3));
         System.out.println(myPow(2, -2));
+        System.out.println(myPow(-2, 4));
+        System.out.println(myPow(99, Integer.MAX_VALUE));
     }
 
     public static double myPow(double x, int n) {
