@@ -2,13 +2,21 @@ import java.util.*;
 
 public class NQueens {
     public static void main(String[] args) {
-        List<List<String>> output = solveNQueens(4);
+        List<List<String>> output = solveNQueens(3);
         output.forEach(solution -> {
             solution.forEach(System.out::println);
             System.out.println("=========");
         });
     }
 
+    /**
+     * Recursive solution.
+     * Start on first row. For each row, loop over all columns and try each position
+     * with backtracking.
+     * If the column is valid, add to solution list and recurse to next row.
+     * Backtrack once recursion is complete.
+     * If not, then prune and abandon current solution and recurse a level up.
+     */
     public static List<List<String>> solveNQueens(int n) {
         List<List<String>> output = new ArrayList<>();
         findSolutions(0, n, new ArrayList<>(), output);
@@ -37,6 +45,10 @@ public class NQueens {
         }
     }
 
+    /**
+     * Transforms a list of Queen objects into the List<List<String>> output format
+     * as required by LeetCode.
+     */
     private static void addSolution(List<Queen> solution, List<List<String>> output, int n) {
         List<String> solutionStringList = new ArrayList<>();
         for (Queen queen: solution) {
@@ -55,6 +67,10 @@ public class NQueens {
         output.add(solutionStringList);
     }
 
+    /**
+     * Checks if the current position is covered by existing queens.
+     * Checks to see if there is an existing queen in the row, column or diagonal.
+     */
     private static boolean isValidPosition(int row, int col, List<Queen> solution) {
         boolean isValidPosition = true;
         for (Queen queen : solution) {
@@ -77,6 +93,9 @@ public class NQueens {
         return isValidPosition;
     }
 
+    /**
+     * Data structure class that stores position of a Queen.
+     */
     private static class Queen {
         public int row;
         public int col;
