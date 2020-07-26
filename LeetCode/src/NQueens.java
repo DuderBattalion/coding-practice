@@ -2,116 +2,86 @@ import java.util.*;
 
 public class NQueens {
     public static void main(String[] args) {
-
+        List<List<String>> output = solveNQueens(4);
+        output.forEach(solution -> {
+            solution.forEach(System.out::println);
+            System.out.println("=========");
+        });
     }
 
-    public List<List<String>> solveNQueens(int n) {
+    public static List<List<String>> solveNQueens(int n) {
         List<List<String>> output = new ArrayList<>();
-        Deque<Cell> config = new LinkedList<>();
-        int[][] board = new int[n][n];
+        findSolutions(0, n, new ArrayList<>(), output);
 
-        return calcConfigs(board, n, i, config, output);
+        return output;
     }
 
-    private void calcConfigs(int board, int n, int i,
-                             Set<Integer> coveredRows,
-                             Set<Integer> coveredCols,
-                             Deque<Cell> config,
-                             List<List<String>> output) {
-        if (config.size() == n) {
-            addConfigToOutput(output, config);
+    private static void findSolutions(int row, int n,
+                                      List<Queen> solution, // Stack?
+                                      List<List<String>> output) {
+        if (row == n) {
+            addSolution(solution, output, n);
             return;
         }
 
-        if (i >= n) {
-            return;
-        }
-
+        // For every row, find solutions for every column
         for (int j = 0; j < n; j++) {
-            boolean isValid = isValidConfig(board, i, j, coveredRows, coveredCols);
-            if (isValid) {
-                config.push(new Cell(i, j));
-
-                calcConfigs(board, n, i + 1, config, output);
+            if (isValidPosition(row, j, solution)) {
+                // Position valid, add column and recurse to next row
+                solution.add(new Queen(row, j));
+                findSolutions(row + 1, n, solution, output);
 
                 // Backtrack
-                config.pop();
+                solution.remove(solution.size() - 1);
             }
         }
     }
 
-    /**
-     * Verifies if a position in the board is a marked position already covered by a queen.
-     * If so, returns true. If not, returns false.
-     */
-    private boolean isValidConfig(int board, int i, int j,
-                                  Set<Integer> coveredRows,
-                                  Set<Integer> coveredCols) {
-        boolean isValid = true;
-        if (coveredRows.contains(i) || coveredCols.contains(j)
-                || isCoveredDiagonal(board, i, j)) {
-            isValid = false;
+    private static void addSolution(List<Queen> solution, List<List<String>> output, int n) {
+        List<String> solutionStringList = new ArrayList<>();
+        for (Queen queen: solution) {
+            StringBuilder queenPosition = new StringBuilder();
+            for (int j = 0; j < n; j++) {
+                if (queen.col == j) {
+                    queenPosition.append("Q");
+                } else {
+                    queenPosition.append(".");
+                }
+            }
+
+            solutionStringList.add(queenPosition.toString());
         }
 
-        return isValid;
+        output.add(solutionStringList);
     }
 
-    private boolean isCoveredDiagonal(String[][] board, int row, int col, int n) {
-        // Going in clockwise direction
-        // NE
-        int i = row - 1;
-        int j = col + 1;
-        while (i >= 0 && j < n) {
-            if (board[i][j] == "Q") {
-                return false;
+    private static boolean isValidPosition(int row, int col, List<Queen> solution) {
+        boolean isValidPosition = true;
+        for (Queen queen : solution) {
+            // Check rows and columns
+            if (queen.row == row || queen.col == col) {
+                isValidPosition = false;
+                break;
             }
 
-            i--;
-            j++;
-        }
-
-        // SE
-        i = row + 1;
-        j = col + 1;
-        while (i < n && j < n) {
-            if (board[i][j] == "Q") {
-                return false;
+            // Check diagonal. Position on queen diagonal if
+            // the difference in rows and cols is the same
+            int diffRow = Math.abs(queen.row - row);
+            int diffCol = Math.abs(queen.col - col);
+            if (diffRow == diffCol) {
+                isValidPosition = false;
+                break;
             }
-
-            i++;
-            j++;
         }
 
-        // SW
-        i = row + 1;
-        j = col - 1;
-        while (i < n && j >= 0) {
-            if (board[i][j] == "Q") {
-                return false;
-            }
-
-            i++;
-            j--;
-        }
-
-        // NW
-        i = row - 1;
-        j = col - 1;
-        while (i >= 0 && j >= 0) {
-            if (board[i][j] == "Q") {
-                return false;
-            }
-
-            i--;
-            j--;
-        }
+        return isValidPosition;
     }
 
-    private static class Cell {
+    private static class Queen {
         public int row;
         public int col;
 
-        public Cell(int row, int col) {
+        public Queen(int row, int col) {
             this.row = row;
             this.col = col;
         }
