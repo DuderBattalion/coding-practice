@@ -1,12 +1,9 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class NQueens {
+public class NQueens2 {
     public static void main(String[] args) {
-        List<List<String>> output = solveNQueens(4);
-        output.forEach(solution -> {
-            solution.forEach(System.out::println);
-            System.out.println("=========");
-        });
+        System.out.println(totalNQueens(4));
     }
 
     /**
@@ -17,11 +14,11 @@ public class NQueens {
      * Backtrack once recursion is complete.
      * If not, then prune and abandon current solution and recurse a level up.
      */
-    public static List<List<String>> solveNQueens(int n) {
+    public static int totalNQueens(int n) {
         List<List<String>> output = new ArrayList<>();
         findSolutions(0, n, new ArrayList<>(), output);
 
-        return output;
+        return output.size();
     }
 
     private static void findSolutions(int row, int n,
