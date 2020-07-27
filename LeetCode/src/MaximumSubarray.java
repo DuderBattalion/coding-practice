@@ -1,15 +1,21 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class MaximumSubarray {
     public static void main(String[] args) {
-        int[] nums = { -2, 1, -3, 4, -1, 2, 1, -5, 4 };
+//        int[] nums = { -2, 1, -3, 4, -1, 2, 1, -5, 4 };
+//        int[] nums = { -2, -3, -4, -5 };
         System.out.println(maxSubArray(nums));
 
     }
 
     public static int maxSubArray(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+
         int maxSum = Integer.MIN_VALUE;
 
         List<Integer> numList = createNumList(nums);
@@ -34,15 +40,23 @@ public class MaximumSubarray {
         List<Integer> numList = new ArrayList<>();
 
         int sum = 0 ;
+        boolean isAllNegative = true;
         for (int num: nums) {
             if (num < 0) {
                 numList.add(sum);
                 numList.add(num);
                 sum = 0;
-            } else
-            {
+            } else {
+                isAllNegative = false;
                 sum += num;
             }
+        }
+
+        if (isAllNegative) {
+            List<Integer> negativeList = new ArrayList<>();
+            Arrays.stream(nums).forEach(negativeList::add);
+
+            return negativeList;
         }
 
         if (sum > 0) {
