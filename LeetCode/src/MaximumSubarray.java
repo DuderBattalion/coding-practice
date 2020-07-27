@@ -1,12 +1,15 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MaximumSubarray {
     public static void main(String[] args) {
+        int[] nums = { -2, 1, -3, 4, -1, 2, 1, -5, 4 };
+        System.out.println(maxSubArray(nums));
 
     }
 
-    public int maxSubArray(int[] nums) {
+    public static int maxSubArray(int[] nums) {
         int maxSum = Integer.MIN_VALUE;
 
         List<Integer> numList = createNumList(nums);
@@ -26,10 +29,9 @@ public class MaximumSubarray {
      * Step 3: Keep merging Step 2 until no more merges are possible
      * Step 4: Return the list of integers. The max of this list is the maxSum possible.
      */
-    private List<Integer> createNumList(int[] nums) {
+    private static List<Integer> createNumList(int[] nums) {
         // Init num list
         List<Integer> numList = new ArrayList<>();
-        numList.add(0); // Dummy node
 
         int sum = 0 ;
         for (int num: nums) {
@@ -48,54 +50,52 @@ public class MaximumSubarray {
         }
 
         // Recursively do merge pass
-        int prevListSize = numList.size();
+        int prevListSize;
         do {
+            prevListSize = numList.size();
             numList = doMergePass(numList);
         } while (prevListSize != numList.size()); // List changed
 
         return numList;
     }
 
-    private List<Integer> doMergePass(List<Integer> numList) {
-        List<Integer> newList = new ArrayList<>();
-        if (numList.size() == 1) {
+    private static List<Integer> doMergePass(List<Integer> numList) {
+        if (numList.size() <= 2) {
             return numList;
-        }
-
-        if (numList.size() == 2) {
-            int sum =  numList.get(0) + numList.get(1);
-            newList.add(numList.get(0));
-            if (sum > newList.get(0)) {
-                newList.add(numList.get(1));
-            }
-
-            return newList;
         }
 
         // Merge pass
         int i = 0;
         while (i < numList.size()) {
-            int a = numList.get(i);
-            int b = (i + 1) < numList.size() ? numList.get(i + 1) : 0;
-            int c = (i + 2) < numList.size() ? numList.get(i + 2) : 0;
+            Integer left = numList.get(i);
+            Integer middle = (i + 1) < numList.size() ? numList.get(i + 1) : null;
+            Integer right = (i + 2) < numList.size() ? numList.get(i + 2) : null;
 
-            if (a + b + c > a) {
-                newList.add(a + b + c);
+            if (middle != null && right != null) {
+                int sum = left + middle + right;
+                if (sum > left && sum > right) {
+                    // Merge
+                    // Step 1: Replace right with sum
+                    numList.set(i + 2, sum);
+
+                    // Step 2: Remove left and middle
+                    // Note: Removing element in linkedlist changes 'i' index
+                    // No need to increment pointer after removal, 'i' will be pointing to 'right` node
+                    // after removal.
+                    numList.remove(i);
+                    numList.remove(i);
+                } else {
+                    // Move pointer to 'right' node
+                    i += 2;
+                }
             } else {
-                newList.add(a);
-
-                if (b > 0) {
-                    newList.add(b);
-                }
-
-                if (c > 0) {
-                    newList.add(c);
-                }
+                // Move pointer to 'right' node
+                i += 2;
             }
 
-            i += 3;
+
         }
 
-        return newList;
+        return numList;
     }
 }
