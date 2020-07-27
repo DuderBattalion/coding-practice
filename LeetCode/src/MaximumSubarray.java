@@ -53,15 +53,15 @@ public class MaximumSubarray {
         int prevListSize;
         do {
             prevListSize = numList.size();
-            numList = doMergePass(numList);
+            doMergePass(numList);
         } while (prevListSize != numList.size()); // List changed
 
         return numList;
     }
 
-    private static List<Integer> doMergePass(List<Integer> numList) {
+    private static void doMergePass(List<Integer> numList) {
         if (numList.size() <= 2) {
-            return numList;
+            return;
         }
 
         // Merge pass
@@ -92,10 +92,6 @@ public class MaximumSubarray {
                 // Move pointer to 'right' node
                 i += 2;
             }
-
-
         }
-
-        return numList;
     }
 }
