@@ -9,10 +9,15 @@ public class SpiralMatrix {
 //                { 7, 8, 9 }
 //        };
 
+//        int[][] matrix = {
+//                {1, 2, 3, 4},
+//                {5, 6, 7, 8},
+//                {9,10,11,12}
+//        };
+
         int[][] matrix = {
-                {1, 2, 3, 4},
-                {5, 6, 7, 8},
-                {9,10,11,12}
+                {1, 2, 3},
+                {4, 5, 6}
         };
 
         List<Integer> output = spiralOrder(matrix);
@@ -22,6 +27,14 @@ public class SpiralMatrix {
     public static List<Integer> spiralOrder(int[][] matrix) {
         List<Integer> output = new ArrayList<>();
         if (matrix.length == 0) {
+            return output;
+        }
+
+        if (matrix.length == 1) {
+            for (int num: matrix[0]) {
+                output.add(num);
+            }
+
             return output;
         }
 
@@ -41,10 +54,19 @@ public class SpiralMatrix {
                 break;
             }
 
+            // If only partial spiral, then print only what's needed
+            if (numInts < rowSize) {
+                rowSize = numInts;
+            }
+
             cell = processRightSpiral(cell, rowSize, matrix, output);
             numInts -= rowSize;
             if (numInts <= 0) {
                 break;
+            }
+
+            if (numInts < colSize) {
+                colSize = numInts;
             }
 
             cell = processBottomSpiral(cell, colSize, matrix, output);
@@ -53,11 +75,18 @@ public class SpiralMatrix {
                 break;
             }
 
-            cell = processLeftSpiral(cell, rowSize - 1, matrix, output);
-            numInts -= rowSize - 1;
+            if (numInts < rowSize) {
+                rowSize = numInts;
+            }
+
+            cell = processLeftSpiral(cell, rowSize, matrix, output);
+            numInts -= rowSize;
             if (numInts <= 0) {
                 break;
             }
+
+            rowSize--;
+            colSize--;
         }
 
         return output;
@@ -92,7 +121,7 @@ public class SpiralMatrix {
             output.add(matrix[start.row - i][start.col]);
         }
 
-        return new Cell(start.row - rowSize, start.col);
+        return new Cell(start.row - (rowSize - 1), start.col + 1);
     }
 
     private static class Cell {
