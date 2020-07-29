@@ -9,11 +9,11 @@ public class SpiralMatrix {
 //                { 7, 8, 9 }
 //        };
 
-        int[][] matrix = {
-                {1, 2, 3, 4},
-                {5, 6, 7, 8},
-                {9,10,11,12}
-        };
+//        int[][] matrix = {
+//                {1, 2, 3, 4},
+//                {5, 6, 7, 8},
+//                {9,10,11,12}
+//        };
 
 //        int[][] matrix = {
 //                {1, 2, 3},
@@ -22,10 +22,10 @@ public class SpiralMatrix {
 
 //        int[][] matrix = {{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16}};
 
-//        int[][] matrix = {
-//            { 3 },
-//            { 2 }
-//        };
+        int[][] matrix = {
+            { 3 },
+            { 2 }
+        };
 
         List<Integer> output = spiralOrder(matrix);
         output.forEach(num -> System.out.print(num + ", "));
@@ -48,9 +48,24 @@ public class SpiralMatrix {
 
         while(output.size() < numInts) {
             processTopSpiral(matrix, rowStart, colStart, colEnd, output);
+            if (output.size() >= numInts) {
+                break;
+            }
+
             processRightSpiral(matrix, rowStart + 1, rowEnd, colEnd, output);
+            if (output.size() >= numInts) {
+                break;
+            }
+
             processBottomSpiral(matrix, rowEnd, colStart, colEnd - 1, output);
+            if (output.size() >= numInts) {
+                break;
+            }
+
             processLeftSpiral(matrix, rowStart + 1, rowEnd - 1, colStart, output);
+            if (output.size() >= numInts) {
+                break;
+            }
 
             rowStart += 1;
             colStart += 1;
