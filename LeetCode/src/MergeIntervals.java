@@ -16,17 +16,27 @@ public class MergeIntervals {
         }
     }
 
+    /**
+     * Algorithm: Modified topological sort
+     * Sort the input array by start time using a priority queue.
+     * Create a stack for the output list. We need to keep peeking at the last element inserted - hence stack.
+     *
+     * Implement a data structure 'Interval' to help with sort and overlap check operations.
+     *
+     * Run through the priority queue. If there is an overlap, merge and add to output stack. If not, add interval
+     * to output stack.
+     *
+     * Once done, we would need to transform output stack into the integer array before returning.
+     */
     public static int[][] merge(int[][] intervals) {
         if (intervals.length <= 1) {
             return intervals;
         }
 
         PriorityQueue<Interval> inputQueue = createInputFormat(intervals);
-
         Deque<Interval> mergedIntervals = new ArrayDeque<>();
         mergedIntervals.push(inputQueue.remove());
 
-        int i = 1;
         while (!inputQueue.isEmpty()) {
             Interval interval = inputQueue.remove();
             if (interval.isOverlap(mergedIntervals.peek())) {
@@ -36,8 +46,6 @@ public class MergeIntervals {
             } else {
                 mergedIntervals.push(interval);
             }
-
-            i++;
         }
 
         return createOutputFormat(mergedIntervals);
@@ -62,9 +70,6 @@ public class MergeIntervals {
             if (interval == null) {
                 return false;
             }
-
-//            return (this.start <= interval.start && this.end >= interval.start)
-//                    || (this.start <= interval.end && this.end >= interval.end);
 
             return !((this.end < interval.start) || (interval.end < this.start));
         }
@@ -103,5 +108,4 @@ public class MergeIntervals {
                 Math.min(interval1.start, interval2.start),
                 Math.max(interval1.end, interval2.end));
     }
-
 }
