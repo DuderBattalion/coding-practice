@@ -20,10 +20,11 @@ public class JumpGame {
 
     private static boolean canJumpDfs(int[] nums, int i, Set<Integer> indexCache) {
         if (indexCache.contains(i)) {
-            return indexCache.remove(i);
+            return false;
         }
 
         if (i < 0 || i >= nums.length) {
+            indexCache.add(i);
             return false;
         }
 
@@ -32,6 +33,7 @@ public class JumpGame {
         }
 
         if (nums[i] == 0) {
+            indexCache.add(i);
             return false;
         }
 
