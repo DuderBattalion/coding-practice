@@ -2,7 +2,12 @@ import java.util.*;
 
 public class MergeIntervals {
     public static void main(String[] args) {
-        int[][] intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
+//        int[][] intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
+//        int[][] intervals = {{1, 4}, {4, 5}};
+//        int[][] intervals = {{2, 6}, {8, 10}, {1, 3}, {9, 12}};
+//        int[][] intervals = {};
+        int[][] intervals = { {1, 3}};
+
         int[][] mergedIntervals = merge(intervals);
 
         for (int[] mergedInterval: mergedIntervals) {
@@ -75,7 +80,7 @@ public class MergeIntervals {
     private static int[][] createOutputFormat(Deque<Interval> intervals) {
         int[][] output = new int[intervals.size()][2];
 
-        // Stack - so fill array in reverse order
+        // Output deque is in a stack - so fill out array in reverse order
         for (int i = intervals.size() - 1; i >= 0; i--) {
             Interval interval = intervals.pop();
             output[i][0] = interval.start;
