@@ -6,7 +6,7 @@ public class MergeIntervals {
 //        int[][] intervals = {{1, 4}, {4, 5}};
 //        int[][] intervals = {{2, 6}, {8, 10}, {1, 3}, {9, 12}};
 //        int[][] intervals = {};
-        int[][] intervals = { {1, 3}};
+        int[][] intervals = { {1, 4}, {2, 3}};
 
         int[][] mergedIntervals = merge(intervals);
 
@@ -52,13 +52,21 @@ public class MergeIntervals {
             this.end = end;
         }
 
+        /**
+         * Intervals don't overlap if:
+         * a) Interval A ends before Interval B starts
+         * b) Interval B ends before Interval A starts
+         * Return the negation of this condition
+         */
         public boolean isOverlap(Interval interval) {
             if (interval == null) {
                 return false;
             }
 
-            return (this.start <= interval.start && this.end >= interval.start)
-                    || (this.start <= interval.end && this.end >= interval.end);
+//            return (this.start <= interval.start && this.end >= interval.start)
+//                    || (this.start <= interval.end && this.end >= interval.end);
+
+            return !((this.end < interval.start) || (interval.end < this.start));
         }
 
         @Override
