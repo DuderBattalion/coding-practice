@@ -18,11 +18,11 @@ public class MergeIntervals {
 
         PriorityQueue<Interval> inputQueue = createInputFormat(intervals);
 
-        Deque<Interval> mergedIntervals = new LinkedList<>();
+        Deque<Interval> mergedIntervals = new ArrayDeque<>();
         mergedIntervals.push(inputQueue.remove());
 
         int i = 1;
-        while (i < intervals.length) {
+        while (!inputQueue.isEmpty()) {
             Interval interval = inputQueue.remove();
             if (interval.isOverlap(mergedIntervals.peek())) {
                 Interval oldMergeInterval = mergedIntervals.pop();
@@ -74,7 +74,9 @@ public class MergeIntervals {
 
     private static int[][] createOutputFormat(Deque<Interval> intervals) {
         int[][] output = new int[intervals.size()][2];
-        for (int i = 0; i < intervals.size(); i++) {
+
+        // Stack - so fill array in reverse order
+        for (int i = intervals.size() - 1; i >= 0; i--) {
             Interval interval = intervals.pop();
             output[i][0] = interval.start;
             output[i][1] = interval.end;
