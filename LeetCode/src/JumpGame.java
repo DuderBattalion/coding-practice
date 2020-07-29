@@ -5,7 +5,10 @@ import java.util.Set;
 public class JumpGame {
     public static void main(String[] args) {
 //        int[] nums = { 2, 3, 1, 1, 4 };
-        int[] nums = { 3, 2, 1, 0, 4 };
+//        int[] nums = { 3, 2, 1, 0, 4 };
+//        int[] nums = { };
+//        int[] nums = { 1 };
+        int[] nums = { 0 };
 
         System.out.println(canJump(nums));
     }
