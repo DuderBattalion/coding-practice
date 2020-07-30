@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 public class SpiralMatrix2 {
-    public static int count = 1;
+//    public static int count = 1;
 
     public static void main(String[] args) {
         int[][] output = generateMatrix(1);
@@ -24,23 +24,24 @@ public class SpiralMatrix2 {
         int colStart = 0;
         int colEnd = colSize - 1;
 
+        int count = 1;
         while(count <= numInts) {
-            processTopSpiral(matrix, rowStart, colStart, colEnd);
+            count = processTopSpiral(matrix, rowStart, colStart, colEnd, count);
             if (count > numInts) {
                 break;
             }
 
-            processRightSpiral(matrix, rowStart + 1, rowEnd, colEnd);
+            count = processRightSpiral(matrix, rowStart + 1, rowEnd, colEnd, count);
             if (count > numInts) {
                 break;
             }
 
-            processBottomSpiral(matrix, rowEnd, colStart, colEnd - 1);
+            count = processBottomSpiral(matrix, rowEnd, colStart, colEnd - 1, count);
             if (count > numInts) {
                 break;
             }
 
-            processLeftSpiral(matrix, rowStart + 1, rowEnd - 1, colStart);
+            count = processLeftSpiral(matrix, rowStart + 1, rowEnd - 1, colStart, count);
             if (count > numInts) {
                 break;
             }
@@ -54,43 +55,51 @@ public class SpiralMatrix2 {
         return matrix;
     }
 
-    private static void processTopSpiral(int[][] matrix, int row, int colStart,
-                                         int colEnd) {
+    private static int processTopSpiral(int[][] matrix, int row, int colStart,
+                                         int colEnd, int count) {
         int col = colStart;
         while (col <= colEnd) {
             matrix[row][col] = count;
             count++;
             col++;
         }
+
+        return count;
     }
 
-    private static void processRightSpiral(int[][] matrix, int rowStart, int rowEnd,
-                                           int col) {
+    private static int processRightSpiral(int[][] matrix, int rowStart, int rowEnd,
+                                           int col, int count) {
         int row = rowStart;
         while (row <= rowEnd) {
             matrix[row][col] = count;
             count++;
             row++;
         }
+
+        return count;
     }
 
-    private static void processBottomSpiral(int[][] matrix, int row, int colStart,
-                                            int colEnd) {
+    private static int processBottomSpiral(int[][] matrix, int row, int colStart,
+                                            int colEnd, int count) {
         int col = Math.max(colEnd, 0);
         while (col >= colStart) {
             matrix[row][col] = count;
             count++;
             col--;
         }
+
+        return count;
     }
 
-    private static void processLeftSpiral(int[][] matrix, int rowStart, int rowEnd,
-                                          int col) {
+    private static int processLeftSpiral(int[][] matrix, int rowStart, int rowEnd,
+                                          int col, int count) {
         int row = Math.max(rowEnd, 0);
         while (row >= rowStart) {
             matrix[row][col] = count;
             count++;
             row--;
         }
+
+        return count;
     }
 }
