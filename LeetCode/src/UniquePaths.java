@@ -9,7 +9,7 @@ public class UniquePaths {
 //        System.out.println(uniquePaths(7, 3));
 //        System.out.println(uniquePaths(1, 1));
 
-        System.out.println(uniquePaths(100, 100));
+        System.out.println(uniquePaths(19, 13));
 
     }
 
@@ -22,11 +22,6 @@ public class UniquePaths {
     }
 
     private static int calcNumPaths(int i, int j, int row, int col, Map<String, Integer> cache) {
-        String key = String.valueOf(i) + String.valueOf(j);
-        if (cache.containsKey(key)) {
-            return cache.get(key);
-        }
-
         // Base case - target found
         if (i == row && j == col) {
             return 1;
@@ -35,6 +30,11 @@ public class UniquePaths {
         // Invalid index - return
         if (i < 0 || i >= row || j < 0 || j >= col) {
             return 0;
+        }
+
+        String key = i + "," + j;
+        if (cache.containsKey(key)) {
+            return cache.get(key);
         }
 
         int numPaths = 1 + calcNumPaths(i + 1, j, row, col, cache) // Down
