@@ -8,13 +8,16 @@ public class RotateList {
         ListNode node4 = new ListNode(4);
         ListNode node5 = new ListNode(5);
 
-        node1.next = node2;
-        node2.next = node3;
-        node3.next = node4;
-        node4.next = node5;
-        node5.next = null;
+//        node1.next = node2;
+//        node2.next = node3;
+//        node3.next = node4;
+//        node4.next = node5;
+//        node5.next = null;
 
-        ListNode rotatedList = rotateRight(node1, 2);
+//        node1.next = node2;
+//        node2.next = node3;
+
+        ListNode rotatedList = rotateRight(node1, 4);
 
         while (rotatedList != null) {
             System.out.print(rotatedList.val + " ");
@@ -24,7 +27,7 @@ public class RotateList {
 
     public static ListNode rotateRight(ListNode head, int k) {
         if (head == null) {
-            return head;
+            return null;
         }
 
         RotatedListProperties tailProps = getTailNode(head);
