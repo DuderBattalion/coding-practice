@@ -12,7 +12,7 @@ public class UniquePaths2 {
 //        int[][] obstacleGrid = {};
 
         int[][] obstacleGrid = {
-                {0,1,0}
+                {0, 1}
         };
 
         System.out.println(uniquePathsWithObstacles(obstacleGrid));
@@ -27,7 +27,7 @@ public class UniquePaths2 {
         int m = obstacleGrid[0].length; // cols
 
         if (m == 1 && n == 1) {
-            return 1;
+            return obstacleGrid[0][0] == 1 ? 0 : 1;
         }
 
         return calcNumPaths(0, 0, n - 1, m - 1,
@@ -38,7 +38,7 @@ public class UniquePaths2 {
                                     Map<String, Integer> cache, int[][] obstacleGrid) {
         // Base case - target found
         if (i == row && j == col) {
-            return 1;
+            return obstacleGrid[i][j] == 0 ? 1 : 0;
         }
 
         // Invalid index - return
