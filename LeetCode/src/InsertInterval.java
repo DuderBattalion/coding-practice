@@ -61,25 +61,25 @@ public class InsertInterval {
             isMergedAtHead = true;
         }
 
-        boolean isMergePositionFound = false;
+        boolean isMerged = false;
         boolean isInserted = false;
         for (int i = 0; i < intervalList.size(); i++) {
             Interval interval = intervalList.get(i);
             if (interval.isOverlap(newIntervalObj)) {
                 Interval mergedInterval = mergeInterval(interval, newIntervalObj);
-//                intervalList.set(i, mergedInterval);
-
-                if (isMergePositionFound) {
-                    // Continuation of merge, pop last output node
-                    // and push in new merged interval
+                if (isMerged) {
+                    // Continuation of merge, keep merging
+                    // Pop last output node and push in new merged interval
                     output.pop();
                 }
 
                 output.push(mergedInterval);
-
                 newIntervalObj = mergedInterval;
-                isMergePositionFound = true;
-            } else if (!isInserted && (i + 1) < intervalList.size()
+
+                isMerged = true;
+            } else if (
+                    !isInserted
+                    && (i + 1) < intervalList.size()
                     && canInsert(interval, intervalList.get(i + 1), newIntervalObj)) {
                 output.push(interval);
                 output.push(newIntervalObj);
@@ -91,7 +91,7 @@ public class InsertInterval {
         }
 
         // Special case: Add to tail
-        if (!isMergePositionFound && !isMergedAtHead && !isInserted) {
+        if (!isMerged && !isMergedAtHead && !isInserted) {
             output.push(newIntervalObj);
         }
 
@@ -165,5 +165,4 @@ public class InsertInterval {
 
         return output;
     }
-
 }
