@@ -17,13 +17,29 @@ public class MinimumPathSum {
         int rows = grid.length;
         int cols = grid[0].length;
 
-        int[][] dp = new int[rows + 1][cols + 1];
-        for (int i = 1; i <= rows; i++) {
-            for (int j = 1; j <= cols; j++) {
-                dp[i][j] = grid[i-1][j-1] + Math.min(dp[i][j-1], dp[i-1][j]);
+        int[][] dp = new int[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int downVal = (i > 0) ? dp[i - 1][j] : 0;
+                int rightVal = (j > 0) ? dp[i][j - 1] : 0;
+
+                dp[i][j] = grid[i][j] + getMinNeighbor(downVal, rightVal);
             }
         }
 
-        return dp[rows][cols];
+        return dp[rows - 1][cols - 1];
+    }
+
+    private static int getMinNeighbor(int downVal, int rightVal) {
+        int minVal;
+        if (downVal != 0 && rightVal != 0) {
+            minVal = Math.min(downVal, rightVal);
+        } else if (downVal == 0) {
+            minVal = rightVal;
+        } else {
+            minVal = downVal;
+        }
+
+        return minVal;
     }
 }
