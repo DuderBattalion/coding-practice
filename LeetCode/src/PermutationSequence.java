@@ -4,7 +4,8 @@ import java.util.Queue;
 
 public class PermutationSequence {
     public static void main(String[] args) {
-        System.out.println(getPermutation(3, 3));
+//        System.out.println(getPermutation(4, 9));
+        System.out.println(getPermutation(3, 6));
     }
 
     public static String getPermutation(int n, int k) {
@@ -17,12 +18,13 @@ public class PermutationSequence {
 
         StringBuilder output = new StringBuilder();
         for (int i = n - 1; i > 0; i--) {
-                if (k == 0) {
+                if (k <= 0) {
                     break;
                 }
 
-                int quotient = (int) Math.ceil(k / getFactorial(i));
-                k = k % n;
+                double nFact = getFactorial(i);
+                int quotient = (int) Math.ceil(k/nFact);
+                k -= (quotient - 1) * (int) nFact;
 
                 int token = nums.remove(quotient - 1);
                 output.append(token);
