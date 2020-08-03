@@ -5,7 +5,7 @@ import java.util.Queue;
 public class PermutationSequence {
     public static void main(String[] args) {
 //        System.out.println(getPermutation(4, 9));
-        System.out.println(getPermutation(3, 6));
+        System.out.println(getPermutation(4, 9));
     }
 
     public static String getPermutation(int n, int k) {
