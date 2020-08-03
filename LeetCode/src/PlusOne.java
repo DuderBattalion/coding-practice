@@ -1,23 +1,21 @@
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class PlusOne {
     public static void main(String[] args) {
-        int[] digits = { 1, 2, 3 };
+        int[] digits = { 4, 3, 2, 1 };
         int[] sumNum = plusOne(digits);
 
         Arrays.stream(sumNum).forEach(num -> System.out.print(num + ","));
     }
 
     public static int[] plusOne(int[] digits) {
-        Queue<Integer> numQ = new LinkedList<>();
+        Deque<Integer> numStack = new ArrayDeque<>();
 
         int sum = 1;
         int carry = 0;
         for (int i = digits.length - 1; i >= 0; i--) {
             sum += digits[i];
-            numQ.add(sum);
+            numStack.push(sum);
 
             if (sum > 9) {
                 carry = sum - 9;
@@ -29,13 +27,13 @@ public class PlusOne {
         }
 
         if (carry > 0) {
-            numQ.add(carry);
+            numStack.push(carry);
         }
 
-        int[] sumNum = new int[numQ.size()];
+        int[] sumNum = new int[numStack.size()];
         int i = 0;
-        while (!numQ.isEmpty()) {
-            sumNum[i] = numQ.remove();
+        while (!numStack.isEmpty()) {
+            sumNum[i] = numStack.pop();
             i++;
         }
 
