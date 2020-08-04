@@ -1,6 +1,7 @@
 public class AddBinary {
     public static void main(String[] args) {
-        System.out.println(addBinary("11", "1"));
+//        System.out.println(addBinary("11", "1"));
+        System.out.println(addBinary("1010", "1011"));
     }
 
     public static String addBinary(String a, String b) {
@@ -42,7 +43,7 @@ public class AddBinary {
                     Character.getNumericValue(binarySum.charAt(1)),
                     Character.getNumericValue(binarySum.charAt(0)));
         } else {
-            sumCarry = new SumCarry(Character.getNumericValue(binarySum.charAt(1)), 0);
+            sumCarry = new SumCarry(Character.getNumericValue(binarySum.charAt(0)), 0);
         }
 
         return sumCarry;
