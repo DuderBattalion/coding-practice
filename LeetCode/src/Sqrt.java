@@ -15,25 +15,17 @@ public class Sqrt {
 
         int start = 1;
         int end = x;
-        int sqrt = -1;
         while (start < end) {
-            int mid = start + (int)Math.floor((end - start) / 2.0);
-            if (mid * mid == x) {
-                sqrt = mid;
-                break;
-            }
-
-            if (mid * mid > x) {
+            int mid = start + (end - start) / 2;
+            if (mid <= (x/mid) && (mid + 1) > (x / (mid + 1))) {
+                return mid;
+            } else if (mid > (x / mid)) {
                 end = mid;
             } else {
                 start = mid + 1;
             }
         }
 
-        if (sqrt < 0) {
-            sqrt = start - 1;
-        }
-
-        return sqrt;
+        return start;
     }
 }
