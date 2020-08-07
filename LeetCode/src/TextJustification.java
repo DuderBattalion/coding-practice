@@ -21,10 +21,11 @@ public class TextJustification {
 
         boolean isLastLine = false;
         int currWord = 0;
-        while (!isLastLine) {
+        while (true) {
             isLastLine = checkIfLastLine(words, currWord, maxWidth);
             if (isLastLine) {
                 generateLastLine(output, words, currWord, maxWidth);
+                break;
             }
 
             WordsInLine wordsInLine = getNumWordsInLine(words, currWord, maxWidth);
@@ -46,7 +47,7 @@ public class TextJustification {
 
         String lineText = line.toString();
         if (lineText.length() >= maxWidth) {
-            lineText = lineText.substring(0, maxWidth + 1);
+            lineText = lineText.substring(0, maxWidth);
         }
 
         return lineText;
@@ -71,7 +72,7 @@ public class TextJustification {
 
     private static WordsInLine getNumWordsInLine(String[] words, int currWord, int maxWidth) {
         WordsInLine wordsInLine = new WordsInLine();
-        while(wordsInLine.wordsLength < maxWidth) {
+        while(currWord < words.length) {
             String word = words[currWord];
             if (wordsInLine.wordsLength + word.length() <= maxWidth) { // + 1 for space
                 wordsInLine.words.add(word);
@@ -80,6 +81,10 @@ public class TextJustification {
                 if (wordsInLine.wordsLength < maxWidth) {
                     wordsInLine.wordsLength++; // Add space only if not last word in line
                 }
+
+                currWord++;
+            } else {
+                break; // line is full
             }
         }
 
@@ -105,7 +110,7 @@ public class TextJustification {
 
         String lastLineText = lastLine.toString();
         if (lastLineText.length() > maxWidth) {
-            lastLineText = lastLineText.substring(0, maxWidth + 1);
+            lastLineText = lastLineText.substring(0, maxWidth);
         } else {
             lastLineText = lastLineText + " ".repeat(maxWidth - lastLineText.length());
         }
