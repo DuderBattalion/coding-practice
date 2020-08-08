@@ -39,14 +39,33 @@ public class TextJustification {
     }
 
     private static String generateLine(WordsInLine wordsInLine, int maxWidth) {
+        String firstWord = wordsInLine.words.get(0);
+        String lastWord = wordsInLine.words.get(wordsInLine.words.size() - 1);
+
+//        int numChars = maxWidth - firstWord.length() - lastWord.length();
+//        int numSpacesPerWord = numChars / wordsInLine.words.size();
+
+        int numSpaces = maxWidth - wordsInLine.wordsLength;
+        int numSpacesPerWord = numSpaces / wordsInLine.words.size();
+
+        // Remainder space after space evenly distributed should go on left
+        int extraSpaceOnLeft = numSpaces % wordsInLine.words.size();
+
         StringBuilder line = new StringBuilder();
+        boolean isFirstSpace = true;
         for (String word: wordsInLine.words) {
             line.append(word);
-            line.append(" ");
+
+            if (isFirstSpace) {
+                line.append(" ".repeat(numSpacesPerWord + extraSpaceOnLeft));
+                isFirstSpace = false;
+            } else {
+                line.append(" ".repeat(numSpacesPerWord));
+            }
         }
 
         String lineText = line.toString();
-        if (lineText.length() >= maxWidth) {
+        if (lineText.length() > maxWidth) {
             lineText = lineText.substring(0, maxWidth);
         }
 
