@@ -5,10 +5,11 @@ public class SimplifyPath {
     public static void main(String[] args) {
 //        String path = "/home/";
 //        String path = "/../";
-//        String path = "/home//foo/";
+        String path = "/home//foo/";
 //        String path = "/a/./b/../../c/";
-        String path = "/a/../../b/../c//.//";
+//        String path = "/a/../../b/../c//.//";
 //        String path = "/a//b////c/d//././/..";
+//        String path = "";
 
         System.out.println(simplifyPath(path));
     }
@@ -37,17 +38,23 @@ public class SimplifyPath {
             }
         }
 
-        StringBuilder outputBuf = new StringBuilder();
+        // Note - path structure stored in Stack - in reverse
+        // Pop back into another stack to get the correct output format
+        Deque<String> outputStack = new ArrayDeque<>();
         while (!pathStack.isEmpty()) {
-            outputBuf.append(pathStack.pop());
-            outputBuf.append("/");
+            outputStack.push(pathStack.pop());
         }
 
-        String output = outputBuf.reverse().toString();
-        if (output.isEmpty()) {
-            output = "/";
+        StringBuilder output = new StringBuilder();
+        while (!outputStack.isEmpty()) {
+            output.append("/");
+            output.append(outputStack.pop());
         }
 
-        return output;
+        if (output.length() == 0) {
+            output.append("/");
+        }
+
+        return output.toString();
     }
 }
