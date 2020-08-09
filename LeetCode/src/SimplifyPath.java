@@ -41,8 +41,8 @@ public class SimplifyPath {
 
         StringBuilder outputBuf = new StringBuilder();
         while (!pathStack.isEmpty()) {
-            outputBuf.append("/");
             outputBuf.append(pathStack.pop());
+            outputBuf.append("/");
         }
 
         String output = outputBuf.reverse().toString();
