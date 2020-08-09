@@ -7,8 +7,8 @@ public class SimplifyPath {
 //        String path = "/../";
 //        String path = "/home//foo/";
 //        String path = "/a/./b/../../c/";
-//        String path = "/a/../../b/../c//.//";
-        String path = "/a//b////c/d//././/..";
+        String path = "/a/../../b/../c//.//";
+//        String path = "/a//b////c/d//././/..";
 
         System.out.println(simplifyPath(path));
     }
@@ -29,11 +29,9 @@ public class SimplifyPath {
         String[] pathTokens = path.split("/");
         for (String token: pathTokens) {
             if (token.equals("..")) {
-                if (pathStack.isEmpty()) {
-                    break;
+                if (!pathStack.isEmpty()) {
+                    pathStack.pop();
                 }
-
-                pathStack.pop();
             } else if (!token.isEmpty() && !token.equals(".")){
                 pathStack.push(token);
             }
