@@ -8,7 +8,8 @@ public class Search2DMatrix {
 //                {23, 30, 34, 50}
 //        };
 
-        int[][] matrix = {{}};
+//        int[][] matrix = {{}};
+        int[][] matrix = {};
 
         System.out.println(searchMatrix(matrix, 51));
     }
@@ -20,6 +21,10 @@ public class Search2DMatrix {
 
         int rows = matrix.length;
         int cols = matrix[0].length;
+        if (cols == 0) {
+            return false;
+        }
+
         if (target < matrix[0][0] || target > matrix[rows - 1][cols - 1]) {
             return false;
         }
