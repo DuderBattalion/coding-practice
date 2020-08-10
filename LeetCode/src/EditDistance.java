@@ -4,7 +4,13 @@ import java.util.List;
 public class EditDistance {
     public static void main(String[] args) {
 //        System.out.println(minDistance("horse", "ros"));
-        System.out.println(minDistance("intention", "execution"));
+//        System.out.println(minDistance("intention", "execution"));
+//        System.out.println(minDistance("a", "horse"));
+//        System.out.println(minDistance("a", "abcde"));
+//        System.out.println(minDistance("", ""));
+//        System.out.println(minDistance("abcde", "abcde"));
+//        System.out.println(minDistance("abcde", ""));
+        System.out.println(minDistance("", "abcde"));
     }
 
     public static int minDistance(String word1, String word2) {
@@ -30,7 +36,6 @@ public class EditDistance {
             }
         }
 
-//        debugDp(dp);
         return dp[dp.length - 1][dp[0].length - 1];
     }
 
@@ -41,16 +46,6 @@ public class EditDistance {
 
         for (int j = 0; j < dp[0].length; j++) {
             dp[0][j] = j;
-        }
-    }
-
-    private static void debugDp(int[][] dp) {
-        for (int i = 0; i < dp.length; i++) {
-            for (int j = 0; j < dp[0].length; j++) {
-                System.out.print(dp[i][j] + " ");
-            }
-
-            System.out.println();
         }
     }
 
