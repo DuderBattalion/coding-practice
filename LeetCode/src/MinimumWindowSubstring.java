@@ -6,7 +6,8 @@ public class MinimumWindowSubstring {
     public static void main(String[] args) {
 //        System.out.println(minWindow("ADOBECODEBANC", "ABC"));
 //        System.out.println(minWindow("ADOBECODEBANCEEFFG", "ABC"));
-        System.out.println(minWindow("AA", "BCDG"));
+//        System.out.println(minWindow("AA", "BCDG"));
+        System.out.println(minWindow("a", "a"));
     }
 
     public static String minWindow(String s, String t) {
@@ -17,7 +18,7 @@ public class MinimumWindowSubstring {
         int start = 0, end = t.length() - 1, minWindowLength = Integer.MAX_VALUE;
         String minWindowStr = "";
 
-        while (start < end) {
+        while (start <= end) {
             String subStr = s.substring(start, end + 1);
             boolean hasTarget = hasTarget(subStr, t);
 
