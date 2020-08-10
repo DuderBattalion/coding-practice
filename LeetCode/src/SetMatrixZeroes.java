@@ -11,11 +11,14 @@ public class SetMatrixZeroes {
 //                {1,3,1,5}
 //        };
 
-        int[][] matrix = {
-                {1,1,1},
-                {1,0,1},
-                {1,1,1}
-        };
+//        int[][] matrix = {
+//                {1,1,1},
+//                {1,0,1},
+//                {1,1,1}
+//        };
+
+//        int[][] matrix = { { 0, 1, 2 }};
+        int[][] matrix = { { 0 } , { 1 } , { 2 } };
 
         setZeroes(matrix);
 
