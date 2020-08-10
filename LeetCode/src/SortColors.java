@@ -3,7 +3,7 @@ import java.util.Arrays;
 public class SortColors {
     public static void main(String[] args) {
 //        int[] nums = { 2,0,2,1,1,0 };
-        int[] nums = { 2 };
+        int[] nums = { 1, 2, 0 };
 
         sortColors(nums);
 
@@ -23,7 +23,7 @@ public class SortColors {
 
         int i = 0, j = 0;
         int k = nums.length - 1;
-        while (j < k) {
+        while (j <= k) {
             if (nums[j] == 0) {
                 int temp = nums[i];
                 nums[i] = nums[j];
@@ -36,7 +36,6 @@ public class SortColors {
                 nums[j] = nums[k];
                 nums[k] = temp;
 
-                j++;
                 k--;
             } else {
                 j++;
