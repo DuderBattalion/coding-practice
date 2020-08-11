@@ -1,3 +1,6 @@
+import java.util.HashSet;
+import java.util.Set;
+
 public class WordSearch {
   public static void main(String[] args) {
     char[][] board = {
@@ -7,7 +10,9 @@ public class WordSearch {
     };
 
     // System.out.println(exist(board, "ASFCED"));
-    System.out.println(exist(board, "ABCCED"));
+    // System.out.println(exist(board, "ABCCED"));
+    // System.out.println(exist(board, "SEE"));
+    System.out.println(exist(board, "ABCB"));
   }
 
   public static boolean exist(char[][] board, String word) {
@@ -21,7 +26,7 @@ public class WordSearch {
     boolean isFound = false;
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < cols; j++) {
-        isFound = findWord(board, i, j, word, "");
+        isFound = findWord(board, i, j, word, "", new HashSet<>());
         if (isFound) {
           break;
         }
@@ -35,9 +40,17 @@ public class WordSearch {
     return isFound;
   }
 
-  private static boolean findWord(char[][] board, int i, int j, String word, String currWord) {
+  private static boolean findWord(char[][] board, int i, int j, String word, String currWord,
+                                  Set<String> visitedCells) {
     if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) {
       return false;
+    }
+
+    String cellKey = i + "," + j;
+    if (visitedCells.contains(cellKey)) {
+      return false;
+    } else {
+      visitedCells.add(cellKey);
     }
 
     currWord += board[i][j];
@@ -48,25 +61,28 @@ public class WordSearch {
     }
 
     // Go right
-    boolean isFound = findWord(board, i, j + 1, word, currWord);
+    boolean isFound = findWord(board, i, j + 1, word, currWord, visitedCells);
     if (isFound) {
       return true;
     }
 
     // Go down
-    isFound = findWord(board, i + 1, j, word, currWord);
+    isFound = findWord(board, i + 1, j, word, currWord, visitedCells);
     if (isFound) {
       return true;
     }
 
     // Go left
-    isFound = findWord(board, i, j - 1, word, currWord);
+    isFound = findWord(board, i, j - 1, word, currWord, visitedCells);
     if (isFound) {
       return true;
     }
 
     // Go up
-    isFound = findWord(board, i - 1, j, word, currWord);
+    isFound = findWord(board, i - 1, j, word, currWord, visitedCells);
+
+    // Backtrack
+    visitedCells.remove(cellKey);
     return isFound;
   }
 }
