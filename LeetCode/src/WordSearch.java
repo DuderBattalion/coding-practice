@@ -3,19 +3,24 @@ import java.util.Set;
 
 public class WordSearch {
   public static void main(String[] args) {
-    char[][] board = {
-        {'A','B','C','E'},
-        {'S','F','C','S'},
-        {'A','D','E','E'}
-    };
+    // char[][] board = {
+    //     {'A','B','C','E'},
+    //     {'S','F','C','S'},
+    //     {'A','D','E','E'}
+    // };
 
     // char[][] board = {{}};
+
+    char[][] board = {
+        {'a','b'},
+        {'c','d'}
+    };
 
     // System.out.println(exist(board, "ASFCED"));
     // System.out.println(exist(board, "ABCCED"));
     // System.out.println(exist(board, "SEE"));
     // System.out.println(exist(board, "ABCB"));
-    System.out.println(exist(board, ""));
+    System.out.println(exist(board, "acdb"));
   }
 
   public static boolean exist(char[][] board, String word) {
@@ -60,24 +65,28 @@ public class WordSearch {
     if (currWord.length() == word.length()) {
       return currWord.equals(word);
     } else if (!word.contains(currWord)) {
+      visitedCells.remove(cellKey); // Backtrack
       return false;
     }
 
     // Go right
     boolean isFound = findWord(board, i, j + 1, word, currWord, visitedCells);
     if (isFound) {
+      visitedCells.remove(cellKey);
       return true;
     }
 
     // Go down
     isFound = findWord(board, i + 1, j, word, currWord, visitedCells);
     if (isFound) {
+      visitedCells.remove(cellKey);
       return true;
     }
 
     // Go left
     isFound = findWord(board, i, j - 1, word, currWord, visitedCells);
     if (isFound) {
+      visitedCells.remove(cellKey);
       return true;
     }
 
