@@ -7,8 +7,8 @@ public class MinimumWindowSubstring {
 //        System.out.println(minWindow("ADOBECODEBANCEEFFG", "ABC"));
 //        System.out.println(minWindow("AA", "BCDG"));
 //        System.out.println(minWindow("a", "a"));
-
-        System.out.println(minWindow("EBANCE", "ABC"));
+        System.out.println(minWindow("", ""));
+//        System.out.println(minWindow("EBANCE", "ABC"));
     }
 
     public static String minWindow(String s, String t) {
@@ -48,20 +48,19 @@ public class MinimumWindowSubstring {
         return minWindowStr;
     }
 
-    private static void addChar(Map<Character, Integer> charMap, char token) {
-        if (charMap.containsKey(token)) {
-            int count = charMap.get(token);
-            charMap.put(token, count + 1);
-        } else {
-            charMap.put(token, 1);
+    private static Map<Character, Integer> getCharCounts(char[] str) {
+        Map<Character, Integer> charCounts = new HashMap<>();
+        for (int i = 0; i < str.length; i++) {
+            char token = str[i];
+            if (charCounts.containsKey(token)) {
+                int count = charCounts.get(token);
+                charCounts.put(token, count + 1);
+            } else {
+                charCounts.put(token, 1);
+            }
         }
-    }
 
-    private static void removeChar(Map<Character, Integer> charMap, char token) {
-        if (charMap.containsKey(token)) {
-            int count = charMap.get(token);
-            charMap.put(token, count - 1);
-        }
+        return charCounts;
     }
 
     private static boolean hasTarget(Map<Character, Integer> subStrChars, Map<Character, Integer> targetChars) {
@@ -79,18 +78,19 @@ public class MinimumWindowSubstring {
         return hasTarget;
     }
 
-    private static Map<Character, Integer> getCharCounts(char[] str) {
-        Map<Character, Integer> charCounts = new HashMap<>();
-        for (int i = 0; i < str.length; i++) {
-            char token = str[i];
-            if (charCounts.containsKey(token)) {
-                int count = charCounts.get(token);
-                charCounts.put(token, count + 1);
-            } else {
-                charCounts.put(token, 1);
-            }
+    private static void addChar(Map<Character, Integer> charMap, char token) {
+        if (charMap.containsKey(token)) {
+            int count = charMap.get(token);
+            charMap.put(token, count + 1);
+        } else {
+            charMap.put(token, 1);
         }
+    }
 
-        return charCounts;
+    private static void removeChar(Map<Character, Integer> charMap, char token) {
+        if (charMap.containsKey(token)) {
+            int count = charMap.get(token);
+            charMap.put(token, count - 1);
+        }
     }
 }
