@@ -64,7 +64,7 @@ public class WordSearch {
     currWord += board[i][j];
     if (currWord.length() == word.length()) {
       return currWord.equals(word);
-    } else if (!word.contains(currWord)) {
+    } else if (!word.startsWith(currWord)) {
       visitedCells.remove(cellKey); // Backtrack
       return false;
     }
