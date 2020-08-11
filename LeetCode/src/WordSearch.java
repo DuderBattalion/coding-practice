@@ -9,10 +9,13 @@ public class WordSearch {
         {'A','D','E','E'}
     };
 
+    // char[][] board = {{}};
+
     // System.out.println(exist(board, "ASFCED"));
     // System.out.println(exist(board, "ABCCED"));
     // System.out.println(exist(board, "SEE"));
-    System.out.println(exist(board, "ABCB"));
+    // System.out.println(exist(board, "ABCB"));
+    System.out.println(exist(board, ""));
   }
 
   public static boolean exist(char[][] board, String word) {
