@@ -1,12 +1,11 @@
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MinimumWindowSubstring {
     public static void main(String[] args) {
 //        System.out.println(minWindow("ADOBECODEBANC", "ABC"));
-        System.out.println(minWindow("ADOBECODEBANCEEFFG", "ABC"));
-//        System.out.println(minWindow("AA", "BCDG"));
+//        System.out.println(minWindow("ADOBECODEBANCEEFFG", "ABC"));
+        System.out.println(minWindow("AA", "BCDG"));
 //        System.out.println(minWindow("a", "a"));
     }
 
@@ -17,16 +16,17 @@ public class MinimumWindowSubstring {
 
         int start = 0, end = t.length() - 1, minWindowLength = Integer.MAX_VALUE;
         String minWindowStr = "";
-        Map<Character, Integer> targetChars = getCharCounts(t);
+        char[] sChars = s.toCharArray();
+        Map<Character, Integer> targetChars = getCharCounts(t.toCharArray(), 0, t.length() - 1);
 
         while (start <= end) {
-            String subStr = s.substring(start, end + 1);
-            boolean hasTarget = hasTarget(subStr, targetChars);
+            boolean hasTarget = hasTarget(sChars, start, end, targetChars);
 
             if (hasTarget) {
-                if (subStr.length() < minWindowLength) {
-                    minWindowStr = subStr;
-                    minWindowLength = subStr.length();
+                int subStrLength = end - start;
+                if (subStrLength < minWindowLength) {
+                    minWindowStr = s.substring(start, end + 1);
+                    minWindowLength = subStrLength;
                 }
 
                 start++;
@@ -42,9 +42,8 @@ public class MinimumWindowSubstring {
         return minWindowStr;
     }
 
-    private static boolean hasTarget(String subStr, Map<Character, Integer> targetChars) {
-        Map<Character, Integer> subStrChars = getCharCounts(subStr);
-//        Map<Character, Integer> targetChars = getCharCounts(target);
+    private static boolean hasTarget(char[] s, int start, int end, Map<Character, Integer> targetChars) {
+        Map<Character, Integer> subStrChars = getCharCounts(s, start, end);
 
         boolean hasTarget = true;
         for (Map.Entry<Character, Integer> entry: targetChars.entrySet()) {
@@ -60,10 +59,10 @@ public class MinimumWindowSubstring {
         return hasTarget;
     }
 
-    private static Map<Character, Integer> getCharCounts(String str) {
+    private static Map<Character, Integer> getCharCounts(char[] str, int start, int end) {
         Map<Character, Integer> charCounts = new HashMap<>();
-        for (int i = 0; i < str.length(); i++) {
-            char token = str.charAt(i);
+        for (int i = start; i <= end; i++) {
+            char token = str[i];
             if (charCounts.containsKey(token)) {
                 int count = charCounts.get(token);
                 charCounts.put(token, count + 1);
