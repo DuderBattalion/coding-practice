@@ -6,7 +6,8 @@ public class WordSearch {
         {'A','D','E','E'}
     };
 
-    System.out.println(exist(board, "ASFCED"));
+    // System.out.println(exist(board, "ASFCED"));
+    System.out.println(exist(board, "ABCCED"));
   }
 
   public static boolean exist(char[][] board, String word) {
@@ -25,6 +26,10 @@ public class WordSearch {
           break;
         }
       }
+
+      if (isFound) {
+        break;
+      }
     }
 
     return isFound;
@@ -38,6 +43,8 @@ public class WordSearch {
     currWord += board[i][j];
     if (currWord.length() == word.length()) {
       return currWord.equals(word);
+    } else if (!word.contains(currWord)) {
+      return false;
     }
 
     // Go right
