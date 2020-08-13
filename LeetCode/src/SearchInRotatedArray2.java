@@ -1,7 +1,7 @@
 public class SearchInRotatedArray2 {
     public static void main(String[] args) {
 //        int[] nums = { 2, 5, 6, 0, 0, 0, 0, 0, 1, 2 };
-        int[] nums = { 2 };
+        int[] nums = { 1, 3 };
 
         System.out.println(search(nums, 3));
     }
@@ -16,6 +16,11 @@ public class SearchInRotatedArray2 {
 
         boolean isFound = false;
         while (start <= end) {
+            if (start == end) {
+                isFound = (nums[start] == target);
+                break;
+            }
+
             mid = (end - start) / 2;
             if (nums[mid] == target) {
                 isFound = true;
