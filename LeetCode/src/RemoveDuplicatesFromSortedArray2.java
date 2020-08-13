@@ -2,6 +2,7 @@ public class RemoveDuplicatesFromSortedArray2 {
     public static void main(String[] args) {
 //        int[] nums = { 1, 1, 1, 2, 2, 3 };
 //        int[] nums = { 0, 0, 1, 1, 1, 1, 2, 3, 3 };
+//        int[] nums = { 1, 1, 1 };
         int[] nums = {  };
 
         int count = removeDuplicates(nums);
@@ -15,23 +16,18 @@ public class RemoveDuplicatesFromSortedArray2 {
             return 0;
         }
 
-        int i = 0, insertIndex = 1;
-        while (i < nums.length) {
-            if (i + 1 == nums.length) {
-                break;
-            }
+        int insertIndex = 1, numCount = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] == nums[i - 1]) {
+                if (numCount < 2) {
+                    nums[insertIndex] = nums[i];
+                    insertIndex++;
+                }
 
-            if (nums[i] == nums[i + 1]) {
+                numCount++;
+            } else {
+                numCount = 1;
                 nums[insertIndex] = nums[i];
-                i++;
-                insertIndex++;
-
-            }
-
-            int nextI = findNextNum(i, nums);
-            if (nextI > 0) {
-                nums[insertIndex] = nums[nextI];
-                i = nextI;
                 insertIndex++;
             }
         }
@@ -39,16 +35,55 @@ public class RemoveDuplicatesFromSortedArray2 {
         return insertIndex;
     }
 
-    private static int findNextNum(int index, int[] nums) {
-        int num = nums[index];
-        int nextIndex = -1;
-        for (int i = index + 1; i < nums.length; i++) {
-            if (nums[i] != num) {
-                nextIndex = i;
-                break;
-            }
-        }
-
-        return nextIndex;
-    }
+//    public static int removeDuplicates(int[] nums) {
+//        if (nums.length == 0) {
+//            return 0;
+//        }
+//
+//        int i = 0, insertIndex = 1;
+//        while (i < nums.length) {
+//            if (i + 1 == nums.length) {
+//                break;
+//            }
+//
+//            if (nums[i] == nums[i + 1]) {
+//                nums[insertIndex] = nums[i];
+//                i++;
+//                insertIndex++;
+//            }
+//
+//            int nextI = findNextNum(i, nums);
+//            if (nextI > 0) {
+//                nums[insertIndex] = nums[nextI];
+//                i = nextI;
+//                insertIndex++;
+//            } else {
+//                // No next nums, this is the last num block
+//                nums[insertIndex] = nums[i];
+//                insertIndex++;
+////
+////                if (i + 1 < nums.length) {
+////                    nums[insertIndex] = nums[i + 1];
+////                    insertIndex++;
+////                }
+//
+//                break;
+//            }
+//        }
+//
+//        return insertIndex - 1;
+//    }
+//
+//    private static int findNextNum(int index, int[] nums) {
+//        int num = nums[index];
+//        int nextIndex = -1;
+//        for (int i = index + 1; i < nums.length; i++) {
+//            if (nums[i] != num) {
+//                nextIndex = i;
+//                break;
+//            }
+//        }
+//
+//        return nextIndex;
+//    }
 }
