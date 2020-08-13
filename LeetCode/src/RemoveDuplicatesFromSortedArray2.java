@@ -1,7 +1,8 @@
 public class RemoveDuplicatesFromSortedArray2 {
     public static void main(String[] args) {
 //        int[] nums = { 1, 1, 1, 2, 2, 3 };
-        int[] nums = { 0, 0, 1, 1, 1, 1, 2, 3, 3 };
+//        int[] nums = { 0, 0, 1, 1, 1, 1, 2, 3, 3 };
+        int[] nums = {  };
 
         int count = removeDuplicates(nums);
         for (int i = 0; i < count; i++) {
@@ -10,6 +11,10 @@ public class RemoveDuplicatesFromSortedArray2 {
     }
 
     public static int removeDuplicates(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+
         int i = 0, insertIndex = 1;
         while (i < nums.length) {
             if (i + 1 == nums.length) {
