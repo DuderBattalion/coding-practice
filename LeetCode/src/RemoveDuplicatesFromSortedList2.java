@@ -46,23 +46,6 @@ public class RemoveDuplicatesFromSortedList2 {
 
         ListNode node = dummy;
         while (node != null) {
-//            ListNode nextNode = node.next;
-//            boolean isNextNodeDuplicate = isNodeDuplicate(nextNode);
-//
-//            // Skip ALL adjacent duplicate nodes
-//            while (isNextNodeDuplicate) {
-//                ListNode nextNextNode = findNextNode(nextNode);
-//                isNextNodeDuplicate = isNodeDuplicate(nextNextNode);
-//                if (!isNextNodeDuplicate) {
-//                    node.next = nextNextNode;
-//                    break;
-//                } else {
-//                    nextNode = nextNextNode;
-//                }
-//            }
-//
-//            node = node.next;
-
             node.next = skipAllDuplicateNodes(node.next);
             node = node.next;
         }
@@ -79,16 +62,8 @@ public class RemoveDuplicatesFromSortedList2 {
             return null;
         }
 
-        // Skip ALL adjacent duplicate nodes
         while (isNodeDuplicate(node)) {
             node = findNextNode(node);
-//            boolean isNextNodeDuplicate = isNodeDuplicate(nextNode);
-//            if (!isNextNodeDuplicate) {
-//                node.next = nextNextNode;
-//                break;
-//            } else {
-//                nextNode = nextNextNode;
-//            }
         }
 
         return node;
