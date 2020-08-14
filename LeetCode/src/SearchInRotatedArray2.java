@@ -1,9 +1,11 @@
+import java.util.Arrays;
+
 public class SearchInRotatedArray2 {
     public static void main(String[] args) {
 //        int[] nums = { 2, 5, 6, 0, 0, 0, 0, 0, 1, 2 };
-        int[] nums = { 1, 3 };
+        int[] nums = { 3, 5, 1 };
 
-        System.out.println(search(nums, 3));
+        System.out.println(search(nums, 1));
     }
 
     public static boolean search(int[] nums, int target) {
@@ -40,6 +42,71 @@ public class SearchInRotatedArray2 {
         }
 
         return isFound;
+    }
+
+    private static int modifiedBinarySearch(int[] nums, int target, int start, int end) {
+        if (start >= end) {
+            return (nums[start] == target) ? start : -1 ;
+        }
+
+        // Base case - If only two left, no more recursion
+        if ((end - start) == 1) {
+            if (nums[start] == target) {
+                return start;
+            } else if (nums[end] == target) {
+                return end;
+            } else {
+                return -1;
+            }
+        }
+
+        int mid = (start + end)/2;
+
+        int leftFromMid = findLeftMid(mid, nums, start);
+        int rightFromMid = findRightMid(mid, nums, end);
+
+        // Split array in mid point
+        // Case 1:
+        // If nums[0] < nums[mid], then pivot is in right arr
+        // if nums[0] < target < nums[mid], just binary search on left arr
+        // If not, then modified binary search on right arr
+
+        // Case 2:
+        // If pivot is in left arr (nums[0] > nums[mid])
+        // if (nums[mid] < target < nums[last]) - then binary search on right arr
+        // else, modified search on left arr
+
+        if (nums[mid] == target) {
+            // Case 1 - Target is mid point
+            return mid;
+        } else if (leftFromMid >= 0 && nums[start] < nums[leftFromMid + 1]) {
+            if (nums[start] <= target && target <= nums[leftFromMid + 1]) {
+                // mid + 2 to make include mid
+                int index = Arrays.binarySearch(nums, start, leftFromMid + 2, target);
+
+                return fixBinarySearchResult(index);
+            } else {
+                return modifiedBinarySearch(nums, target, mid, nums.length - 1);
+            }
+        } else {
+            if (rightFromMid >= 0 && nums[rightFromMid] <= target && target <= nums[nums.length - 1]) {
+                int index = Arrays.binarySearch(nums, rightFromMid, nums.length, target);
+
+                return fixBinarySearchResult(index);
+            } else {
+                return modifiedBinarySearch(nums, target, start, rightFromMid);
+            }
+        }
+    }
+
+    // For non-zero starting arrays, if not found, gives weird negative index
+    // Re-adjust to -1
+    private static int fixBinarySearchResult(int index) {
+        if (index < -1) {
+            index = -1;
+        }
+
+        return index;
     }
 
     private static  int findLeftMid(int index, int[] nums, int start) {

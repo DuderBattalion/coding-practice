@@ -1,0 +1,60 @@
+import com.leetcode.util.ListNode;
+
+import java.util.List;
+
+public class RemoveDuplicatesFromSortedList2 {
+    public static void main(String[] args) {
+        ListNode list1 = new ListNode(1);
+        ListNode list2 = new ListNode(2);
+        ListNode list3 = new ListNode(3);
+        ListNode list4 = new ListNode(4);
+        ListNode list5 = new ListNode(5);
+
+        list1.next = list2;
+        list2.next = list3;
+        list3.next = list4;
+        list4.next = list5;
+        list5.next = null;
+
+        ListNode node = deleteDuplicates(list1);
+        while (node != null) {
+            System.out.print(node.val + "->");
+            node = node.next;
+        }
+    }
+
+    public static ListNode deleteDuplicates(ListNode head) {
+        ListNode node = head;
+        while (node != null) {
+            boolean isNextNodeDuplicate = isNodeDuplicate(node.next);
+            if (isNextNodeDuplicate) {
+                node.next = findNextNode(node.next);
+            }
+
+            node = node.next;
+        }
+
+        return head;
+    }
+
+    private static boolean isNodeDuplicate(ListNode node) {
+        if (node == null || node.next == null) {
+            return false;
+        }
+
+        return node.val == node.next.val;
+    }
+
+    private static ListNode findNextNode(ListNode node) {
+        if (node == null) {
+            return null;
+        }
+
+        int val = node.val;
+        while (node != null && val == node.val) {
+            node = node.next;
+        }
+
+        return node;
+    }
+}
