@@ -16,7 +16,12 @@ public class PartitionList {
         node5.next = node6;
         node6.next = null;
 
-        ListNode node = partition(node1, 3);
+//        ListNode node = partition(node1, 3);
+//        ListNode node = partition(null, 3);
+//        ListNode node = partition(node1, 10);
+//        ListNode node = partition(node1, 0);
+        ListNode node = partition(node5, 3);
+
         while (node != null) {
             System.out.print(node.val + ", ");
             node = node.next;
