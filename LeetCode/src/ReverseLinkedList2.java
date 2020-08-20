@@ -16,7 +16,9 @@ public class ReverseLinkedList2 {
         node4.next = node5;
         node5.next = null;
 
-        ListNode node = reverseBetween(node1, 2, 4);
+//        ListNode node = reverseBetween(node1, 2, 4);
+        ListNode node = reverseBetween(node1, 1, 5);
+
         while (node != null) {
             System.out.print(node.val + " ");
             node = node.next;
