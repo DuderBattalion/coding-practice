@@ -87,46 +87,4 @@ public class ReverseLinkedList2 {
             this.tail = tail;
         }
     }
-
-//    public static ListNode reverseBetween(ListNode head, int m, int n) {
-//        ListNode dummy = new ListNode();
-//        dummy.next = head;
-//        head = dummy;
-//
-//        ListNode reverseListDummy = new ListNode();
-//
-//        // Stop one before reverse node start (m)
-//        ListNode node = head;
-//        for (int i = 0; i < (m - 1); i++) {
-//            node = node.next;
-//        }
-//
-//        ListNode leftInsertNode = node;
-//        ListNode rightInsertNode = null;
-//        if (node.next != null) {
-//            rightInsertNode = node.next.next;
-//        }
-//
-//        // Add nodes to be reversed in reverse order into a linked list
-//        // Think Queue type insertion at head
-//        ListNode reverseNodeTail = node.next;
-//        ListNode reverseNode = node.next;
-//        ListNode reverseListHead = null;
-//        for (int i = 0; i < (n - m); i++) {
-//            ListNode nextReverseNode = reverseNode.next;
-//
-//            reverseNode.next = reverseListHead; // Add to reverse list head
-//            reverseListHead = reverseNode; // Move reverse list head to newly added node
-//            reverseNode = nextReverseNode; // Queue up next node that needs to be reversed
-//        }
-//
-//        // Insert reversed list into the original list
-//        leftInsertNode.next = reverseListHead;
-//
-//        if (reverseNodeTail != null) {
-//            reverseNodeTail.next = rightInsertNode;
-//        }
-//
-//        return dummy.next;
-//    }
 }
