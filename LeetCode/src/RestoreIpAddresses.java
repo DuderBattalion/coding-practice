@@ -3,7 +3,8 @@ import java.util.List;
 
 public class RestoreIpAddresses {
     public static void main(String[] args) {
-        List<String> output = restoreIpAddresses("25525511135");
+//        List<String> output = restoreIpAddresses("25525511135");
+        List<String> output = restoreIpAddresses("010010");
 
         for (String row: output) {
             System.out.println(row);
@@ -85,7 +86,7 @@ public class RestoreIpAddresses {
             }
 
             int subIpNum = Integer.parseInt(subIp);
-            if (subIpNum > 255) {
+            if (subIpNum > 255 || String.valueOf(subIpNum).length() != subIp.length()) {
                 return false;
             }
         }
