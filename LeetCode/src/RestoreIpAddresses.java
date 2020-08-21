@@ -8,13 +8,25 @@ public class RestoreIpAddresses {
         for (String row: output) {
             System.out.println(row);
         }
+
+//        // Debug
+//        List<String> output = new ArrayList<>();
+//        String s = "25525511135";
+//
+//        List<Integer> cutIndices = new ArrayList<>();
+//        cutIndices.add(3);
+//        cutIndices.add(6);
+//        cutIndices.add(9);
+//
+//        generateIpAddresses(s, output, cutIndices);
+//        for (String row: output) {
+//            System.out.println(row);
+//        }
     }
 
     public static List<String> restoreIpAddresses(String s) {
         List<String> output = new ArrayList<>();
-
         List<Integer> cutIndices = new ArrayList<>();
-        cutIndices.add(1);
 
         generateIpAddresses(s, output, cutIndices);
 
@@ -36,8 +48,15 @@ public class RestoreIpAddresses {
             return;
         }
 
-        int lastCutIndex = cutIndices.get(cutIndices.size() - 1);
-        for (int i = lastCutIndex + 1; i <= s.length(); i++) {
+        int lastCutIndex;
+        if (cutIndices.isEmpty()) {
+            lastCutIndex = 1;
+        } else {
+            lastCutIndex = cutIndices.get(cutIndices.size() - 1) + 1;
+        }
+
+//        int lastCutIndex = cutIndices.get(cutIndices.size() - 1);
+        for (int i = lastCutIndex; i <= s.length(); i++) {
             cutIndices.add(i);
             generateIpAddresses(s, output, cutIndices);
 
@@ -85,7 +104,7 @@ public class RestoreIpAddresses {
         }
 
         // Remove trailing "."
-        return ip.toString().substring(ip.length() - 1);
+        return ip.toString().substring(0, ip.length() - 1);
     }
 
 //    private static boolean isValidIp(String s, List<Integer> cutIndices) {
