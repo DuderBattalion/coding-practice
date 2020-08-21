@@ -55,7 +55,6 @@ public class RestoreIpAddresses {
             lastCutIndex = cutIndices.get(cutIndices.size() - 1) + 1;
         }
 
-//        int lastCutIndex = cutIndices.get(cutIndices.size() - 1);
         for (int i = lastCutIndex; i <= s.length(); i++) {
             cutIndices.add(i);
             generateIpAddresses(s, output, cutIndices);
@@ -111,32 +110,4 @@ public class RestoreIpAddresses {
         // Remove trailing "."
         return ip.toString().substring(0, ip.length() - 1);
     }
-
-//    private static boolean isValidIp(String s, List<Integer> cutIndices) {
-//        if (cutIndices.size() != 3) {
-//            return false;
-//        }
-//
-//        String s1 = s.substring(0, cutIndices.get(0) + 1);
-//        if (!isValidSubIp(s1)) {
-//            return false;
-//        }
-//
-//        String s2 = s.substring(cutIndices.get(0) + 1, cutIndices.get(1) + 1);
-//        if (!isValidSubIp(s2)) {
-//            return false;
-//        }
-//
-//        String s3 = s.substring(cutIndices.get(1) + 1, cutIndices.get(2) + 1);
-//        if (!isValidSubIp(s3)) {
-//            return false;
-//        }
-//
-//        String s4 = s.substring(cutIndices.get(2) + 1);
-//        return isValidSubIp(s4);
-//    }
-
-//    private static boolean isValidSubIp(String s) {
-//        return !s.isEmpty() && s.length() <= 3 && !s.equals("00") && !s.equals("000");
-//    }
 }
