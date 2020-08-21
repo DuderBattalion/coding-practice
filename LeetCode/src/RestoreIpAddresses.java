@@ -80,8 +80,13 @@ public class RestoreIpAddresses {
 
     private static boolean isValidIp(List<String> subIps) {
         for (String subIp: subIps) {
-            if (subIp.isEmpty() || subIp.length() > 3 || subIp.equals("00")
-                    || subIp.equals("000")) {
+            if (subIp.isEmpty() || subIp.length() > 3
+                    || subIp.equals("00")|| subIp.equals("000")) {
+                return false;
+            }
+
+            int subIpNum = Integer.parseInt(subIp);
+            if (subIpNum > 255) {
                 return false;
             }
         }
