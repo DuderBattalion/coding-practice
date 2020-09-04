@@ -18,15 +18,15 @@ public class ScrambleString {
     }
 
     private static boolean isScramble(String s1, String s2, Set<String> memoCache) {
+        if (s1.equals(s2)) {
+            return true;
+        }
+
         String memoKey = s1 + "," + s2;
         if (memoCache.contains(memoKey)) {
             return false;
         } else {
             memoCache.add(memoKey);
-        }
-
-        if (s1.equals(s2)) {
-            return true;
         }
 
         if (!matchCharCounts(s1, s2)) {
