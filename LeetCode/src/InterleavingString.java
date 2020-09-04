@@ -3,9 +3,11 @@ import java.util.Set;
 
 public class InterleavingString {
     public static void main(String[] args) {
-        System.out.println(isInterleave("aabcc", "dbbca", "aadbbcbcac"));
-        System.out.println(isInterleave("aabcc", "dbbca", "aadbbbaccc"));
-        System.out.println(isInterleave("", "", ""));
+//        System.out.println(isInterleave("aabcc", "dbbca", "aadbbcbcac"));
+//        System.out.println(isInterleave("aabcc", "dbbca", "aadbbbaccc"));
+//        System.out.println(isInterleave("", "", ""));
+
+        System.out.println(isInterleave("a", "b", "a"));
     }
 
     public static boolean isInterleave(String s1, String s2, String s3) {
@@ -23,10 +25,6 @@ public class InterleavingString {
             return false;
         }
 
-        if (output.length() == s3.length()) {
-            return output.equals(s3);
-        }
-
         // s1 empty
         if (i >= s1.length()) {
             output += s2.substring(j);
@@ -36,6 +34,10 @@ public class InterleavingString {
         // s2 empty
         if (j >= s2.length()) {
             output += s1.substring(i);
+            return output.equals(s3);
+        }
+
+        if (output.length() == s3.length()) {
             return output.equals(s3);
         }
 
