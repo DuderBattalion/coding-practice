@@ -4,8 +4,13 @@ import java.util.Set;
 
 public class ScrambleString {
     public static void main(String[] args) {
-        System.out.println(isScramble("great", "rgeat"));
-        System.out.println(isScramble("abcde", "caebd"));
+//        System.out.println(isScramble("great", "rgeat"));
+//        System.out.println(isScramble("abcde", "caebd"));
+        System.out.println(isScramble("abcdbdacbdac", "bdacabcdbdac"));
+
+//        System.out.println(isScramble("", "caebd"));
+//        System.out.println(isScramble("abcde", ""));
+//        System.out.println(isScramble("", ""));
     }
 
     public static boolean isScramble(String s1, String s2) {
