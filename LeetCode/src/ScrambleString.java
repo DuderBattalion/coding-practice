@@ -45,10 +45,10 @@ public class ScrambleString {
         boolean isScrambled = false;
         for (int i = 1; i <= s1.length(); i++) {
             String leftSubstringS1 = s1.substring(0, i);
-            String rightSubstringS1 = s1.substring(i);
+            String rightSubstringS1 = s1.substring(s1.length() - i);
 
             String leftSubstringS2 = s2.substring(0, i);
-            String rightSubstringS2 = s2.substring(i);
+            String rightSubstringS2 = s2.substring(s1.length() - i);
 
             isScrambled =
                     (isScramble(leftSubstringS1, leftSubstringS2, memoCache) // No swap
