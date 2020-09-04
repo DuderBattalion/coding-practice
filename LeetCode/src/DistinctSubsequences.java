@@ -1,11 +1,12 @@
 public class DistinctSubsequences {
     public static void main(String[] args) {
-        System.out.println(numDistinct("rabbbit", "rabbit"));
-        System.out.println(numDistinct("babgbag", "bag"));
+//        System.out.println(numDistinct("rabbbit", "rabbit"));
+//        System.out.println(numDistinct("babgbag", "bag"));
+        System.out.println(numDistinct("bccbcdcabadabddbccaddcbabbaaacdba", "bccbbdc"));
 
-        System.out.println(numDistinct("", "bag"));
-        System.out.println(numDistinct("abcde", ""));
-        System.out.println(numDistinct("", ""));
+//        System.out.println(numDistinct("", "bag"));
+//        System.out.println(numDistinct("abcde", ""));
+//        System.out.println(numDistinct("", ""));
     }
 
     public static int numDistinct(String s, String t) {
