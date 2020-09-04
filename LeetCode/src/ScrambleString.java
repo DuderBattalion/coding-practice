@@ -6,13 +6,22 @@ public class ScrambleString {
     public static void main(String[] args) {
 //        System.out.println(isScramble("great", "rgeat"));
 //        System.out.println(isScramble("abcde", "caebd"));
-        System.out.println(isScramble("abcdbdacbdac", "bdacabcdbdac"));
+//        System.out.println(isScramble("abcdbdacbdac", "bdacabcdbdac"));
+        System.out.println(isScramble("abb", "bba"));
 
 //        System.out.println(isScramble("", "caebd"));
 //        System.out.println(isScramble("abcde", ""));
 //        System.out.println(isScramble("", ""));
     }
 
+    /**
+     * Algorithm: Recursion + Memoization
+     * Split at all index points - left and right
+     * Two choices after each split.
+     * Case 1: Don't swap the splits and recurse further down each substring from the split
+     * Case 2: Swap the splits and then recurse further down each substring
+     * If the substrings match, return true. Both left and right recursions need to be true for a complete match
+     */
     public static boolean isScramble(String s1, String s2) {
         return isScramble(s1, s2, new HashSet<>());
     }
