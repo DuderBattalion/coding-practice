@@ -7,7 +7,8 @@ public class ScrambleString {
 //        System.out.println(isScramble("great", "rgeat"));
 //        System.out.println(isScramble("abcde", "caebd"));
 //        System.out.println(isScramble("abcdbdacbdac", "bdacabcdbdac"));
-        System.out.println(isScramble("abb", "bba"));
+//        System.out.println(isScramble("abb", "bba"));
+        System.out.println(isScramble("abcdbdacbdac", "bdacabcdbdac"));
 
 //        System.out.println(isScramble("", "caebd"));
 //        System.out.println(isScramble("abcde", ""));
@@ -43,18 +44,12 @@ public class ScrambleString {
         }
 
         boolean isScrambled = false;
-        for (int i = 1; i <= s1.length(); i++) {
-            String leftSubstringS1 = s1.substring(0, i);
-            String rightSubstringS1 = s1.substring(s1.length() - i);
-
-            String leftSubstringS2 = s2.substring(0, i);
-            String rightSubstringS2 = s2.substring(s1.length() - i);
-
+        for (int i = 1; i < s1.length(); i++) {
             isScrambled =
-                    (isScramble(leftSubstringS1, leftSubstringS2, memoCache) // No swap
-                            && isScramble(rightSubstringS1, rightSubstringS2, memoCache))
-                    ||(isScramble(rightSubstringS1, leftSubstringS2, memoCache) // Swap
-                            && isScramble(leftSubstringS1, rightSubstringS2, memoCache));
+                    (isScramble(s1.substring(0, i), s2.substring(0, i), memoCache) // No swap
+                            && isScramble(s1.substring(i), s2.substring(i), memoCache))
+                    ||(isScramble(s1.substring(0, i), s2.substring(s2.length() - i), memoCache) // Swap
+                            && isScramble(s1.substring(i), s2.substring(0, s2.length() - i), memoCache));
 
             if (isScrambled) {
                 break;
