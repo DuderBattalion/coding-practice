@@ -6,11 +6,18 @@ public class RecoverBinarySearchTree {
         TreeNode t1 = new TreeNode(1);
         TreeNode t2 = new TreeNode(2);
         TreeNode t3 = new TreeNode(3);
+        TreeNode t4 = new TreeNode(4);
 
-        t1.left = t3;
-        t3.right = t2;
+        // Test case 1
+//        t1.left = t3;
+//        t3.right = t2;
 
-        recoverTree(t1);
+        // Test case 2
+        t3.left = t1;
+        t3.right = t4;
+        t4.left = t2;
+
+        recoverTree(t3);
         DebugUtil.printTree(t1);
     }
 
@@ -24,7 +31,8 @@ public class RecoverBinarySearchTree {
         }
 
         // Check Root
-        if (root.val < root.left.val || root.val > root.right.val) {
+        if ((root.left != null && root.val < root.left.val)
+                || (root.right != null && root.val > root.right.val)) {
             invalidNodes.setInvalidNode(root);
         }
 
