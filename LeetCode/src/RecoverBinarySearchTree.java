@@ -1,5 +1,6 @@
 import com.leetcode.util.DebugUtil;
 import com.leetcode.util.TreeNode;
+import com.sun.source.tree.Tree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +13,23 @@ public class RecoverBinarySearchTree {
         TreeNode t4 = new TreeNode(4);
 
         // Test case 1
-//        t1.left = t3;
-//        t3.right = t2;
+        t1.left = t3;
+        t3.right = t2;
 
-        // Test case 2
-        t3.left = t1;
-        t3.right = t4;
-        t4.left = t2;
+//        recoverTree(t1);
+        traverse(t1, null, null, new TreeNode(Integer.MIN_VALUE));
+        DebugUtil.printTree(t1);
 
-        recoverTree(t3);
-        DebugUtil.printTree(t3);
+//        // Test case 2
+//        t3.left = t1;
+//        t3.right = t4;
+//        t4.left = t2;
+
+//        recoverTree(t3);
+//        DebugUtil.printTree(t3);
     }
 
     public static void recoverTree(TreeNode root) {
-//        recoverTreeRecursive(root, new InvalidNodes());
         List<TreeNode> output = new ArrayList<>();
         findInvalidNodes(root, null, output);
         if (output.size() != 2) {
@@ -82,71 +86,27 @@ public class RecoverBinarySearchTree {
         second.val = temp;
     }
 
+    private static void traverse(TreeNode root, TreeNode firstElement, TreeNode secondElement, TreeNode prevElement) {
 
+        if (root == null)
+            return;
 
-//    private static void recoverTreeRecursive(TreeNode root, InvalidNodes invalidNodes) {
-//        if (root == null) {
-//            return;
-//        }
-//
-//        // Check Root
-//        if ((root.left != null && root.val < root.left.val)
-//                || (root.right != null && root.val > root.right.val)) {
-//            invalidNodes.setInvalidNode(root);
-//        }
-//
-//        if (invalidNodes.areBothInvalidNodesFound()) {
-//            swapNodeVals(invalidNodes);
-//            return;
-//        }
-//
-//        // Check left
-//        if (root.left != null && root.left.val > root.val) {
-//            invalidNodes.setInvalidNode(root.left);
-//        }
-//
-//        if (invalidNodes.areBothInvalidNodesFound()) {
-//            swapNodeVals(invalidNodes);
-//            return;
-//        }
-//
-//        // Check right
-//        if (root.right != null && root.right.val < root.val) {
-//            invalidNodes.setInvalidNode(root.right);
-//        }
-//
-//        if (invalidNodes.areBothInvalidNodesFound()) {
-//            swapNodeVals(invalidNodes);
-//            return;
-//        }
-//
-//        recoverTreeRecursive(root.left, invalidNodes);
-//        recoverTreeRecursive(root.right, invalidNodes);
-//    }
-//
-//    private static class InvalidNodes {
-//        public TreeNode firstNode;
-//        public TreeNode secondNode;
-//
-//        public boolean areBothInvalidNodesFound() {
-//            return firstNode != null && secondNode != null;
-//        }
-//
-//        public void setInvalidNode(TreeNode node) {
-//            if (firstNode == null) {
-//                firstNode = node;
-//            } else if (secondNode == null) {
-//                secondNode = node;
-//            } else {
-//                throw new RuntimeException("[Error]: Both nodes are already defined.");
-//            }
-//        }
-//    }
-//
-//    private static void swapNodeVals(InvalidNodes invalidNodes) {
-//        int tempVal = invalidNodes.firstNode.val;
-//        invalidNodes.firstNode.val = invalidNodes.secondNode.val;
-//        invalidNodes.secondNode.val = tempVal;
-//    }
+        traverse(root.left, firstElement, secondElement, prevElement);
 
+        // Start of "do some business",
+        // If first element has not been found, assign it to prevElement (refer to 6 in the example above)
+        if (firstElement == null && prevElement.val >= root.val) {
+            firstElement = prevElement;
+        }
+
+        // If first element is found, assign the second element to the root (refer to 2 in the example above)
+        if (firstElement != null && prevElement.val >= root.val) {
+            secondElement = root;
+        }
+        prevElement = root;
+
+        // End of "do some business"
+
+        traverse(root.right, firstElement, secondElement, prevElement);
+    }
 }
