@@ -8,11 +8,11 @@ public class BestTimeToBuyAndSellStock3 {
 //        int[] prices = { 1, 2, 3, 4, 5 };
 //        System.out.println(maxProfit(prices));
 
-//        int[] prices = { 5, 4, 3, 2, 1 };
-//        System.out.println(maxProfit(prices));
-
-        int[] prices = { 1 };
+        int[] prices = { 5, 4, 3, 2, 1 };
         System.out.println(maxProfit(prices));
+
+//        int[] prices = { 1 };
+//        System.out.println(maxProfit(prices));
     }
 
     /**
@@ -34,17 +34,16 @@ public class BestTimeToBuyAndSellStock3 {
         int[][] dp = new int[3][prices.length];
 
         for (int t = 1; t <= 2; t++) {
+            int maxPreviousProfitCombo = -prices[0] + dp[t-1][0];
             for (int d = 1; d < prices.length; d++) {
-                int maxPreviousProfitCombo = Integer.MIN_VALUE;
-                for (int x = 0; x <= d; x++) {
-                    maxPreviousProfitCombo = Math.max(maxPreviousProfitCombo, -prices[x] + dp[t-1][x]);
+                int profitCombo = -prices[d] + dp[t-1][d];
+                if (maxPreviousProfitCombo < profitCombo) {
+                    maxPreviousProfitCombo = profitCombo;
                 }
 
                 dp[t][d] = Math.max(dp[t][d-1], prices[d] + maxPreviousProfitCombo);
             }
         }
-
-//        DebugUtil.debugDpCache(dp, 3, prices.length);
 
         return dp[2][prices.length - 1];
     }
