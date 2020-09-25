@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class WordLadder2 {
     public static void main(String[] args) {
@@ -32,8 +29,24 @@ public class WordLadder2 {
             return results;
         }
 
+//        Set<String> wordSet = new HashSet<>(wordList);
+//        findLaddersRecursive(beginWord, endWord, wordSet, results, new ArrayList<>(), new HashSet<>());
+
         Set<String> wordSet = new HashSet<>(wordList);
-        findLaddersRecursive(beginWord, endWord, wordSet, results, new ArrayList<>(), new HashSet<>());
+        List<Character> allChars = createAllCharsList(wordList);
+
+        List<String> result = new ArrayList<>();
+        Map<String, List<String>> cache = new HashMap<>(); // TODO - caching
+
+        for (int i = 0; i < beginWord.length(); i++) {
+            for (Character token: allChars) {
+                String newWord = replaceWordChar(beginWord, token, i);
+
+                if (wordSet.contains(newWord)) {
+
+                }
+            }
+        }
 
         return results;
     }
