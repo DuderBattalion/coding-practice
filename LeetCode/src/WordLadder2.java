@@ -2,16 +2,24 @@ import java.util.*;
 
 public class WordLadder2 {
     public static void main(String[] args) {
-        String beginWord = "hit";
-        String endWord = "cog";
+//        String beginWord = "hit";
+//        String endWord = "cog";
+//
+//        List<String> wordList = new ArrayList<>();
+//        wordList.add("hot");
+//        wordList.add("dot");
+//        wordList.add("dog");
+//        wordList.add("lot");
+//        wordList.add("log");
+//        wordList.add("cog");
+
+        String beginWord = "a";
+        String endWord = "c";
 
         List<String> wordList = new ArrayList<>();
-        wordList.add("hot");
-        wordList.add("dot");
-        wordList.add("dog");
-        wordList.add("lot");
-        wordList.add("log");
-        wordList.add("cog");
+        wordList.add("a");
+        wordList.add("b");
+        wordList.add("c");
 
         List<List<String>> results = findLadders(beginWord, endWord, wordList);
         for (List<String> result: results) {
@@ -116,29 +124,48 @@ public class WordLadder2 {
         List<String> currentChain = new ArrayList<>();
         currentChain.add(root.val);
 
-        findPathsRecursive(root, endWord, output, currentChain);
+        findPathsRecursive(root, endWord, output, currentChain, 0, new DepthTracker(Integer.MAX_VALUE));
 
         return output;
     }
 
+    private static class DepthTracker {
+        public int maxDepth;
+
+        public DepthTracker(int maxDepth) {
+            this.maxDepth = maxDepth;
+        }
+    }
+
     private static void findPathsRecursive(Node node, String endWord, List<List<String>> output,
-                                           List<String> currentChain) {
-        if (node == null) {
+                                           List<String> currentChain, int depth, DepthTracker depthTracker) {
+        if (node == null || depth > depthTracker.maxDepth) {
             return;
         }
 
         if (node.val.equals(endWord)) {
             output.add(new ArrayList<>(currentChain));
+
+            if (depth < depthTracker.maxDepth) {
+                depthTracker.maxDepth = depth;
+
+                filterLongerPaths(output, depth);
+            }
+
             return;
         }
 
         for (Node neighbor: node.neighbors) {
             currentChain.add(neighbor.val);
-            findPathsRecursive(neighbor, endWord, output, currentChain);
+            findPathsRecursive(neighbor, endWord, output, currentChain, depth + 1, depthTracker);
 
             // Backtrack
             currentChain.remove(currentChain.size()-1);
         }
+    }
+
+    private static void filterLongerPaths(List<List<String>> output, int depth) {
+        output.removeIf(result -> (result.size() - 1) > depth); // -1 because depth is zero index'd
     }
 }
 
