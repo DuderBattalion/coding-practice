@@ -13,13 +13,26 @@ public class WordLadder2 {
 //        wordList.add("log");
 //        wordList.add("cog");
 
-        String beginWord = "a";
-        String endWord = "c";
+//        String beginWord = "a";
+//        String endWord = "c";
+//
+//        List<String> wordList = new ArrayList<>();
+//        wordList.add("a");
+//        wordList.add("b");
+//        wordList.add("c");
+
+        String beginWord = "red";
+        String endWord = "tax";
 
         List<String> wordList = new ArrayList<>();
-        wordList.add("a");
-        wordList.add("b");
-        wordList.add("c");
+        wordList.add("ted");
+        wordList.add("tex");
+        wordList.add("red");
+        wordList.add("tax");
+        wordList.add("tad");
+        wordList.add("den");
+        wordList.add("rex");
+        wordList.add("pee");
 
         List<List<String>> results = findLadders(beginWord, endWord, wordList);
         for (List<String> result: results) {
@@ -38,6 +51,8 @@ public class WordLadder2 {
         }
 
         Node root = createWordGraph(beginWord, endWord, new HashSet<>(wordList));
+
+        printGraph(root);
         return findPaths(root, endWord);
     }
 
@@ -66,7 +81,7 @@ public class WordLadder2 {
             }
 
             // Generate next state transitions
-            generateNextStates(state, wordList, distinctChars, frontier, node);
+            generateNextStates(state, wordList, distinctChars, frontier, processedStates, node);
 
             processedStates.add(state);
             frontier.remove();
@@ -87,11 +102,13 @@ public class WordLadder2 {
     }
 
     private static void generateNextStates(String beginWord, Set<String> wordList,
-                                           Set<Character> distinctChars, Queue<Node> frontier, Node node) {
+                                           Set<Character> distinctChars, Queue<Node> frontier,
+                                           Set<String> processedStates, Node node) {
         for (int i = 0; i < node.val.length(); i++) {
             for (Character token: distinctChars) {
                 String newWord = replaceWord(beginWord, i, token);
-                if (wordList.contains(newWord)) { // TODO - change to hashmap for perf boost
+                if (!newWord.equals(beginWord) && wordList.contains(newWord)
+                        && !processedStates.contains(newWord)) {
                     Node newNode = new Node(newWord);
                     node.addNeighbor(newNode);
 
@@ -166,6 +183,26 @@ public class WordLadder2 {
 
     private static void filterLongerPaths(List<List<String>> output, int depth) {
         output.removeIf(result -> (result.size() - 1) > depth); // -1 because depth is zero index'd
+    }
+
+    private static void printGraph(Node root) {
+        Queue<Node> frontier = new LinkedList<>();
+        frontier.add(root);
+
+        while (!frontier.isEmpty()) {
+            Node node = frontier.remove();
+
+            System.out.println("Node id:" + node.toString());
+            System.out.println("Node val: " + node.val);
+            System.out.println("Node neighbors");
+            for (Node neighbor: node.neighbors) {
+                System.out.printf("%s (%s), ", neighbor.val, neighbor.toString());
+                frontier.add(neighbor);
+            }
+
+            System.out.println("");
+            System.out.println();
+        }
     }
 }
 
