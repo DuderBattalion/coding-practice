@@ -29,11 +29,11 @@ public class WordLadder2 {
             return output;
         }
 
-        Node root = createWordGraph(beginWord, endWord, wordList);
+        Node root = createWordGraph(beginWord, endWord, new HashSet<>(wordList));
         return findPaths(root, endWord);
     }
 
-    private static Node createWordGraph(String beginWord, String endWord, List<String> wordList) {
+    private static Node createWordGraph(String beginWord, String endWord, Set<String> wordList) {
         Set<Character> distinctChars = getDistinctChars(wordList);
 
         Queue<Node> frontier = new LinkedList<>();
@@ -67,7 +67,7 @@ public class WordLadder2 {
         return root;
     }
 
-    private static Set<Character> getDistinctChars(List<String> wordList) {
+    private static Set<Character> getDistinctChars(Set<String> wordList) {
         Set<Character> distinctChars = new HashSet<>();
         for (String word: wordList) {
             for (char token: word.toCharArray()) {
@@ -78,7 +78,7 @@ public class WordLadder2 {
         return distinctChars;
     }
 
-    private static void generateNextStates(String beginWord, List<String> wordList,
+    private static void generateNextStates(String beginWord, Set<String> wordList,
                                            Set<Character> distinctChars, Queue<Node> frontier, Node node) {
         for (int i = 0; i < node.val.length(); i++) {
             for (Character token: distinctChars) {
