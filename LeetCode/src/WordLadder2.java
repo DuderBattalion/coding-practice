@@ -64,6 +64,7 @@ public class WordLadder2 {
         frontier.add(root);
 
         Set<String> processedStates = new HashSet<>();
+        Map<String, Node> nodes = new HashMap<>();
         while (!frontier.isEmpty()) {
             Node node = frontier.peek();
             String state = node.val;
@@ -81,7 +82,8 @@ public class WordLadder2 {
             }
 
             // Generate next state transitions
-            generateNextStates(state, wordList, distinctChars, frontier, processedStates, node);
+            generateNextStates(state, wordList, distinctChars, frontier,
+                    nodes, processedStates, node);
 
             processedStates.add(state);
             frontier.remove();
@@ -103,16 +105,27 @@ public class WordLadder2 {
 
     private static void generateNextStates(String beginWord, Set<String> wordList,
                                            Set<Character> distinctChars, Queue<Node> frontier,
-                                           Set<String> processedStates, Node node) {
+                                           Map<String, Node> nodes, Set<String> processedStates, Node node) {
         for (int i = 0; i < node.val.length(); i++) {
             for (Character token: distinctChars) {
                 String newWord = replaceWord(beginWord, i, token);
                 if (!newWord.equals(beginWord) && wordList.contains(newWord)
                         && !processedStates.contains(newWord)) {
-                    Node newNode = new Node(newWord);
-                    node.addNeighbor(newNode);
+                    Node neighborNode;
+                    if (nodes.containsKey(newWord)) {
+                        neighborNode = nodes.get(newWord);
+                    } else {
+                        neighborNode = new Node(newWord);
+                        nodes.put(newWord, neighborNode);
+                    }
 
-                    frontier.add(newNode);
+//                    Node newNode = new Node(newWord);
+//                    node.addNeighbor(newNode);
+
+//                    frontier.add(newNode);
+
+                    node.addNeighbor(neighborNode);
+                    frontier.add(neighborNode);
                 }
             }
         }
