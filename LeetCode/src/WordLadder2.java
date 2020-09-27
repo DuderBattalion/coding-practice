@@ -24,66 +24,121 @@ public class WordLadder2 {
     }
 
     public static List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-        List<List<String>> results = new ArrayList<>();
+        List<List<String>> output = new ArrayList<>();
         if (!wordList.contains(endWord)) {
-            return results;
+            return output;
         }
 
-//        Set<String> wordSet = new HashSet<>(wordList);
-//        findLaddersRecursive(beginWord, endWord, wordSet, results, new ArrayList<>(), new HashSet<>());
+        Node root = createWordGraph(beginWord, endWord, wordList);
+        return findPaths(root, endWord);
+    }
 
-        Set<String> wordSet = new HashSet<>(wordList);
-        List<Character> allChars = createAllCharsList(wordList);
+    private static Node createWordGraph(String beginWord, String endWord, List<String> wordList) {
+        Set<Character> distinctChars = getDistinctChars(wordList);
 
-        List<String> result = new ArrayList<>();
-        Map<String, List<String>> cache = new HashMap<>(); // TODO - caching
+        Queue<Node> frontier = new LinkedList<>();
+        Node root = new Node(beginWord);
+        frontier.add(root);
 
-        for (int i = 0; i < beginWord.length(); i++) {
-            for (Character token: allChars) {
-                String newWord = replaceWordChar(beginWord, token, i);
+        Set<String> processedStates = new HashSet<>();
+        while (!frontier.isEmpty()) {
+            Node node = frontier.peek();
+            String state = node.val;
 
-                if (wordSet.contains(newWord)) {
+            if (processedStates.contains(state)) {
+                frontier.remove();
+                continue;
+            }
 
+            if (state.equals(endWord)) {
+                processedStates.add(endWord);
+                frontier.remove();
+
+                continue; // No need to transform further if endword reached
+            }
+
+            // Generate next state transitions
+            generateNextStates(state, wordList, distinctChars, frontier, node);
+
+            processedStates.add(state);
+            frontier.remove();
+        }
+
+        return root;
+    }
+
+    private static Set<Character> getDistinctChars(List<String> wordList) {
+        Set<Character> distinctChars = new HashSet<>();
+        for (String word: wordList) {
+            for (char token: word.toCharArray()) {
+                distinctChars.add(token);
+            }
+        }
+
+        return distinctChars;
+    }
+
+    private static void generateNextStates(String beginWord, List<String> wordList,
+                                           Set<Character> distinctChars, Queue<Node> frontier, Node node) {
+        for (int i = 0; i < node.val.length(); i++) {
+            for (Character token: distinctChars) {
+                String newWord = replaceWord(beginWord, i, token);
+                if (wordList.contains(newWord)) { // TODO - change to hashmap for perf boost
+                    Node newNode = new Node(newWord);
+                    node.addNeighbor(newNode);
+
+                    frontier.add(newNode);
                 }
             }
         }
-
-        return results;
     }
 
-    // TODO - Performance improve - memoization
-    private static void findLaddersRecursive(String beginWord, String endWord, Set<String> wordList,
-                                                           List<List<String>> results, List<String> wordLadder,
-                                                           Set<String> cache) {
-        if (beginWord.equals(endWord)) {
-            results.add(wordLadder);
-            return;
+    private static String replaceWord(String word, int i, Character token) {
+        return word.substring(0, i) + token + word.substring(i+1);
+    }
+
+    private static class Node {
+        public String val;
+        public List<Node> neighbors;
+
+        public Node(String val) {
+            this.val = val;
+            this.neighbors = new ArrayList<>();
         }
 
-        if (cache.contains(beginWord)) {
-            return;
-        } else {
-            cache.add(beginWord);
-        }
-
-        // Try replacing each character in begin word
-        for (int i = 0; i < beginWord.length(); i++) {
-            char endChar = endWord.charAt(i);
-            String newBeginWord = replaceWordChar(beginWord, endChar, i);
-
-            System.out.println("[Debug]: new word = " + newBeginWord);
-
-            if (wordList.contains(newBeginWord)) {
-                wordLadder.add(newBeginWord);
-                findLaddersRecursive(newBeginWord, endWord, wordList, results, wordLadder, cache);
-
-                // Backtrack
-                wordLadder.remove(newBeginWord);
-            }
+        public void addNeighbor(Node node) {
+            neighbors.add(node);
         }
     }
 
-    private static String replaceWordChar(String word, char token, int i) {
-        return (word.substring(0, i) + token + word.substring(i+1));
+    private static List<List<String>> findPaths(Node root, String endWord) {
+        List<List<String>> output = new ArrayList<>();
+        List<String> currentChain = new ArrayList<>();
+        currentChain.add(root.val);
+
+        findPathsRecursive(root, endWord, output, currentChain);
+
+        return output;
+    }
+
+    private static void findPathsRecursive(Node node, String endWord, List<List<String>> output,
+                                           List<String> currentChain) {
+        if (node == null) {
+            return;
+        }
+
+        if (node.val.equals(endWord)) {
+            output.add(new ArrayList<>(currentChain));
+            return;
+        }
+
+        for (Node neighbor: node.neighbors) {
+            currentChain.add(neighbor.val);
+            findPathsRecursive(neighbor, endWord, output, currentChain);
+
+            // Backtrack
+            currentChain.remove(currentChain.size()-1);
+        }
     }
 }
+
