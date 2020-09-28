@@ -52,7 +52,7 @@ public class WordLadder2 {
 
         Node root = createWordGraph(beginWord, endWord, new HashSet<>(wordList));
 
-        printGraph(root);
+//        printGraph(root);
         return findPaths(root, endWord);
     }
 
@@ -78,7 +78,8 @@ public class WordLadder2 {
                 processedStates.add(endWord);
                 frontier.remove();
 
-                continue; // No need to transform further if endword reached
+//                continue; // No need to transform further if endword reached
+                break;
             }
 
             // Generate next state transitions
