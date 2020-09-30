@@ -58,6 +58,9 @@ public class WordLadder2 {
         Node root = createWordGraph(beginWord, endWord, new HashSet<>(wordList));
 
 //        printGraph(root);
+        int solutionDepth = getSolutionDepth(root, endWord);
+        System.out.println("solution depth = " + solutionDepth);
+
         return findPaths(root, endWord);
     }
 
@@ -153,6 +156,42 @@ public class WordLadder2 {
         public void addNeighbor(Node node) {
             neighbors.add(node);
         }
+    }
+
+    private static int getSolutionDepth(Node root, String endWord) {
+        if (root == null) {
+            return 0;
+        }
+
+        int depth = 0;
+
+        Queue<Node> frontier = new LinkedList<>();
+        frontier.add(root);
+
+        Set<String> processedNodes = new HashSet<>();
+        while (!frontier.isEmpty()) {
+            depth++;
+
+            Queue<Node> nextLevel = new LinkedList<>();
+            while (!frontier.isEmpty()) {
+                Node node = frontier.remove();
+                if (processedNodes.contains(node.val)) {
+                    continue;
+                }
+
+                processedNodes.add(node.val);
+
+                if (node.val.equals(endWord)) {
+                    return depth;
+                }
+
+                nextLevel.addAll(node.neighbors);
+            }
+
+            frontier = nextLevel;
+        }
+
+        return depth;
     }
 
     private static List<List<String>> findPaths(Node root, String endWord) {
