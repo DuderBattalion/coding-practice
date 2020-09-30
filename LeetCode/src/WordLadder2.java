@@ -61,7 +61,7 @@ public class WordLadder2 {
         int solutionDepth = getSolutionDepth(root, endWord);
         System.out.println("solution depth = " + solutionDepth);
 
-        return findPaths(root, endWord);
+        return findPaths(root, endWord, solutionDepth);
     }
 
     private static Node createWordGraph(String beginWord, String endWord, Set<String> wordList) {
@@ -194,73 +194,100 @@ public class WordLadder2 {
         return depth;
     }
 
-    private static List<List<String>> findPaths(Node root, String endWord) {
+    private static List<List<String>> findPaths(Node root, String endWord, int maxDepth) {
         List<List<String>> output = new ArrayList<>();
-        List<String> currentChain = new ArrayList<>();
-        currentChain.add(root.val);
-
-        findPathsRecursive(root, endWord, output, currentChain, 0, new DepthTracker(Integer.MAX_VALUE));
+        findPathsRecursive(root, endWord, maxDepth, 1, output, new ArrayList<>());
 
         return output;
     }
 
-    private static class DepthTracker {
-        public int maxDepth;
-
-        public DepthTracker(int maxDepth) {
-            this.maxDepth = maxDepth;
-        }
-    }
-
-    private static void findPathsRecursive(Node node, String endWord, List<List<String>> output,
-                                           List<String> currentChain, int depth, DepthTracker depthTracker) {
-        if (node == null || depth > depthTracker.maxDepth) {
+    private static void findPathsRecursive(Node root, String endWord, int maxDepth, int depth,
+                                           List<List<String>> output, List<String> chain) {
+        if (root == null || depth > maxDepth) {
             return;
         }
 
-        if (node.val.equals(endWord)) {
-            output.add(new ArrayList<>(currentChain));
-
-            if (depth < depthTracker.maxDepth) {
-                depthTracker.maxDepth = depth;
-
-                filterLongerPaths(output, depth);
-            }
-
+        if (root.val.equals(endWord)) {
+            output.add(new ArrayList<>(chain));
             return;
         }
 
-        for (Node neighbor: node.neighbors) {
-            currentChain.add(neighbor.val);
-            findPathsRecursive(neighbor, endWord, output, currentChain, depth + 1, depthTracker);
-
-            // Backtrack
-            currentChain.remove(currentChain.size()-1);
+        chain.add(root.val);
+        for (Node neighbor: root.neighbors) {
+            findPathsRecursive(neighbor, endWord, maxDepth, depth + 1, output, chain);
         }
+
+        // Backtrack
+        chain.remove(chain.size() - 1);
     }
 
-    private static void filterLongerPaths(List<List<String>> output, int depth) {
-        output.removeIf(result -> (result.size() - 1) > depth); // -1 because depth is zero index'd
-    }
-
-    private static void printGraph(Node root) {
-        Queue<Node> frontier = new LinkedList<>();
-        frontier.add(root);
-
-        while (!frontier.isEmpty()) {
-            Node node = frontier.remove();
-
-            System.out.println("Node id:" + node.toString());
-            System.out.println("Node val: " + node.val);
-            System.out.println("Node neighbors");
-            for (Node neighbor: node.neighbors) {
-                System.out.printf("%s (%s), ", neighbor.val, neighbor.toString());
-                frontier.add(neighbor);
-            }
-
-            System.out.println("");
-            System.out.println();
-        }
-    }
+//    private static List<List<String>> findPaths(Node root, String endWord) {
+//        List<List<String>> output = new ArrayList<>();
+//        List<String> currentChain = new ArrayList<>();
+//        currentChain.add(root.val);
+//
+//        findPathsRecursive(root, endWord, output, currentChain, 0, new DepthTracker(Integer.MAX_VALUE));
+//
+//        return output;
+//    }
+//
+//    private static class DepthTracker {
+//        public int maxDepth;
+//
+//        public DepthTracker(int maxDepth) {
+//            this.maxDepth = maxDepth;
+//        }
+//    }
+//
+//    private static void findPathsRecursive(Node node, String endWord, List<List<String>> output,
+//                                           List<String> currentChain, int depth, DepthTracker depthTracker) {
+//        if (node == null || depth > depthTracker.maxDepth) {
+//            return;
+//        }
+//
+//        if (node.val.equals(endWord)) {
+//            output.add(new ArrayList<>(currentChain));
+//
+//            if (depth < depthTracker.maxDepth) {
+//                depthTracker.maxDepth = depth;
+//
+//                filterLongerPaths(output, depth);
+//            }
+//
+//            return;
+//        }
+//
+//        for (Node neighbor: node.neighbors) {
+//            currentChain.add(neighbor.val);
+//            findPathsRecursive(neighbor, endWord, output, currentChain, depth + 1, depthTracker);
+//
+//            // Backtrack
+//            currentChain.remove(currentChain.size()-1);
+//        }
+//    }
+//
+//    private static void filterLongerPaths(List<List<String>> output, int depth) {
+//        output.removeIf(result -> (result.size() - 1) > depth); // -1 because depth is zero index'd
+//    }
+//
+//    private static void printGraph(Node root) {
+//        Queue<Node> frontier = new LinkedList<>();
+//        frontier.add(root);
+//
+//        while (!frontier.isEmpty()) {
+//            Node node = frontier.remove();
+//
+//            System.out.println("Node id:" + node.toString());
+//            System.out.println("Node val: " + node.val);
+//            System.out.println("Node neighbors");
+//            for (Node neighbor: node.neighbors) {
+//                System.out.printf("%s (%s), ", neighbor.val, neighbor.toString());
+//                frontier.add(neighbor);
+//            }
+//
+//            System.out.println("");
+//            System.out.println();
+//        }
+//    }
 }
 
