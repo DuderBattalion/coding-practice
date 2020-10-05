@@ -4,6 +4,8 @@ import java.util.List;
 public class PalindromePartitioning2 {
     public static void main(String[] args) {
         System.out.println(minCut("aab"));
+        System.out.println(minCut("banana"));
+        System.out.println(minCut("aabbbcccc"));
     }
 
     public static int minCut(String s) {
@@ -49,7 +51,7 @@ public class PalindromePartitioning2 {
             int minCut = Integer.MAX_VALUE;
             for (int j = 0; j < i; j++) {
                 if (minCutDp[j] < minCut && palindromeDp[j+1][i]) { // Note: Will be true atleast once
-                    minCut = minCutDp[j];
+                    minCut = 1 + minCutDp[j];
                 }
             }
 
@@ -60,14 +62,28 @@ public class PalindromePartitioning2 {
     }
 
     private static void initDp(boolean[][] palindromeDp, String s) {
+        // Note: Initializing in this order is important
+        // For palindromes with length more than 2, these need to be populated
+        // to act as caches for longer values
+
+        // Single characters are always palindromes
         for (int i = 0; i < s.length(); i++) {
-            for (int j = i; j < s.length(); j++) {
-                if (i == j) {
+            palindromeDp[i][i] = true;
+        }
+
+        // Two characters, check if first and last characters match
+        for (int i = 0; i < s.length() - 1; i++) {
+            palindromeDp[i][i+1] = (s.charAt(i) == s.charAt(i+1));
+        }
+
+        // Greater than two characters, use previously cached values to fill out dp table
+        // Note: Order of filling palindromeDp table is important
+        // First calculate 3 letter substrings, then 4 and so on.
+        for (int subStringLen = 3; subStringLen <= s.length(); subStringLen++) {
+            for (int i = 0; i < (s.length() - subStringLen + 1); i++) {
+                int j = i + subStringLen - 1;
+                if (s.charAt(i) == s.charAt(j) && palindromeDp[i+1][j-1]) {
                     palindromeDp[i][j] = true;
-                } else if ((j-i) == 1) {
-                    palindromeDp[i][j] = (s.charAt(i) == s.charAt(j));
-                } else {
-                    palindromeDp[i][j] = (s.charAt(i) == s.charAt(j)) && palindromeDp[i+1][j-1];
                 }
             }
         }
