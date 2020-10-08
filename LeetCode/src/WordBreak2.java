@@ -3,13 +3,13 @@ import java.util.List;
 
 public class WordBreak2 {
     public static void main(String[] args) {
-        String s = "catsanddog";
-        List<String> wordDict = new ArrayList<>();
-        wordDict.add("cat");
-        wordDict.add("cats");
-        wordDict.add("and");
-        wordDict.add("sand");
-        wordDict.add("dog");
+//        String s = "catsanddog";
+//        List<String> wordDict = new ArrayList<>();
+//        wordDict.add("cat");
+//        wordDict.add("cats");
+//        wordDict.add("and");
+//        wordDict.add("sand");
+//        wordDict.add("dog");
 
 //        String s = "pineapplepenapple";
 //        List<String> wordDict = new ArrayList<>();
@@ -22,6 +22,19 @@ public class WordBreak2 {
 //        String s = "pineapplepenapple";
 //        List<String> wordDict = new ArrayList<>();
 //        wordDict.add("fffff");
+
+        String s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        List<String> wordDict = new ArrayList<>();
+        wordDict.add("a");
+        wordDict.add("aa");
+        wordDict.add("aaa");
+        wordDict.add("aaaa");
+        wordDict.add("aaaaa");
+        wordDict.add("aaaaaa");
+        wordDict.add("aaaaaaa");
+        wordDict.add("aaaaaaaa");
+        wordDict.add("aaaaaaaaa");
+        wordDict.add("aaaaaaaaaa");
 
         List<String> output = wordBreak(s, wordDict);
         for (String result: output) {
