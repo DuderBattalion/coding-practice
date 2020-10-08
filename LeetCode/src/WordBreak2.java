@@ -3,10 +3,33 @@ import java.util.List;
 
 public class WordBreak2 {
     public static void main(String[] args) {
+//        String s = "catsanddog";
+//        List<String> wordDict = new ArrayList<>();
+//        wordDict.add("cat");
+//        wordDict.add("cats");
+//        wordDict.add("and");
+//        wordDict.add("sand");
+//        wordDict.add("dog");
 
+//        String s = "pineapplepenapple";
+//        List<String> wordDict = new ArrayList<>();
+//        wordDict.add("apple");
+//        wordDict.add("pen");
+//        wordDict.add("applepen");
+//        wordDict.add("pine");
+//        wordDict.add("pineapple");
+
+        String s = "pineapplepenapple";
+        List<String> wordDict = new ArrayList<>();
+        wordDict.add("fffff");
+
+        List<String> output = wordBreak(s, wordDict);
+        for (String result: output) {
+            System.out.println(result);
+        }
     }
 
-    public List<String> wordBreak(String s, List<String> wordDict) {
+    public static List<String> wordBreak(String s, List<String> wordDict) {
         List<String> output = new ArrayList<>();
         if (s.isEmpty()) {
             return output;
@@ -30,14 +53,23 @@ public class WordBreak2 {
         return output;
     }
 
-    private void recursiveFindWordPaths(boolean[][] substringDp, int i, String s,
+    private static void initSubstringDp(boolean[][] substringDp, String s, List<String> wordDict) {
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i; j < s.length(); j++) {
+                String substring = s.substring(i, j+1); // +1 because s.substring endIndex is excluded
+                substringDp[i][j] = wordDict.contains(substring);
+            }
+        }
+    }
+
+    private static void recursiveFindWordPaths(boolean[][] substringDp, int i, String s,
                                                 List<String> words, List<String> output) {
-        if (i >= s.length()) {
+        if (i > s.length()) {
             return;
         }
 
-        if (i == s.length() - 1) {
-            words.add(s.substring(i, j));
+        if (i == s.length()) {
+//            words.add(s.substring(i, j));
             StringBuffer wordsStringBuf = new StringBuffer();
             for (String word: words) {
                 wordsStringBuf.append(word);
@@ -50,7 +82,7 @@ public class WordBreak2 {
             return;
         }
 
-        for (int j = 0; j < substringDp.length; i++) {
+        for (int j = i; j < substringDp.length; j++) {
             if (!substringDp[i][j]) {
                 continue;
             }
@@ -74,7 +106,7 @@ public class WordBreak2 {
 //        words.remove(words.size() - 1);
     }
 
-    private int findNextValidIndex(boolean[][] substringDp, int row) {
+    private static int findNextValidIndex(boolean[][] substringDp, int row) {
         int nextIndex = -1;
         for (int j = 0; j < substringDp.length; j++) {
             if (substringDp[row][j]) {
@@ -85,6 +117,4 @@ public class WordBreak2 {
 
         return nextIndex;
     }
-
-
 }
