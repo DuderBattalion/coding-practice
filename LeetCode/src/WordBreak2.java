@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WordBreak2 {
     public static void main(String[] args) {
@@ -48,6 +50,13 @@ public class WordBreak2 {
             return output;
         }
 
+        Set<Character> validChars = getValidChars(wordDict);
+        for (Character token: s.toCharArray()) {
+            if (!validChars.contains(token)) {
+                return output;
+            }
+        }
+
         // i,j - substring is valid word from index i..j
         boolean[][] substringDp = new boolean[s.length()][s.length()];
         initSubstringDp(substringDp, s, wordDict);
@@ -55,6 +64,17 @@ public class WordBreak2 {
         recursiveFindWordPaths(substringDp, 0, s, new ArrayList<>(), output);
 
         return output;
+    }
+
+    private static Set<Character> getValidChars(List<String> wordDict) {
+        Set<Character> validChars = new HashSet<>();
+        for (String word: wordDict) {
+            for (Character token: word.toCharArray()) {
+                validChars.add(token);
+            }
+        }
+
+        return validChars;
     }
 
     private static void initSubstringDp(boolean[][] substringDp, String s, List<String> wordDict) {
@@ -73,7 +93,7 @@ public class WordBreak2 {
         }
 
         if (i == s.length()) {
-            StringBuffer wordsStringBuf = new StringBuffer();
+            StringBuilder wordsStringBuf = new StringBuilder();
             for (String word: words) {
                 wordsStringBuf.append(word);
                 wordsStringBuf.append(" ");
