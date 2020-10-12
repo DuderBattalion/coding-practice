@@ -27,13 +27,13 @@ public class FindMinimumInRotatedSortedArray2 {
         // mid - 1 > mid && mid < mid + 1
         //
         // 2) Min is right of mid: 3 4 5 6 7 0 1 2
-        // mid - 1 < mid < mid + 1 AND mid > N
+        // mid > N
         //
         // 3) Min is left of mid: 6 7 0 1 2 3 4 5
-        // mid - 1 < mid < mid + 1 AND mid < N
+        // mid < N
         // Also, seek left and right to skip duplicate values before recursing
 
-        int mid = (start - end) / 2;
+        int mid = start + (end - start) / 2;
         int leftElem = nums[mid - 1];
         int rightElem = nums[mid + 1];
         int lastElem = nums[nums.length - 1];
@@ -44,14 +44,14 @@ public class FindMinimumInRotatedSortedArray2 {
         }
 
         // Case 2: Pivot is right of mid - recurse right
-        if ((leftElem < mid && mid < rightElem) && (nums[mid] > lastElem)) {
-            start = skipRight(nums, start);
+        if (nums[mid] > lastElem) {
+            start = skipRight(nums, mid);
             return findMin(nums, start, end);
         }
 
         // Case 3: Pivot is left of mid - recurse left
-        if ((leftElem < nums[mid] && mid < lastElem) && nums[mid] < lastElem) {
-            end = skipLeft(nums, end);
+        if (nums[mid] < lastElem) {
+            end = skipLeft(nums, mid);
             return findMin(nums, start, end);
         }
 
@@ -65,15 +65,13 @@ public class FindMinimumInRotatedSortedArray2 {
         }
 
         int originalVal = nums[i];
-        i++;
-
-        // Note: We make sure we only go upto nums.length - 1,
-        // if we skip all the way to the end
-        while (i < (nums.length - 1) && nums[i] == originalVal) {
+        int index = i;
+        while (i < nums.length && nums[i] == originalVal) {
+            index = i;
             i++;
         }
 
-        return i;
+        return index;
     }
 
     private static int skipLeft(int[] nums, int i) {
@@ -82,13 +80,14 @@ public class FindMinimumInRotatedSortedArray2 {
         }
 
         int originalVal = nums[i];
-        i--;
+        int index = i;
 
         while (i > 0 && nums[i] == originalVal) {
+            index = i;
             i--;
         }
 
-        return i;
+        return index;
     }
 
 //    private static int getElem(int[] nums, int i) {
