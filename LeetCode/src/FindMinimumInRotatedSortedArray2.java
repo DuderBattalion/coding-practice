@@ -1,6 +1,9 @@
 public class FindMinimumInRotatedSortedArray2 {
     public static void main(String[] args) {
-        int[] nums = { 4, 5, 6, 7, 0, 1, 2 };
+//        int[] nums = { 4, 5, 6, 7, 0, 1, 2 };
+//        int[] nums = { 1, 3, 5 };
+        int[] nums = { 2, 2, 2, 0, 1 };
+
         System.out.println(findMin(nums));
     }
 
