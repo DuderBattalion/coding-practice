@@ -2,12 +2,27 @@ public class FindMinimumInRotatedSortedArray2 {
     public static void main(String[] args) {
 //        int[] nums = { 4, 5, 6, 7, 0, 1, 2 };
 //        int[] nums = { 1, 3, 5 };
-        int[] nums = { 2, 2, 2, 0, 1 };
+//        int[] nums = { 2, 2, 2, 0, 1 };
+
+//        int[] nums = { 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 7, 0, 0, 1, 1, 1, 2, 2 };
+//        int[] nums = { };
+//        int[] nums = { 2 };
+//        int[] nums = { 2, 1 };
+
+        int[] nums = { 1, 1, 1 };
 
         System.out.println(findMin(nums));
     }
 
     public static int findMin(int[] nums) {
+        if (nums.length == 0) {
+            return Integer.MAX_VALUE;
+        }
+
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
         return findMin(nums, 0, nums.length - 1);
     }
 
@@ -34,7 +49,7 @@ public class FindMinimumInRotatedSortedArray2 {
         //
         // 3) Min is left of mid: 6 7 0 1 2 3 4 5
         // mid < N
-        // Also, seek left and right to skip duplicate values before recursing
+        // Also, seek left or right to skip duplicate values before recursing
 
         int mid = start + (end - start) / 2;
         int leftElem = nums[mid - 1];
@@ -92,12 +107,4 @@ public class FindMinimumInRotatedSortedArray2 {
 
         return index;
     }
-
-//    private static int getElem(int[] nums, int i) {
-//        if (i < 0 || i >= nums.length) {
-//            return Integer.MAX_VALUE;
-//        } else {
-//            return nums[i];
-//        }
-//    }
 }
