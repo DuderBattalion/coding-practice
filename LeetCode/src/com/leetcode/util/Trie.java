@@ -43,36 +43,53 @@ public class Trie {
     }
 
     public boolean searchPrefix(String key) {
-        boolean isFound = true;
+//        boolean isFound = true;
+//
+//        TrieNode node = root;
+//        for (Character token: key.toCharArray()) {
+//            int charIndex = token - 'a';
+//            if (node.children[charIndex] == null) {
+//                isFound = false;
+//                break;
+//            }
+//
+//            node = node.children[charIndex];
+//        }
 
+        TrieNode node = findNode(key);
+        return (node != null);
+    }
+
+    private TrieNode findNode(String key) {
         TrieNode node = root;
         for (Character token: key.toCharArray()) {
             int charIndex = token - 'a';
             if (node.children[charIndex] == null) {
-                isFound = false;
+                node = null;
                 break;
             }
 
             node = node.children[charIndex];
         }
 
-        return isFound;
+        return node;
     }
 
     public boolean search(String key) {
-        boolean isFound = true;
+//        boolean isFound = true;
+//
+//        TrieNode node = root;
+//        for (Character token: key.toCharArray()) {
+//            int charIndex = token - 'a';
+//            if (node.children[charIndex] == null) {
+//                isFound = false;
+//                break;
+//            }
+//
+//            node = node.children[charIndex];
+//        }
 
-        TrieNode node = root;
-        for (Character token: key.toCharArray()) {
-            int charIndex = token - 'a';
-            if (node.children[charIndex] == null) {
-                isFound = false;
-                break;
-            }
-
-            node = node.children[charIndex];
-        }
-
-        return isFound && node != null && node.isEndOfWord;
+        TrieNode node = findNode(key);
+        return node != null && node.isEndOfWord;
     }
 }
