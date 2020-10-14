@@ -18,7 +18,7 @@ public class WordSearch2 {
 
         Set<String> output = findWords(board, words);
         for (String word: output) {
-            System.out.print(word + " ,");
+            System.out.print(word + ", ");
         }
     }
 
@@ -29,19 +29,23 @@ public class WordSearch2 {
         }
 
         Set<String> output = new HashSet<>();
-        recursiveFindWord(board, wordPrefixes, Arrays.asList(words), 0, 0, new StringBuilder(), output);
+        recursiveFindWord(board, wordPrefixes, Arrays.asList(words), 0, 0,
+                new StringBuilder(), output, new HashSet<>());
 
         return output;
     }
 
     private static void recursiveFindWord(char[][] board, Trie wordPrefixes, List<String> words, int i, int j,
-                                          StringBuilder word, Set<String> output) {
-        if (i < 0 || i > board.length || j < 0 || j > board[0].length) {
+                                          StringBuilder word, Set<String> output, Set<String> visitedNodes) {
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || isVisited(i, j, visitedNodes)) {
             return;
         }
 
+        markVisited(i, j, visitedNodes);
+
         word.append(board[i][j]);
-        if (!wordPrefixes.search(word.toString())) {
+        if (!wordPrefixes.searchPrefix(word.toString())) {
+            backtrack(word, visitedNodes, i, j);
             return;
         }
 
@@ -49,12 +53,32 @@ public class WordSearch2 {
             output.add(word.toString());
         }
 
-        recursiveFindWord(board, wordPrefixes, words, i - 1, j, word, output); // Go up
-        recursiveFindWord(board, wordPrefixes, words, i, j + 1, word, output); // Go right
-        recursiveFindWord(board, wordPrefixes, words, i + 1, j, word, output); // Go down
-        recursiveFindWord(board, wordPrefixes, words, i, j - 1, word, output); // Go left
+        recursiveFindWord(board, wordPrefixes, words, i - 1, j, word, output, visitedNodes); // Go up
+        recursiveFindWord(board, wordPrefixes, words, i, j + 1, word, output, visitedNodes); // Go right
+        recursiveFindWord(board, wordPrefixes, words, i + 1, j, word, output, visitedNodes); // Go down
+        recursiveFindWord(board, wordPrefixes, words, i, j - 1, word, output, visitedNodes); // Go left
 
         // Backtrack
-        word.deleteCharAt(word.length() - 1);
+//        word.deleteCharAt(word.length() - 1); // necessary, is StringBuilder copied or is reference passed by value??
+//        unmarkVisited(i, j, visitedNodes);
+
+        backtrack(word, visitedNodes, i, j);
+    }
+
+    private static boolean isVisited(int i, int j, Set<String> visitedNodes) {
+        return visitedNodes.contains(i + "," + j);
+    }
+
+    private static void markVisited(int i, int j, Set<String> visitedNodes) {
+        visitedNodes.add(i + "," + j);
+    }
+
+    private static void unmarkVisited(int i, int j, Set<String> visitedNodes) {
+        visitedNodes.remove(i + "," + j);
+    }
+
+    private static void backtrack(StringBuilder word, Set<String> visitedNodes, int i, int j) {
+        word.deleteCharAt(word.length() - 1); // necessary, is StringBuilder copied or is reference passed by value??
+        unmarkVisited(i, j, visitedNodes);
     }
 }

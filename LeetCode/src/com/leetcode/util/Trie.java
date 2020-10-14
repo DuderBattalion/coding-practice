@@ -42,7 +42,7 @@ public class Trie {
         node.isEndOfWord = true;
     }
 
-    public boolean search(String key) {
+    public boolean searchPrefix(String key) {
         boolean isFound = true;
 
         TrieNode node = root;
@@ -56,6 +56,6 @@ public class Trie {
             node = root.children[charIndex];
         }
 
-        return isFound && node != null && node.isEndOfWord;
+        return isFound && node != null;
     }
 }
