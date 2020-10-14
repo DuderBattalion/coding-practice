@@ -29,8 +29,12 @@ public class WordSearch2 {
         }
 
         Set<String> output = new HashSet<>();
-        recursiveFindWord(board, wordPrefixes, Arrays.asList(words), 0, 0,
-                new StringBuilder(), output, new HashSet<>());
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                recursiveFindWord(board, wordPrefixes, Arrays.asList(words), i, j,
+                        new StringBuilder(), output, new HashSet<>());
+            }
+        }
 
         return output;
     }
