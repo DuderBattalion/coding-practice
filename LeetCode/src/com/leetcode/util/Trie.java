@@ -32,11 +32,11 @@ public class Trie {
         TrieNode node = root;
         for (Character token: key.toCharArray()) {
             int charIndex = token - 'a';
-            if (root.children[charIndex] == null) {
-                root.children[charIndex] = new TrieNode();
+            if (node.children[charIndex] == null) {
+                node.children[charIndex] = new TrieNode();
             }
 
-            node = root.children[charIndex];
+            node = node.children[charIndex];
         }
 
         node.isEndOfWord = true;
@@ -48,14 +48,31 @@ public class Trie {
         TrieNode node = root;
         for (Character token: key.toCharArray()) {
             int charIndex = token - 'a';
-            if (root.children[charIndex] == null) {
+            if (node.children[charIndex] == null) {
                 isFound = false;
                 break;
             }
 
-            node = root.children[charIndex];
+            node = node.children[charIndex];
         }
 
-        return isFound && node != null;
+        return isFound;
+    }
+
+    public boolean search(String key) {
+        boolean isFound = true;
+
+        TrieNode node = root;
+        for (Character token: key.toCharArray()) {
+            int charIndex = token - 'a';
+            if (node.children[charIndex] == null) {
+                isFound = false;
+                break;
+            }
+
+            node = node.children[charIndex];
+        }
+
+        return isFound && node != null && node.isEndOfWord;
     }
 }

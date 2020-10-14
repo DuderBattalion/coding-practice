@@ -10,9 +10,9 @@ public class WordSearch2 {
 //                {'i','h','k','r'},
 //                {'i','f','l','v'}
 //        };
-
-//        char[][] board = { };
-
+//
+////        char[][] board = { };
+//
 //        String[] words = { "oath","pea","eat","rain" };
 
         char[][] board = {
