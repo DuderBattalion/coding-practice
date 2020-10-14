@@ -1,9 +1,6 @@
 import com.leetcode.util.Trie;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class WordSearch2 {
     public static void main(String[] args) {
@@ -14,15 +11,17 @@ public class WordSearch2 {
                 {'i','f','l','v'}
         };
 
+//        char[][] board = { };
+
         String[] words = { "oath","pea","eat","rain" };
 
-        Set<String> output = findWords(board, words);
+        List<String> output = findWords(board, words);
         for (String word: output) {
             System.out.print(word + ", ");
         }
     }
 
-    public static Set<String> findWords(char[][] board, String[] words) {
+    public static List<String> findWords(char[][] board, String[] words) {
         Trie wordPrefixes = new Trie();
         for (String word: words) {
             wordPrefixes.insert(word);
@@ -36,7 +35,7 @@ public class WordSearch2 {
             }
         }
 
-        return output;
+        return new ArrayList<>(output);
     }
 
     private static void recursiveFindWord(char[][] board, Trie wordPrefixes, List<String> words, int i, int j,
@@ -62,10 +61,6 @@ public class WordSearch2 {
         recursiveFindWord(board, wordPrefixes, words, i + 1, j, word, output, visitedNodes); // Go down
         recursiveFindWord(board, wordPrefixes, words, i, j - 1, word, output, visitedNodes); // Go left
 
-        // Backtrack
-//        word.deleteCharAt(word.length() - 1); // necessary, is StringBuilder copied or is reference passed by value??
-//        unmarkVisited(i, j, visitedNodes);
-
         backtrack(word, visitedNodes, i, j);
     }
 
@@ -82,7 +77,7 @@ public class WordSearch2 {
     }
 
     private static void backtrack(StringBuilder word, Set<String> visitedNodes, int i, int j) {
-        word.deleteCharAt(word.length() - 1); // necessary, is StringBuilder copied or is reference passed by value??
+        word.deleteCharAt(word.length() - 1);
         unmarkVisited(i, j, visitedNodes);
     }
 }
