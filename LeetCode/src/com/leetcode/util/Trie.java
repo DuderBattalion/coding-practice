@@ -8,7 +8,7 @@ public class Trie {
     final int ALPHABET_SIZE = 26;
     TrieNode root;
 
-    Trie() {
+    public Trie() {
         root = new TrieNode();
     }
 
@@ -22,40 +22,40 @@ public class Trie {
                 children[i] = null;
             }
         }
+    }
 
-        /**
-         * Insert each character of key into trie - starting from the root.
-         * If character exists as TrieNode, keep moving. If not, create a new TrieNode.
-         */
-        void insert(String key) {
-            TrieNode node = root;
-            for (Character token: key.toCharArray()) {
-                int charIndex = token - 'a';
-                if (root.children[charIndex] == null) {
-                    root.children[charIndex] = new TrieNode();
-                }
-
-                node = root.children[charIndex];
+    /**
+     * Insert each character of key into trie - starting from the root.
+     * If character exists as TrieNode, keep moving. If not, create a new TrieNode.
+     */
+    public void insert(String key) {
+        TrieNode node = root;
+        for (Character token: key.toCharArray()) {
+            int charIndex = token - 'a';
+            if (root.children[charIndex] == null) {
+                root.children[charIndex] = new TrieNode();
             }
 
-            node.isEndOfWord = true;
+            node = root.children[charIndex];
         }
 
-        boolean search(String key) {
-            boolean isFound = true;
+        node.isEndOfWord = true;
+    }
 
-            TrieNode node = root;
-            for (Character token: key.toCharArray()) {
-                int charIndex = token - 'a';
-                if (root.children[charIndex] == null) {
-                    isFound = false;
-                    break;
-                }
+    public boolean search(String key) {
+        boolean isFound = true;
 
-                node = root.children[charIndex];
+        TrieNode node = root;
+        for (Character token: key.toCharArray()) {
+            int charIndex = token - 'a';
+            if (root.children[charIndex] == null) {
+                isFound = false;
+                break;
             }
 
-            return isFound && node != null && node.isEndOfWord;
+            node = root.children[charIndex];
         }
+
+        return isFound && node != null && node.isEndOfWord;
     }
 }
