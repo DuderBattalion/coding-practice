@@ -31,6 +31,11 @@ public class WordSearch2 {
         }
     }
 
+    /**
+     * Algorithm:
+     * Recursion with backtracking. Use a Trie for storing word prefixes.
+     * At each cell, calculate all the words starting from that position.
+     */
     public static List<String> findWords(char[][] board, String[] words) {
         Trie wordPrefixes = new Trie();
         for (String word: words) {
@@ -40,7 +45,7 @@ public class WordSearch2 {
         Set<String> output = new HashSet<>();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                recursiveFindWord(board, wordPrefixes, Arrays.asList(words), i, j,
+                recursiveFindWord(board, wordPrefixes,i, j,
                         new StringBuilder(), output, new HashSet<>());
             }
         }
@@ -48,28 +53,29 @@ public class WordSearch2 {
         return new ArrayList<>(output);
     }
 
-    private static void recursiveFindWord(char[][] board, Trie wordPrefixes, List<String> words, int i, int j,
+    private static void recursiveFindWord(char[][] board, Trie wordPrefixes, int i, int j,
                                           StringBuilder word, Set<String> output, Set<String> visitedNodes) {
-        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || isVisited(i, j, visitedNodes)) {
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length
+                || isVisited(i, j, visitedNodes)) {
             return;
         }
 
         markVisited(i, j, visitedNodes);
-
         word.append(board[i][j]);
+
         if (!wordPrefixes.searchPrefix(word.toString())) {
             backtrack(word, visitedNodes, i, j);
             return;
         }
 
-        if (words.contains(word.toString())) {
+        if (wordPrefixes.search(word.toString())) {
             output.add(word.toString());
         }
 
-        recursiveFindWord(board, wordPrefixes, words, i - 1, j, word, output, visitedNodes); // Go up
-        recursiveFindWord(board, wordPrefixes, words, i, j + 1, word, output, visitedNodes); // Go right
-        recursiveFindWord(board, wordPrefixes, words, i + 1, j, word, output, visitedNodes); // Go down
-        recursiveFindWord(board, wordPrefixes, words, i, j - 1, word, output, visitedNodes); // Go left
+        recursiveFindWord(board, wordPrefixes, i - 1, j, word, output, visitedNodes); // Go up
+        recursiveFindWord(board, wordPrefixes, i, j + 1, word, output, visitedNodes); // Go right
+        recursiveFindWord(board, wordPrefixes, i + 1, j, word, output, visitedNodes); // Go down
+        recursiveFindWord(board, wordPrefixes, i, j - 1, word, output, visitedNodes); // Go left
 
         backtrack(word, visitedNodes, i, j);
     }
