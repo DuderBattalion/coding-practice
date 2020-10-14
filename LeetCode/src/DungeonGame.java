@@ -1,9 +1,23 @@
+import com.leetcode.util.DebugUtil;
+
 public class DungeonGame {
     public static void main(String[] args) {
+//        int[][] dungeon = {
+//                { -2, -3, 3},
+//                { -5, -10, 1},
+//                {10, 30, -5 }
+//        };
+
+//        int[][] dungeon = {
+//                { 0 }
+//        };
+
+//        int[][] dungeon = {
+//                { 0, 0 },
+//        };
+
         int[][] dungeon = {
-                { -2, -3, 3},
-                { -5, -10, 1},
-                {10, 30, -5 }
+                { -3, 5 }
         };
 
         System.out.println(calculateMinimumHP(dungeon));
@@ -21,16 +35,27 @@ public class DungeonGame {
      * @return
      */
     public static int calculateMinimumHP(int[][] dungeon) {
-        int[][] dp = new int[dungeon.length+1][dungeon.length+1];
+        int M = dungeon.length;
+        int N = dungeon[0].length;
 
-        for (int i = dungeon.length - 1; i >= 0; i--) {
-            for (int j = dungeon.length - 1; j >= 0; j--) {
-                int rightVal = 0, downVal = 0;
-                if (j + 1 < dungeon.length) {
+        int[][] dp = new int[M][N];
+        dp[M-1][N-1] = 1 - dungeon[M-1][N-1];
+        if (dp[M-1][N-1] <= 0) {
+            dp[M-1][N-1] = 1; // Negative means excess health, anchor at 1.
+        }
+
+        for (int i = M - 1; i >= 0; i--) {
+            for (int j = N - 1; j >= 0; j--) {
+                if (i == (M - 1) && j == (N - 1)) {
+                    continue; // Already set outside loop
+                }
+
+                int rightVal = Integer.MAX_VALUE, downVal = Integer.MAX_VALUE;
+                if (j + 1 < N) {
                     rightVal = dp[i][j+1];
                 }
 
-                if (i + 1 < dungeon.length) {
+                if (i + 1 < M) {
                     downVal = dp[i+1][j];
                 }
 
@@ -41,6 +66,7 @@ public class DungeonGame {
             }
         }
 
-        return dp[0][0] + 1;
+        DebugUtil.debugDpCache(dp, dungeon.length, dungeon[0].length);
+        return dp[0][0];
     }
 }
