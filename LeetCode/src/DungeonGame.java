@@ -26,13 +26,13 @@ public class DungeonGame {
     /**
      * Algorithm: Dynamic programming
      * Go in reverse direction - from princess to knight
-     * Health of knight at princess cell should be 1 or more.
+     * Health of knight at princess cell should be 1.
      *
      * Recurrence formula:
-     * dp[i][j] = Math.min(dp[i][j+1] - dungeon[i][j]. dp[i+1][j] - dungeon[i][j]);
-     * Note that if value falls below zero, make it 1. Negative value shows excess health which is not needed.
-     * @param dungeon
-     * @return
+     * dp[i][j] = Math.min(dp[i][j+1] - dungeon[i][j]. dp[i+1][j] - dungeon[i][j]); // either right or down
+     *
+     * dp[i][j] represents minimum health required when entering this block.
+     * Note that if value falls below zero, we make it 1. Negative value shows excess health which is not needed.
      */
     public static int calculateMinimumHP(int[][] dungeon) {
         int M = dungeon.length;
@@ -59,7 +59,7 @@ public class DungeonGame {
                     downVal = dp[i+1][j];
                 }
 
-                dp[i][j] = Math.min(rightVal - dungeon[i][j], downVal - dungeon[i][j]);
+                dp[i][j] = Math.min(rightVal, downVal) - dungeon[i][j];
                 if (dp[i][j] <= 0) {
                     dp[i][j] = 1; // Note: Negative values show excess health which is not required. Anchor at 1.
                 }
