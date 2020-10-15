@@ -24,22 +24,27 @@ public class BuyAndSellStocks4 {
      * 2) Sell, total profit is today's profit plus profit across previous transactions.
      */
     public static int maxProfit(int k, int[] prices) {
-        int[][] dp = new int[k+1][prices.length + 1];
+        int[] dp = new int[prices.length + 1];
+
 
         for (int t = 1; t <= k; t++) {
+            int[] newDp = new int[prices.length + 1];
+
             for (int i = 1; i <= prices.length; i++) {
                 int max = Integer.MIN_VALUE;
                 for (int j = 1; j <= i; j++) {
-                    int profit = prices[i-1] - prices[j-1] + dp[t-1][j-1]; //prices [i-1] because loop is 1 index'd
+                    int profit = prices[i-1] - prices[j-1] + dp[j-1]; //prices [i-1] because loop is 1 index'd
                     if (profit > max) {
                         max = profit;
                     }
                 }
 
-                dp[t][i] = Math.max(dp[t][i-1], max);
+                newDp[i] = Math.max(newDp[i-1], max);
             }
+
+            dp = newDp;
         }
 
-        return dp[k][prices.length];
+        return dp[prices.length];
     }
 }
