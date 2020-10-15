@@ -1,6 +1,11 @@
+import com.leetcode.util.DebugUtil;
+
 public class BuyAndSellStocks4 {
     public static void main(String[] args) {
-        int[] prices = { 2, 4, 1 };
+//        int[] prices = { 2, 4, 1 };
+//        int k = 2;
+
+        int[] prices = { 3, 2, 6, 5, 0, 3 };
         int k = 2;
 
         System.out.println(maxProfit(k, prices));
@@ -35,6 +40,6 @@ public class BuyAndSellStocks4 {
             }
         }
 
-        return dp[k-1][prices.length];
+        return dp[k][prices.length];
     }
 }
