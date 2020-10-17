@@ -18,10 +18,19 @@ import java.util.*;
  */
 public class SkylineProblem {
     public static void main(String[] args) {
+        int[][] buildings = { {2, 9, 10}, {3, 7, 15}, {5, 12, 12}, {15, 20, 10}, {19, 24, 8} };
 
+        List<List<Integer>> output = getSkyline(buildings);
+        for (List<Integer> result: output) {
+            for (int token: result) {
+                System.out.print(token + " ");
+            }
+
+            System.out.println();
+        }
     }
 
-    public List<List<Integer>> getSkyline(int[][] buildings) {
+    public static List<List<Integer>> getSkyline(int[][] buildings) {
         List<List<Integer>> output = new ArrayList<>();
         PriorityQueue<Integer> heightQueue = new PriorityQueue<>();
         heightQueue.add(0);
@@ -45,7 +54,7 @@ public class SkylineProblem {
         return output;
     }
 
-    private List<Building> buildSkyline(int[][] buildings) {
+    private static List<Building> buildSkyline(int[][] buildings) {
         List<Building> sortedBuildings = new ArrayList<>();
         for (int[] buildingData: buildings) {
             int start = buildingData[0];
@@ -64,7 +73,7 @@ public class SkylineProblem {
         return sortedBuildings;
     }
 
-    private List<Integer> createOutlinePoint(Building building) {
+    private static List<Integer> createOutlinePoint(Building building) {
         List<Integer> outlinePoint = new ArrayList<>();
         outlinePoint.add(building.index);
         outlinePoint.add(building.height);
