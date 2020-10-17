@@ -11,10 +11,10 @@ import java.util.*;
  * - If end point (x, y), changes max in priority queue on remove, then add to answer and update max in priority queue.
  *
  * Edge cases:
- * - Two buildings with same start point, process taller building first.
- * - Two buildings with same end point, process shorter building first.
- * - Two buildings, one starting and one ending, different height - process end first and start later.
- * - Two buildings, one starting and one ending, with same height - merge together.
+ * - Multiple buildings with same start point, process taller building first.
+ * - Multiple buildings with same end point, process shorter building first.
+ * - Multiple buildings, one starting and one ending, different height - process end first and start later.
+ * - Multiple buildings, one starting and one ending, with same height - merge together.
  */
 public class SkylineProblem {
     public static void main(String[] args) {
@@ -24,104 +24,48 @@ public class SkylineProblem {
     public List<List<Integer>> getSkyline(int[][] buildings) {
         List<List<Integer>> output = new ArrayList<>();
 
-        SkylineInfo skylineInfo = buildSkylineInfo(buildings);
+        List<Building> sortedBuildings = buildSkyline(buildings);
+        for (Building building: sortedBuildings) {
 
-        for (Integer index: skylineInfo.allIndices) {
-            if (skylineInfo.startIndices.containsKey(index) && skylineInfo.endIndices.containsKey(index)) {
-                // Multiple buildings - starting + ending.
-                PriorityQueue<Integer> starts = skylineInfo.startIndices.get(index);
-                PriorityQueue<Integer> ends = skylineInfo.endIndices.get(index);
-
-                // Process ends first, then starts
-                while (!ends.isEmpty()) {
-
-                }
-            } else if (skylineInfo.startIndices.containsKey(index)) {
-
-            } else {
-                // only end indices
-            }
         }
+
+
     }
 
-    /**
-     * allIndices - Stores a list of all relevant indices to process, sorted form left to right
-     * startIndices - Map of all start indices, max priority queue stores all buildings with same start index sorted
-     * in descending order of heights, so we process the taller buildings first.
-     * endIndices - Map of all end indices, min priority queue for all buildings with same end index, sorted in
-     * ascending order of heights, so we process the shortest build first.
-     */
-    private static class SkylineInfo {
-        private Map<Integer, PriorityQueue<Integer>> startIndices;
-        private Map<Integer, PriorityQueue<Integer>> endIndices;
-        private List<Integer> allIndices;
-
-        public SkylineInfo() {
-            this.startIndices = new HashMap<>();
-            this.endIndices = new HashMap<>();
-            this.allIndices = new ArrayList<>();
-        }
-
-        public void addSkylineIndex(int index, String type) {
-            allIndices.add(new SkylineIndex(index, type));
-        }
-
-        private void addIndex(int index, int height, Map<Integer, PriorityQueue<Integer>> indices) {
-            if (indices.containsKey(index)) {
-                PriorityQueue<Integer> startQueue = indices.get(index);
-                startQueue.add(height);
-            } else {
-                PriorityQueue<Integer> startQueue = new PriorityQueue<>(Collections.reverseOrder()); // max queue
-                startQueue.add(height);
-
-                indices.put(index, startQueue);
-            }
-        }
-
-        public void addStartIndex(int index, int height) {
-            addIndex(index, height, this.startIndices);
-        }
-
-        public void addEndIndex(int index, int height) {
-            addIndex(index, height, this.endIndices);
-        }
-
-        private void removeIndex(int index, int height, Map<Integer, PriorityQueue<Integer>> indices) {
-            if (!indices.containsKey(index)) {
-                return;
-            }
-
-            PriorityQueue<Integer> indexQueue = indices.get(index);
-            indexQueue.remove(height);
-
-            if (indexQueue.isEmpty()) {
-                indices.remove(index);
-            }
-        }
-
-        public void removeStartIndex(int index, int height) {
-            removeIndex(index, height, this.startIndices);
-        }
-
-        public void removeEndIndex(int index, int height) {
-            removeIndex(index, height, this.endIndices);
-        }
-    }
-
-    private static class SkylineIndex {
+    private static class Building implements Comparable<Building>  {
         public int index;
-        List<BuildingIndex> buildings;
-
-
-    }
-
-    private static class BuildingIndex {
-        public int index;
+        public int height;
         public String type;
 
-        public BuildingIndex(int index, String type) {
+        public Building(int index, int height, String type) {
             this.index = index;
+            this.height = height;
             this.type = type;
+        }
+
+        /**
+         * If indices are not the same, then sort by earlier index.
+         * If indices are same, then:
+         * - If both indices are starts, then sort taller before shorter
+         * - If both indices are ends, then sort shorter before taller
+         * - If one start and one end, then sort start before end
+         */
+        @Override
+        public int compareTo(Building building) {
+            if (this.index != building.index) {
+                return this.index - building.index;
+            }
+
+            // If same, then:
+            // If type is 'start', sort taller building before shorter building
+            if (this.type.equals("start") && building.type.equals("start")) {
+                return -(this.height - building.height); // Taller sorted first
+            } else if (this.type.equals("end") && building.type.equals("end")) {
+                return this.height - building.height; // Shorter sorted first
+            } else {
+                // One start, one end
+                return (this.type.equals("start")) ? -1 : 1;
+            }
         }
     }
 }
