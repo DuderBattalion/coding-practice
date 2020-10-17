@@ -23,13 +23,53 @@ public class SkylineProblem {
 
     public List<List<Integer>> getSkyline(int[][] buildings) {
         List<List<Integer>> output = new ArrayList<>();
+        PriorityQueue<Integer> heightQueue = new PriorityQueue<>();
+        heightQueue.add(0);
 
         List<Building> sortedBuildings = buildSkyline(buildings);
         for (Building building: sortedBuildings) {
+            int max = (heightQueue.peek() == null) ? 0 : heightQueue.peek();
 
+            if (max < building.height) {
+                List<Integer> outlinePoint = createOutlinePoint(building);
+                output.add(outlinePoint);
+            }
+
+            if (building.type.equals("start")) {
+                heightQueue.add(building.height);
+            } else { // building.type == end
+                heightQueue.remove(building.height);
+            }
         }
 
+        return output;
+    }
 
+    private List<Building> buildSkyline(int[][] buildings) {
+        List<Building> sortedBuildings = new ArrayList<>();
+        for (int[] buildingData: buildings) {
+            int start = buildingData[0];
+            int end = buildingData[1];
+            int height = buildingData[2];
+
+            Building buildingStart = new Building(start, height, "start");
+            Building buildingEnd = new Building(end, height, "end");
+
+            sortedBuildings.add(buildingStart);
+            sortedBuildings.add(buildingEnd);
+        }
+
+        Collections.sort(sortedBuildings);
+
+        return sortedBuildings;
+    }
+
+    private List<Integer> createOutlinePoint(Building building) {
+        List<Integer> outlinePoint = new ArrayList<>();
+        outlinePoint.add(building.index);
+        outlinePoint.add(building.height);
+
+        return outlinePoint;
     }
 
     private static class Building implements Comparable<Building>  {
