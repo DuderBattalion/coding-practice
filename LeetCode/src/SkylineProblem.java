@@ -32,22 +32,24 @@ public class SkylineProblem {
 
     public static List<List<Integer>> getSkyline(int[][] buildings) {
         List<List<Integer>> output = new ArrayList<>();
-        PriorityQueue<Integer> heightQueue = new PriorityQueue<>();
+        PriorityQueue<Integer> heightQueue = new PriorityQueue<>(Collections.reverseOrder());
         heightQueue.add(0);
 
         List<Building> sortedBuildings = buildSkyline(buildings);
+        int prevMaxHeight = 0;
         for (Building building: sortedBuildings) {
-            int max = (heightQueue.peek() == null) ? 0 : heightQueue.peek();
-
-            if (max < building.height) {
-                List<Integer> outlinePoint = createOutlinePoint(building);
-                output.add(outlinePoint);
-            }
-
             if (building.type.equals("start")) {
                 heightQueue.add(building.height);
             } else { // building.type == end
                 heightQueue.remove(building.height);
+            }
+
+            int maxHeight = heightQueue.isEmpty() ? 0 : heightQueue.peek();
+            if (prevMaxHeight != maxHeight) {
+                List<Integer> outlinePoint = createOutlinePoint(building);
+                output.add(outlinePoint);
+
+                prevMaxHeight = maxHeight;
             }
         }
 
