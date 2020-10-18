@@ -46,7 +46,7 @@ public class SkylineProblem {
 
             int maxHeight = heightQueue.isEmpty() ? 0 : heightQueue.peek();
             if (prevMaxHeight != maxHeight) {
-                List<Integer> outlinePoint = createOutlinePoint(building);
+                List<Integer> outlinePoint = createOutlinePoint(building, maxHeight);
                 output.add(outlinePoint);
 
                 prevMaxHeight = maxHeight;
@@ -75,10 +75,10 @@ public class SkylineProblem {
         return sortedBuildings;
     }
 
-    private static List<Integer> createOutlinePoint(Building building) {
+    private static List<Integer> createOutlinePoint(Building building, int height) {
         List<Integer> outlinePoint = new ArrayList<>();
         outlinePoint.add(building.index);
-        outlinePoint.add(building.height);
+        outlinePoint.add(height);
 
         return outlinePoint;
     }
