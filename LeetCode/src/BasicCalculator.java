@@ -1,9 +1,10 @@
 public class BasicCalculator {
     public static void main(String[] args) {
-//        System.out.println(calculate("1+(2+3)"));
-//        System.out.println(calculate("(1+(2+3))-4"));
+        System.out.println(calculate("1+(2+3)"));
+        System.out.println(calculate("(1+(2+3))-4"));
         System.out.println(calculate("(1+(4+5+2)-3)+(6+8)"));
         System.out.println(calculate("(1+3)+(6+8)"));
+        System.out.println(calculate(" 2-1 + 2 "));
     }
 
     /**
@@ -30,8 +31,7 @@ public class BasicCalculator {
      *
      */
     public static int calculate(String s) {
-        int result = 0;
-        int index = 0;
+        s = s.replaceAll(" ", "");
 
         int subResult;
         int[] globalIndex = new int[1];
@@ -42,6 +42,7 @@ public class BasicCalculator {
             }
 
             s = subResult + s.substring(globalIndex[0]);
+            globalIndex[0] = 0;
         } while (true);
 
         return subResult;
@@ -104,7 +105,7 @@ public class BasicCalculator {
 
         StringBuilder num = new StringBuilder();
 
-        while (isNumChar(s.charAt(i))) {
+        while (i < s.length() && isNumChar(s.charAt(i))) {
             num.append(s.charAt(i));
             i++;
         }
