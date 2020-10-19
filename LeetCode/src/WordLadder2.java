@@ -83,23 +83,87 @@ public class WordLadder2 {
             }
 
             if (state.equals(endWord)) {
-                processedStates.add(endWord);
+                processedStates.add(state);
                 frontier.remove();
 
-//                continue; // No need to transform further if endword reached
                 break;
             }
 
-            // Generate next state transitions
-            generateNextStates(state, wordList, distinctChars, frontier,
-                    nodes, processedStates, node);
+            addNeighbors(node, wordList, distinctChars, nodes);
+            for (Node neighbor: node.neighbors) {
+                if (processedStates.contains(neighbor.val)) {
+                    continue;
+                }
+
+                node.addNeighbor(neighbor);
+            }
 
             processedStates.add(state);
-            frontier.remove();
         }
 
         return root;
     }
+
+    private static void addNeighbors(Node node, Set<String> wordList, Set<Character> distinctChars,
+                                           Map<String, Node> nodes) {
+        String beginWord = node.val;
+        for (int i = 0; i < beginWord.length(); i++) {
+            char token = node.val.charAt(i);
+            for (Character character: distinctChars) {
+                String newWord = replaceWord(beginWord, i, token);
+                if (newWord.equals(beginWord) || !wordList.contains(newWord)) {
+                    continue;
+                }
+
+                Node neighbor;
+                if (nodes.containsKey(newWord)) {
+                    neighbor = nodes.get(newWord);
+                } else {
+                    neighbor = new Node(newWord);
+                    nodes.put(newWord, neighbor);
+                }
+
+                node.addNeighbor(neighbor);
+            }
+        }
+    }
+
+//    private static Node createWordGraph(String beginWord, String endWord, Set<String> wordList) {
+//        Set<Character> distinctChars = getDistinctChars(wordList);
+//
+//        Queue<Node> frontier = new LinkedList<>();
+//        Node root = new Node(beginWord);
+//        frontier.add(root);
+//
+//        Set<String> processedStates = new HashSet<>();
+//        Map<String, Node> nodes = new HashMap<>();
+//        while (!frontier.isEmpty()) {
+//            Node node = frontier.peek();
+//            String state = node.val;
+//
+//            if (processedStates.contains(state)) {
+//                frontier.remove();
+//                continue;
+//            }
+//
+//            if (state.equals(endWord)) {
+//                processedStates.add(endWord);
+//                frontier.remove();
+//
+////                continue; // No need to transform further if endword reached
+//                break;
+//            }
+//
+//            // Generate next state transitions
+//            generateNextStates(state, wordList, distinctChars, frontier,
+//                    nodes, processedStates, node);
+//
+//            processedStates.add(state);
+//            frontier.remove();
+//        }
+//
+//        return root;
+//    }
 
     private static Set<Character> getDistinctChars(Set<String> wordList) {
         Set<Character> distinctChars = new HashSet<>();
