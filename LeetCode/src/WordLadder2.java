@@ -73,6 +73,7 @@ public class WordLadder2 {
 
         Set<String> processedStates = new HashSet<>();
         Map<String, Node> nodes = new HashMap<>();
+
         while (!frontier.isEmpty()) {
             Node node = frontier.peek();
             String state = node.val;
@@ -89,29 +90,24 @@ public class WordLadder2 {
                 break;
             }
 
-            addNeighbors(node, wordList, distinctChars, nodes);
-            for (Node neighbor: node.neighbors) {
-                if (processedStates.contains(neighbor.val)) {
-                    continue;
-                }
-
-                node.addNeighbor(neighbor);
-            }
-
+            addNeighbors(node, wordList, distinctChars, nodes, processedStates);
             processedStates.add(state);
+            frontier.remove();
+
+            frontier.addAll(node.neighbors);
         }
 
         return root;
     }
 
     private static void addNeighbors(Node node, Set<String> wordList, Set<Character> distinctChars,
-                                           Map<String, Node> nodes) {
+                                           Map<String, Node> nodes, Set<String> processedStates) {
         String beginWord = node.val;
         for (int i = 0; i < beginWord.length(); i++) {
             char token = node.val.charAt(i);
             for (Character character: distinctChars) {
-                String newWord = replaceWord(beginWord, i, token);
-                if (newWord.equals(beginWord) || !wordList.contains(newWord)) {
+                String newWord = replaceWord(beginWord, i, character);
+                if (newWord.equals(beginWord) || !wordList.contains(newWord) || processedStates.contains(newWord)) {
                     continue;
                 }
 
