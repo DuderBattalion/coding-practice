@@ -1,10 +1,12 @@
 public class BasicCalculator {
     public static void main(String[] args) {
-        System.out.println(calculate("1+(2+3)"));
-        System.out.println(calculate("(1+(2+3))-4"));
-        System.out.println(calculate("(1+(4+5+2)-3)+(6+8)"));
-        System.out.println(calculate("(1+3)+(6+8)"));
-        System.out.println(calculate(" 2-1 + 2 "));
+//        System.out.println(calculate("1+(2+3)"));
+//        System.out.println(calculate("(1+(2+3))-4"));
+//        System.out.println(calculate("(1+(4+5+2)-3)+(6+8)"));
+//        System.out.println(calculate("(1+3)+(6+8)"));
+//        System.out.println(calculate(" 2-1 + 2 "));
+
+        System.out.println(calculate("4-5+2"));
     }
 
     /**
@@ -104,6 +106,12 @@ public class BasicCalculator {
         }
 
         StringBuilder num = new StringBuilder();
+
+        // Handle negative value
+        if (s.charAt(i) == '-') {
+            num.append("-");
+            i++;
+        }
 
         while (i < s.length() && isNumChar(s.charAt(i))) {
             num.append(s.charAt(i));
