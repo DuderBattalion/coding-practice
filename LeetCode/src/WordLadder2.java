@@ -61,7 +61,9 @@ public class WordLadder2 {
         int solutionDepth = getSolutionDepth(root, endWord);
         System.out.println("solution depth = " + solutionDepth);
 
-        return findPaths(root, endWord, solutionDepth);
+        findPaths(root, endWord, solutionDepth, 0, output, new ArrayList<>());
+
+        return output;
     }
 
     private static Node createWordGraph(String beginWord, String endWord, Set<String> wordList) {
@@ -122,6 +124,27 @@ public class WordLadder2 {
                 node.addNeighbor(neighbor);
             }
         }
+    }
+
+    private static void findPaths(Node node, String endWord, int maxDepth, int depth,
+                                                List<List<String>> output, List<String> chain) {
+        if (node == null || depth >= maxDepth) {
+            return;
+        }
+
+        chain.add(node.val);
+        if (node.val.equals(endWord)) {
+            output.add(new ArrayList<>(chain));
+            chain.remove(chain.size() - 1); // Backtrack
+
+            return;
+        }
+
+        for (Node neighbor: node.neighbors) {
+            findPaths(neighbor, endWord, maxDepth, depth + 1, output, chain);
+        }
+
+        chain.remove(chain.size() - 1);
     }
 
 //    private static Node createWordGraph(String beginWord, String endWord, Set<String> wordList) {
@@ -188,11 +211,6 @@ public class WordLadder2 {
                         nodes.put(newWord, neighborNode);
                     }
 
-//                    Node newNode = new Node(newWord);
-//                    node.addNeighbor(newNode);
-
-//                    frontier.add(newNode);
-
                     node.addNeighbor(neighborNode);
                     frontier.add(neighborNode);
                 }
@@ -254,32 +272,32 @@ public class WordLadder2 {
         return depth;
     }
 
-    private static List<List<String>> findPaths(Node root, String endWord, int maxDepth) {
-        List<List<String>> output = new ArrayList<>();
-        findPathsRecursive(root, endWord, maxDepth, 1, output, new ArrayList<>());
-
-        return output;
-    }
-
-    private static void findPathsRecursive(Node root, String endWord, int maxDepth, int depth,
-                                           List<List<String>> output, List<String> chain) {
-        if (root == null || depth > maxDepth) {
-            return;
-        }
-
-        if (root.val.equals(endWord)) {
-            output.add(new ArrayList<>(chain));
-            return;
-        }
-
-        chain.add(root.val);
-        for (Node neighbor: root.neighbors) {
-            findPathsRecursive(neighbor, endWord, maxDepth, depth + 1, output, chain);
-        }
-
-        // Backtrack
-        chain.remove(chain.size() - 1);
-    }
+//    private static List<List<String>> findPaths(Node root, String endWord, int maxDepth) {
+//        List<List<String>> output = new ArrayList<>();
+//        findPathsRecursive(root, endWord, maxDepth, 1, output, new ArrayList<>());
+//
+//        return output;
+//    }
+//
+//    private static void findPathsRecursive(Node root, String endWord, int maxDepth, int depth,
+//                                           List<List<String>> output, List<String> chain) {
+//        if (root == null || depth > maxDepth) {
+//            return;
+//        }
+//
+//        if (root.val.equals(endWord)) {
+//            output.add(new ArrayList<>(chain));
+//            return;
+//        }
+//
+//        chain.add(root.val);
+//        for (Node neighbor: root.neighbors) {
+//            findPathsRecursive(neighbor, endWord, maxDepth, depth + 1, output, chain);
+//        }
+//
+//        // Backtrack
+//        chain.remove(chain.size() - 1);
+//    }
 
 //    private static List<List<String>> findPaths(Node root, String endWord) {
 //        List<List<String>> output = new ArrayList<>();
