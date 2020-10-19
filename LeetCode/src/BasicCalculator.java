@@ -1,12 +1,13 @@
 public class BasicCalculator {
     public static void main(String[] args) {
-//        System.out.println(calculate("1+(2+3)"));
-//        System.out.println(calculate("(1+(2+3))-4"));
-//        System.out.println(calculate("(1+(4+5+2)-3)+(6+8)"));
-//        System.out.println(calculate("(1+3)+(6+8)"));
-//        System.out.println(calculate(" 2-1 + 2 "));
+        System.out.println(calculate("1+(2+3)"));
+        System.out.println(calculate("(1+(2+3))-4"));
+        System.out.println(calculate("(1+(4+5+2)-3)+(6+8)"));
+        System.out.println(calculate("(1+3)+(6+8)"));
+        System.out.println(calculate(" 2-1 + 2 "));
 
         System.out.println(calculate("4-5+2"));
+        System.out.println(calculate("(7)-(0)+(4)"));
     }
 
     /**
@@ -65,11 +66,23 @@ public class BasicCalculator {
             i += leftNumStr.length();
         }
 
-        char operand;
-        do {
-            operand = s.charAt(i);
-            i++;
-        } while (operand == ')' && i < s.length());
+        if (i >= s.length()) {
+            globalIndex[0] = i;
+            return Integer.parseInt(leftNumStr);
+        }
+
+        char operand = s.charAt(i);
+        i++;
+        if (operand == ')') {
+            globalIndex[0] = i;
+            return Integer.parseInt(leftNumStr);
+        }
+
+//        char operand;
+//        do {
+//            operand = s.charAt(i);
+//            i++;
+//        } while (operand == ')' && i < s.length());
 
         if (i >= s.length()) {
             globalIndex[0] = i;
