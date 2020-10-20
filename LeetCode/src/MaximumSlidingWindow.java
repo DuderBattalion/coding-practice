@@ -16,15 +16,15 @@ public class MaximumSlidingWindow {
         }
 
         MonotonicDecreasingQueue<Integer> monotonicQueue = new MonotonicDecreasingQueue<>();
-        for (int i = 0; i < k - 1; i++) {
+        for (int i = 0; i < k-1; i++) {
             monotonicQueue.push(nums[i]);
         }
 
-        int[] maxValues = new int[nums.length - (k - 1)];
-        for (int i = k - 1; i < nums.length; i++) {
+        int[] maxValues = new int[nums.length - (k-1)];
+        for (int i = k-1; i < nums.length; i++) {
             monotonicQueue.push(nums[i]);
-            maxValues[i - (k - 1)] = monotonicQueue.peek();
-            monotonicQueue.pop(nums[i]);
+            maxValues[i-(k-1)] = monotonicQueue.peek();
+            monotonicQueue.pop(nums[i-(k-1)]);
         }
 
         return maxValues;
