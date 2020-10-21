@@ -4,31 +4,20 @@ public class IntegerToEnglishWords {
     }
 
     public static String numberToWords(int num) {
-        int power = 9;
-        double divider;
-        do {
-           divider = Math.pow(10, power);
-           power-= 3;
-        } while (divider < num);
-
-        StringBuilder word = new StringBuilder();
-        while (power >= 0) {
-            divider = Math.pow(10, power);
-
-            int quotient = (int) (num/divider);
-            int remainder = (int) (num % divider);
-
-            String snippet = createSnippet(quotient, power);
-            word.append(snippet);
-            word.append(" ");
-
-            power = getNextPower(power);
+        if (num == 0) {
+            return "Zero";
         }
 
-        return word.toString().trim();
+        while (num > 0) {
+            int quotient = num/1000;
+            int remainder = num % 1000;
+            if (remainder != 0) {
+
+            }
+        }
     }
 
     private static String createSnippet(int num, int power) {
-        return null;
+        if ()
     }
 }
