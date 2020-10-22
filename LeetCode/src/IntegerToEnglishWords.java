@@ -4,12 +4,15 @@ public class IntegerToEnglishWords {
     private final static String[] THOUSANDS = { "", "Thousand", "Million", "Billion" };
 
     public static void main(String[] args) {
+        System.out.println(numberToWords(1));
+        System.out.println(numberToWords(12));
         System.out.println(numberToWords(123));
         System.out.println(numberToWords(12345));
         System.out.println(numberToWords(1234567));
         System.out.println(numberToWords(1234567891));
 
-
+        System.out.println(numberToWords(Integer.MAX_VALUE));
+        System.out.println(numberToWords(0));
     }
 
     public static String numberToWords(int num) {
@@ -17,36 +20,36 @@ public class IntegerToEnglishWords {
             return "Zero";
         }
 
-        String word = "";
+        StringBuilder word = new StringBuilder();
         int i = 0;
         while (num > 0) {
             int remainder = num % 1000;
             if (remainder != 0) {
                 String snippet = createSnippet(remainder);
-                word = snippet + THOUSANDS[i] + " " + word;
+                word.insert(0, snippet + THOUSANDS[i] + " ");
             }
 
             num = num/1000;
             i++;
         }
 
-        return word.toString().trim();
+        return word.toString().toString().trim();
     }
 
     private static String createSnippet(int num) {
         StringBuilder snippet = new StringBuilder();
         if (num < 20) {
-            snippet.append(ONES[num] + " ");
+            snippet.append(ONES[num]).append(" ");
         } else if (num < 100) {
             int secondNum = num % 10;
             int firstNum = num/10;
 
-            snippet.append(TENS[firstNum] + " " + ONES[secondNum] + " ");
+            snippet.append(TENS[firstNum]).append(" ").append(ONES[secondNum]).append(" ");
         } else if (num < 1000) {
             int secondNums = num % 100;
             int firstNum = num/100;
 
-            snippet.append(ONES[firstNum] + " Hundred " + createSnippet(secondNums));
+            snippet.append(ONES[firstNum]).append(" Hundred ").append(createSnippet(secondNums));
         }
 
         return snippet.toString();
