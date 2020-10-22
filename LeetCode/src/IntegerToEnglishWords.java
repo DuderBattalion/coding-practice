@@ -1,5 +1,14 @@
 public class IntegerToEnglishWords {
+    private final static String[] ONES = { "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
+    private final static String[] TENS = { "", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety" };
+    private final static String[] THOUSANDS = { "", "Thousand", "Million", "Billion" };
+
     public static void main(String[] args) {
+        System.out.println(numberToWords(123));
+        System.out.println(numberToWords(12345));
+        System.out.println(numberToWords(1234567));
+        System.out.println(numberToWords(1234567891));
+
 
     }
 
@@ -8,16 +17,38 @@ public class IntegerToEnglishWords {
             return "Zero";
         }
 
+        String word = "";
+        int i = 0;
         while (num > 0) {
-            int quotient = num/1000;
             int remainder = num % 1000;
             if (remainder != 0) {
-
+                String snippet = createSnippet(remainder);
+                word = snippet + THOUSANDS[i] + " " + word;
             }
+
+            num = num/1000;
+            i++;
         }
+
+        return word.toString().trim();
     }
 
-    private static String createSnippet(int num, int power) {
-        if ()
+    private static String createSnippet(int num) {
+        StringBuilder snippet = new StringBuilder();
+        if (num < 20) {
+            snippet.append(ONES[num] + " ");
+        } else if (num < 100) {
+            int secondNum = num % 10;
+            int firstNum = num/10;
+
+            snippet.append(TENS[firstNum] + " " + ONES[secondNum] + " ");
+        } else if (num < 1000) {
+            int secondNums = num % 100;
+            int firstNum = num/100;
+
+            snippet.append(ONES[firstNum] + " Hundred " + createSnippet(secondNums));
+        }
+
+        return snippet.toString();
     }
 }
