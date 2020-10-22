@@ -4,17 +4,28 @@ public class IntegerToEnglishWords {
     private final static String[] THOUSANDS = { "", "Thousand", "Million", "Billion" };
 
     public static void main(String[] args) {
-        System.out.println(numberToWords(1));
-        System.out.println(numberToWords(12));
-        System.out.println(numberToWords(123));
-        System.out.println(numberToWords(12345));
-        System.out.println(numberToWords(1234567));
-        System.out.println(numberToWords(1234567891));
+//        System.out.println(numberToWords(1));
+//        System.out.println(numberToWords(12));
+//        System.out.println(numberToWords(123));
+//        System.out.println(numberToWords(12345));
+//        System.out.println(numberToWords(1234567));
+//        System.out.println(numberToWords(1234567891));
+//
+//        System.out.println(numberToWords(Integer.MAX_VALUE));
+//        System.out.println(numberToWords(0));
 
-        System.out.println(numberToWords(Integer.MAX_VALUE));
-        System.out.println(numberToWords(0));
+        System.out.println(numberToWords(50868));
     }
 
+    /**
+     * Algorithm:
+     * Scan from right to left. Keep dividing by 1000 to get nums in chunks of 3.
+     * Pass to a helper function to create a snippet.
+     *
+     * Store ones, tens, hundreds and thousands strings in pre-defined arrays, to hep create snippets.
+     * @param num
+     * @return
+     */
     public static String numberToWords(int num) {
         if (num == 0) {
             return "Zero";
@@ -52,6 +63,6 @@ public class IntegerToEnglishWords {
             snippet.append(ONES[firstNum]).append(" Hundred ").append(createSnippet(secondNums));
         }
 
-        return snippet.toString();
+        return snippet.toString().trim() + " "; // Guarantee only one space at end (ex: 50868)
     }
 }
