@@ -44,7 +44,7 @@ public class ExpressionAddOperator {
         recursiveAddOperators(num, target, expression + "-" + digit,
                 value - digitVal, i+1, nextDigit, output);
 
-        recursiveAddOperators(num, target, expression + "+" + digit,
+        recursiveAddOperators(num, target, expression + "*" + digit,
                 value * digitVal, i+1, nextDigit, output);
 
         // No operator added - include next character in operand
