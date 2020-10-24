@@ -77,7 +77,7 @@ public class ExpressionAddOperator {
         // Checking expression length to get around num = "00", while
         // expression is "0" - which apparently is not accepted as
         // an answer - *commence eye roll* -
-        if (value == target && expression.length() >= num.length()) {
+        if (value == target && expression.length() >= num.length() && i == num.length()) {
             output.add(expression);
         }
 
