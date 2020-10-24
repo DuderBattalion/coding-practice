@@ -12,8 +12,11 @@ public class ExpressionAddOperator {
 //        String num = "105";
 //        int target = 5;
 
-        String num = "00";
-        int target = 0;
+//        String num = "00";
+//        int target = 0;
+
+        String num = "3456237490";
+        int target = 9191;
 
         List<String> output = addOperators(num, target);
         for (String row: output) {
@@ -41,7 +44,7 @@ public class ExpressionAddOperator {
     }
 
     private static void recursiveAddOperators(String num, int target, String expression,
-                                              double value, int i, int prevOperand,
+                                              double value, int i, double prevOperand,
                                               List<String> output) {
         // Checking expression length to get around num = "00", while
         // expression is "0" - which apparently is not accepted as
@@ -55,7 +58,7 @@ public class ExpressionAddOperator {
         }
 
         String operand = String.valueOf(num.charAt(i));
-        int operandValue = Integer.parseInt(operand);
+        double operandValue = Double.parseDouble(operand);
 
         String newExpression = expression + "+";
         recursiveAddOperators(num, target, newExpression + operand,
@@ -73,7 +76,7 @@ public class ExpressionAddOperator {
         // No operator added - include next character in operand
         String mergeOperand = String.valueOf(prevOperand) + operand;
         newExpression = expression + operand;
-        int mergeOperandValue = Integer.parseInt(mergeOperand);
+        double mergeOperandValue = Double.parseDouble(mergeOperand);
         value = (value - prevOperand) + mergeOperandValue;
 
         // To get around results like 1*05 - where 05 is not eligible
@@ -81,5 +84,4 @@ public class ExpressionAddOperator {
             recursiveAddOperators(num, target, newExpression, value, i+1, mergeOperandValue, output);
         }
     }
-
 }
