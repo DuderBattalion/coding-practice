@@ -12,11 +12,11 @@ public class ExpressionAddOperator {
 //        String num = "105";
 //        int target = 5;
 
-//        String num = "00";
-//        int target = 0;
+        String num = "00";
+        int target = 0;
 
-        String num = "3456237490";
-        int target = 9191;
+//        String num = "3456237490";
+//        int target = 9191;
 
         List<String> output = addOperators(num, target);
         for (String row: output) {
@@ -38,13 +38,13 @@ public class ExpressionAddOperator {
         int value = Integer.parseInt(expression);
 
         recursiveAddOperators(num, target, expression, value, 1,
-                value, output);
+                expression, output);
 
         return output;
     }
 
     private static void recursiveAddOperators(String num, int target, String expression,
-                                              double value, int i, double prevOperand,
+                                              double value, int i, String prevOperand,
                                               List<String> output) {
         // Checking expression length to get around num = "00", while
         // expression is "0" - which apparently is not accepted as
@@ -59,29 +59,30 @@ public class ExpressionAddOperator {
 
         String operand = String.valueOf(num.charAt(i));
         double operandValue = Double.parseDouble(operand);
+        double prevOperandValue = Double.parseDouble(prevOperand);
 
         String newExpression = expression + "+";
         recursiveAddOperators(num, target, newExpression + operand,
-                value + operandValue, i+1, operandValue, output);
+                value + operandValue, i+1, operand, output);
 
         newExpression = expression + "-";
         recursiveAddOperators(num, target, newExpression + operand,
-                value - operandValue, i+1, -operandValue, output);
+                value - operandValue, i+1, "-" + operand, output);
 
         newExpression = expression + "*";
-        double newValue = value - prevOperand + (prevOperand * operandValue);
+        double newValue = value - prevOperandValue + (prevOperandValue * operandValue);
         recursiveAddOperators(num, target, newExpression + operand,
-                newValue, i+1, operandValue, output);
+                newValue, i+1, operand, output);
 
         // No operator added - include next character in operand
-        String mergeOperand = String.valueOf(prevOperand) + operand;
+        String mergeOperand = prevOperand + operand;
         newExpression = expression + operand;
         double mergeOperandValue = Double.parseDouble(mergeOperand);
-        value = (value - prevOperand) + mergeOperandValue;
+        value = (value - prevOperandValue) + mergeOperandValue;
 
         // To get around results like 1*05 - where 05 is not eligible
-        if (String.valueOf(mergeOperandValue).length() == mergeOperand.length()) {
-            recursiveAddOperators(num, target, newExpression, value, i+1, mergeOperandValue, output);
+        if (mergeOperand.charAt(0) != '0') {
+            recursiveAddOperators(num, target, newExpression, value, i+1, mergeOperand, output);
         }
     }
 }
