@@ -3,8 +3,14 @@ import java.util.List;
 
 public class ExpressionAddOperator {
     public static void main(String[] args) {
-        String num = "123";
-        int target = 6;
+//        String num = "123";
+//        int target = 6;
+
+//        String num = "232";
+//        int target = 8;
+
+        String num = "105";
+        int target = 5;
 
         List<String> output = addOperators(num, target);
         for (String row: output) {
@@ -14,9 +20,13 @@ public class ExpressionAddOperator {
 
     public static List<String> addOperators(String num, int target) {
         List<String> output = new ArrayList<>();
+        if (num.length() == 1) {
+            if (Integer.parseInt(num) == target) {
+                output.add(num);
+            }
 
-//        recursiveAddOperators(num, target, "", 0, 0,
-//                String.valueOf(num.charAt(0)), 0, output);
+            return output;
+        }
 
         String expression = num.substring(0, 1);
         int value = Integer.parseInt(expression);
@@ -56,7 +66,9 @@ public class ExpressionAddOperator {
 
         // No operator added - include next character in operand
         String mergeOperands = String.valueOf(prevOperand) + operand;
-        recursiveAddOperators(num, target, expression, value, i+1, Integer.parseInt(mergeOperands), output);
+        newExpression = expression + operand;
+        value = value * 10 + operandValue;
+        recursiveAddOperators(num, target, newExpression, value, i+1, Integer.parseInt(mergeOperands), output);
     }
 
 }
