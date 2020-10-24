@@ -16,13 +16,14 @@ public class ExpressionAddOperator {
         List<String> output = new ArrayList<>();
 
         recursiveAddOperators(num, target, "", 0, 0,
-                String.valueOf(num.charAt(0)), output);
+                String.valueOf(num.charAt(0)), 0, output);
 
         return output;
     }
 
-    private static void recursiveAddOperators(String num, int target, String expression, double value,
-                                              int i, String digit, List<String> output) {
+    private static void recursiveAddOperators(String num, int target, String expression,
+                                              double value, int i, String operand, int prevOperand,
+                                              List<String> output) {
         if (value == target) {
             output.add(expression);
         }
@@ -31,25 +32,38 @@ public class ExpressionAddOperator {
             return;
         }
 
-//        char nextDigit = num.charAt(i);
-        int digitVal = Integer.parseInt(digit);
-        String nextDigit = "";
+        int operandValue = Integer.parseInt(operand);
+        String nextOperand = "";
         if (i + 1 < num.length()) {
-            nextDigit = String.valueOf(num.charAt(i+1));
+            nextOperand = String.valueOf(num.charAt(i+1));
         }
 
-        recursiveAddOperators(num, target, expression + "+" + digit,
-                value + digitVal, i+1, nextDigit, output);
+        String newExpression = "";
+        if (!expression.isEmpty()) {
+            newExpression = expression + "+";
+        }
 
-        recursiveAddOperators(num, target, expression + "-" + digit,
-                value - digitVal, i+1, nextDigit, output);
+        recursiveAddOperators(num, target, newExpression + operand,
+                value + operandValue, i+1, nextOperand, operandValue, output);
 
-        recursiveAddOperators(num, target, expression + "*" + digit,
-                value * digitVal, i+1, nextDigit, output);
+        if (!expression.isEmpty()) {
+            newExpression = expression + "-";
+        }
+
+        recursiveAddOperators(num, target, newExpression + operand,
+                value - operandValue, i+1, nextOperand, -operandValue, output);
+
+        if (!expression.isEmpty()) {
+            newExpression = expression + "*";
+        }
+
+        double newValue = value - prevOperand + (prevOperand * operandValue);
+        recursiveAddOperators(num, target, newExpression + operand,
+                newValue, i+1, nextOperand, operandValue, output);
 
         // No operator added - include next character in operand
-        digit += nextDigit;
-        recursiveAddOperators(num, target, expression, value, i+1, digit, output);
+        operand += nextOperand;
+        recursiveAddOperators(num, target, expression, value, i+1, operand, prevOperand, output);
     }
 
 }
