@@ -12,6 +12,9 @@ public class ExpressionAddOperator {
         String num = "105";
         int target = 5;
 
+//        String num = "00";
+//        int target = 0;
+
         List<String> output = addOperators(num, target);
         for (String row: output) {
             System.out.println(row);
@@ -65,10 +68,11 @@ public class ExpressionAddOperator {
                 newValue, i+1, operandValue, output);
 
         // No operator added - include next character in operand
-        String mergeOperands = String.valueOf(prevOperand) + operand;
+        String mergeOperand = String.valueOf(prevOperand) + operand;
         newExpression = expression + operand;
-        value = value * 10 + operandValue;
-        recursiveAddOperators(num, target, newExpression, value, i+1, Integer.parseInt(mergeOperands), output);
+        int mergeOperandValue = Integer.parseInt(mergeOperand);
+        value = (value - prevOperand) + mergeOperandValue;
+        recursiveAddOperators(num, target, newExpression, value, i+1, mergeOperandValue, output);
     }
 
 }
