@@ -43,7 +43,10 @@ public class ExpressionAddOperator {
     private static void recursiveAddOperators(String num, int target, String expression,
                                               double value, int i, int prevOperand,
                                               List<String> output) {
-        if (value == target) {
+        // Checking expression length to get around num = "00", while
+        // expression is "0" - which apparently is not accepted as
+        // an answer - *commence eye roll* -
+        if (value == target && expression.length() >= num.length()) {
             output.add(expression);
         }
 
