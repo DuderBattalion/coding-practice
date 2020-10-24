@@ -9,11 +9,11 @@ public class ExpressionAddOperator {
 //        String num = "232";
 //        int target = 8;
 
-        String num = "105";
-        int target = 5;
+//        String num = "105";
+//        int target = 5;
 
-//        String num = "00";
-//        int target = 0;
+        String num = "00";
+        int target = 0;
 
         List<String> output = addOperators(num, target);
         for (String row: output) {
@@ -72,7 +72,11 @@ public class ExpressionAddOperator {
         newExpression = expression + operand;
         int mergeOperandValue = Integer.parseInt(mergeOperand);
         value = (value - prevOperand) + mergeOperandValue;
-        recursiveAddOperators(num, target, newExpression, value, i+1, mergeOperandValue, output);
+
+        // To get around results like 1*05 - where 05 is not eligible
+        if (String.valueOf(mergeOperandValue).length() == mergeOperand.length()) {
+            recursiveAddOperators(num, target, newExpression, value, i+1, mergeOperandValue, output);
+        }
     }
 
 }
