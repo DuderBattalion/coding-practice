@@ -5,7 +5,10 @@ import java.util.Set;
 
 public class RemoveInvalidParantheses {
     public static void main(String[] args) {
-        String s = "()())()";
+//        String s = "()())()";
+//        String s = "(a)())()";
+        String s = ")(";
+
         List<String> output = removeInvalidParentheses(s);
 
         for (String result: output) {
