@@ -1,13 +1,26 @@
+import com.leetcode.util.TreeNode;
+
 public class Driver {
     public static void main(String[] args) {
-        MedianFinder medianFinder = new MedianFinder();
+        TreeNode node1 = new TreeNode(1);
+        TreeNode node2 = new TreeNode(2);
+        TreeNode node3 = new TreeNode(3);
+        TreeNode node4 = new TreeNode(4);
+        TreeNode node5 = new TreeNode(5);
 
-        medianFinder.addNum(2);
-//        medianFinder.addNum(4);
-//        medianFinder.addNum(3);
-//        medianFinder.addNum(1);
-//        medianFinder.addNum(5);
+        node1.left = node2;
+        node1.right = node3;
 
-        System.out.println(medianFinder.findMedian());
+        node3.left = node4;
+        node3.right = node5;
+
+        SerializeBinaryTree ser = new SerializeBinaryTree();
+        SerializeBinaryTree deser = new SerializeBinaryTree();
+
+        String serializedNodes = ser.serialize(node1);
+        System.out.println(serializedNodes);
+
+        TreeNode root = deser.deserialize(serializedNodes);
+        System.out.println(ser.serialize(root));
     }
 }

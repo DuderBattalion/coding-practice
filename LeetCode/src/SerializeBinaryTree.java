@@ -1,6 +1,8 @@
 import com.leetcode.util.TreeNode;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class SerializeBinaryTree {
@@ -13,25 +15,33 @@ public class SerializeBinaryTree {
         StringBuilder data = new StringBuilder();
         Queue<TreeNode> nodes = new LinkedList<>();
         nodes.add(root);
+        serializeNode(root, data);
 
         while (!nodes.isEmpty()) {
+            List<TreeNode> nextLevel = new ArrayList<>();
+            StringBuilder nextLevelString = new StringBuilder();
+
             TreeNode node = nodes.remove();
-            serializeNode(node, data);
             if (node != null) {
                 if (node.left != null) {
-                    nodes.add(node.left);
+                    nextLevel.add(node.left);
                 }
 
                 if (node.right != null) {
-                    nodes.add(node.right);
+                    nextLevel.add(node.right);
                 }
 
-                serializeNode(node.left, data);
-                serializeNode(node.right, data);
+                serializeNode(node.left, nextLevelString);
+                serializeNode(node.right, nextLevelString);
+            }
+
+            if (!nextLevel.isEmpty() && nodes.isEmpty()) {
+                nodes.addAll(nextLevel);
+                data.append(nextLevelString);
             }
         }
 
-        return data.toString();
+        return data.substring(0, data.length() - 1); // Remove trailing comma
     }
 
     private void serializeNode(TreeNode node, StringBuilder data) {
@@ -46,36 +56,55 @@ public class SerializeBinaryTree {
             return null;
         }
 
-//        TreeNode root = new TreeNode(Integer.parseInt(nodeVals[0]));
-//        Queue<TreeNode> deserializeQueue = new LinkedList<>();
-//        deserializeQueue.add(root);
+        TreeNode root = new TreeNode(Integer.parseInt(nodeVals[0]));
 
-        int readIndex = 0, writeIndex = 1, level = 1;
-        while (writeIndex < nodeVals.length) {
+        Queue<DeserializeQueueNode> deserializeQueue = new LinkedList<>();
+        DeserializeQueueNode deserializeQueueNode = new DeserializeQueueNode(root);
+        deserializeQueue.add(deserializeQueueNode);
+
+        int deserializeIndex = 1, level = 1;
+        while (!deserializeQueue.isEmpty()) {
             for (int i = 0; i < Math.pow(2, level); i+=2) {
-                String readNodeVal = nodeVals[readIndex];
-                readIndex++;
-
-                if (readNodeVal.equals("null")) {
-                    writeIndex += 2;
+                DeserializeQueueNode queueNode = deserializeQueue.remove();
+                if (queueNode.node == null) {
                     continue;
                 }
 
-                TreeNode node =
-
-                String writeNodeLeftVal = nodeVals[writeIndex];
-                writeIndex++;
-
-                String writeNodeRightVal = nodeVals[writeIndex];
-                writeIndex++;
-
-                if ()
+                if (deserializeIndex >= nodeVals.length) {
+                    break;
+                }
 
 
+                String leftValue = nodeVals[deserializeIndex];
+                TreeNode left = null;
+                if (!leftValue.equals("null")) {
+                    left = new TreeNode(Integer.parseInt(leftValue));
+                }
+
+                if (deserializeIndex + 1 >= nodeVals.length) {
+                    break;
+                }
+
+                String rightValue = nodeVals[deserializeIndex+1];
+                TreeNode right = null;
+                if (!rightValue.equals("null")) {
+                    right = new TreeNode(Integer.parseInt(leftValue));
+                }
+
+                queueNode.node.left = left;
+                queueNode.node.right = right;
 
             }
         }
 
+        return root;
+    }
 
+    private static class DeserializeQueueNode {
+        public TreeNode node;
+
+        public DeserializeQueueNode(TreeNode node) {
+            this.node = node;
+        }
     }
 }
