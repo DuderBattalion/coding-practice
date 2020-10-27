@@ -76,11 +76,15 @@ public class SerializeBinaryTree {
                     break;
                 }
 
+//                String leftValue = nodeVals[deserializeIndex];
+//                TreeNode left = null;
+//                if (!leftValue.equals("null")) {
+//                    left = new TreeNode(Integer.parseInt(leftValue));
+//                    deserializeQueue.add(new DeserializeQueueNode(left));
+//                }
 
-                String leftValue = nodeVals[deserializeIndex];
-                TreeNode left = null;
-                if (!leftValue.equals("null")) {
-                    left = new TreeNode(Integer.parseInt(leftValue));
+                TreeNode left = parseTreeNode(nodeVals[deserializeIndex]);
+                if (left != null) {
                     deserializeQueue.add(new DeserializeQueueNode(left));
                 }
 
@@ -90,10 +94,15 @@ public class SerializeBinaryTree {
                     break;
                 }
 
-                String rightValue = nodeVals[deserializeIndex];
-                TreeNode right = null;
-                if (!rightValue.equals("null")) {
-                    right = new TreeNode(Integer.parseInt(rightValue));
+//                String rightValue = nodeVals[deserializeIndex];
+//                TreeNode right = null;
+//                if (!rightValue.equals("null")) {
+//                    right = new TreeNode(Integer.parseInt(rightValue));
+//                    deserializeQueue.add(new DeserializeQueueNode(right));
+//                }
+
+                TreeNode right = parseTreeNode(nodeVals[deserializeIndex]);
+                if (right != null) {
                     deserializeQueue.add(new DeserializeQueueNode(right));
                 }
 
@@ -101,9 +110,6 @@ public class SerializeBinaryTree {
 
                 queueNode.node.left = left;
                 queueNode.node.right = right;
-
-//                deserializeQueue.add(new DeserializeQueueNode(left));
-//                deserializeQueue.add(new DeserializeQueueNode(right));
             }
 
             level++;
@@ -118,5 +124,13 @@ public class SerializeBinaryTree {
         public DeserializeQueueNode(TreeNode node) {
             this.node = node;
         }
+    }
+
+    private static TreeNode parseTreeNode(String nodeVal) {
+        if (nodeVal.equals("null")) {
+            return null;
+        }
+
+        return new TreeNode(Integer.parseInt(nodeVal));
     }
 }
