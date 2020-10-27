@@ -17,10 +17,9 @@ public class SerializeBinaryTree {
         nodes.add(root);
         serializeNode(root, data);
 
+        List<TreeNode> nextLevel = new ArrayList<>();
+        StringBuilder nextLevelString = new StringBuilder();
         while (!nodes.isEmpty()) {
-            List<TreeNode> nextLevel = new ArrayList<>();
-            StringBuilder nextLevelString = new StringBuilder();
-
             TreeNode node = nodes.remove();
             if (node != null) {
                 if (node.left != null) {
@@ -38,6 +37,9 @@ public class SerializeBinaryTree {
             if (!nextLevel.isEmpty() && nodes.isEmpty()) {
                 nodes.addAll(nextLevel);
                 data.append(nextLevelString);
+
+                nextLevel.clear();
+                nextLevelString.setLength(0);
             }
         }
 
@@ -79,22 +81,32 @@ public class SerializeBinaryTree {
                 TreeNode left = null;
                 if (!leftValue.equals("null")) {
                     left = new TreeNode(Integer.parseInt(leftValue));
+                    deserializeQueue.add(new DeserializeQueueNode(left));
                 }
 
-                if (deserializeIndex + 1 >= nodeVals.length) {
+                deserializeIndex++;
+
+                if (deserializeIndex >= nodeVals.length) {
                     break;
                 }
 
-                String rightValue = nodeVals[deserializeIndex+1];
+                String rightValue = nodeVals[deserializeIndex];
                 TreeNode right = null;
                 if (!rightValue.equals("null")) {
-                    right = new TreeNode(Integer.parseInt(leftValue));
+                    right = new TreeNode(Integer.parseInt(rightValue));
+                    deserializeQueue.add(new DeserializeQueueNode(right));
                 }
+
+                deserializeIndex++;
 
                 queueNode.node.left = left;
                 queueNode.node.right = right;
 
+//                deserializeQueue.add(new DeserializeQueueNode(left));
+//                deserializeQueue.add(new DeserializeQueueNode(right));
             }
+
+            level++;
         }
 
         return root;
