@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RemoveInvalidParantheses {
     public static void main(String[] args) {
@@ -14,11 +16,14 @@ public class RemoveInvalidParantheses {
     public static List<String> removeInvalidParentheses(String s) {
         int numExtraBrackets = calcExtraBrackets(s);
 
-        List<String> output = new ArrayList<>();
-        recursiveRemoveExtraBrackets(s, 0, output, new StringBuilder(),
+        Set<String> output = new HashSet<>();
+        String[] currentChainContainer = new String[1];
+        currentChainContainer[0] = "";
+
+        recursiveRemoveExtraBrackets(s, 0, output, currentChainContainer,
                 0, 0, numExtraBrackets);
 
-        return output;
+        return new ArrayList<>(output);
     }
 
     private static int calcExtraBrackets(String s) {
@@ -35,14 +40,15 @@ public class RemoveInvalidParantheses {
     }
 
     private static void recursiveRemoveExtraBrackets(String s, int i,
-                                                     List<String> output,
-                                                     StringBuilder currentChain,
+                                                     Set<String> output,
+                                                     String[] currentChainContainer,
                                                      int bracketCount, int numRemove,
                                                      int maxRemove) {
         if (bracketCount < 0) {
             return;
         }
 
+        String currentChain = currentChainContainer[0];
         if (i >= s.length()) {
             if (bracketCount == 0) {
                 output.add(currentChain.toString());
@@ -60,7 +66,7 @@ public class RemoveInvalidParantheses {
         // 2. Keep bracket
 
         // 1. Remove bracket
-        recursiveRemoveExtraBrackets(s, i+1, output, currentChain,
+        recursiveRemoveExtraBrackets(s, i+1, output, currentChainContainer,
                 bracketCount, numRemove + 1, maxRemove);
 
         // 2. Keep bracket
@@ -71,8 +77,14 @@ public class RemoveInvalidParantheses {
             bracketCount--;
         }
 
-        currentChain.append(token);
-        recursiveRemoveExtraBrackets(s, i+1, output, currentChain,
+        currentChain += token;
+        currentChainContainer[0] = currentChain;
+
+        recursiveRemoveExtraBrackets(s, i+1, output, currentChainContainer,
                 bracketCount, numRemove, maxRemove);
+
+        // Backtrack
+        currentChain = currentChain.substring(0, currentChain.length() - 1);
+        currentChainContainer[0] = currentChain;
     }
 }
