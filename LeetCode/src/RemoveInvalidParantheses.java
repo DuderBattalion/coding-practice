@@ -3,9 +3,9 @@ import java.util.*;
 public class RemoveInvalidParantheses {
     public static void main(String[] args) {
 //        String s = "()())()";
-//        String s = "(a)())()";
+        String s = "(a)())()";
 //        String s = ")(";
-        String s = "x(";
+//        String s = "x(";
 
         List<String> output = removeInvalidParentheses(s);
 
@@ -14,16 +14,30 @@ public class RemoveInvalidParantheses {
         }
     }
 
+    /**
+     * Algorithm:
+     * Recurse through all possibilities with pruning.
+     *
+     * Cases on each recursion point:
+     * 1) If non-bracket character, then add to chain and move ahead
+     * 2) Remove bracket character and move ahead
+     * 3) Keep bracket character, add to chain and move ahead
+     *
+     * Pruning conditions:
+     * 1) If bracket count falls below zero, stop. bracketCount++ for '(' and -- for ')'.
+     * 2) Set min brackets removed for each successful match. If num brackets removed exceeds
+     * previous minBracketRemove, then stop - no point going further.
+     */
     public static List<String> removeInvalidParentheses(String s) {
-//        int numExtraBrackets = calcExtraBrackets(s);
-
         Map<Integer, Set<String>> outputMap = new HashMap<>();
-//        String[] currentChainContainer = new String[1];
-//        currentChainContainer[0] = "";
 
         recursiveRemoveExtraBrackets(s, 0, outputMap, new RemoveBracketData(),
                 0, 0);
 
+        return parseOutput(outputMap);
+    }
+
+    private static ArrayList<String> parseOutput(Map<Integer, Set<String>> outputMap) {
         int minRemove = Integer.MAX_VALUE;
         Set<String> output = new HashSet<>();
         for (Map.Entry<Integer, Set<String>> entry: outputMap.entrySet()) {
@@ -39,19 +53,6 @@ public class RemoveInvalidParantheses {
         return new ArrayList<>(output);
     }
 
-    private static int calcExtraBrackets(String s) {
-        int bracketCount = 0;
-        for (char token: s.toCharArray()) {
-            if (token == '(') {
-                bracketCount++;
-            } else if (token == ')') {
-                bracketCount--;
-            }
-        }
-
-        return Math.abs(bracketCount);
-    }
-
     private static void recursiveRemoveExtraBrackets(String s, int i,
                                                      Map<Integer, Set<String>> output,
                                                      RemoveBracketData data,
@@ -60,7 +61,6 @@ public class RemoveInvalidParantheses {
             return;
         }
 
-//        String currentChain = currentChainContainer[0];
         if (i >= s.length()) {
             if (bracketCount == 0) {
                 if (output.containsKey(numRemove)) {
@@ -73,7 +73,6 @@ public class RemoveInvalidParantheses {
                     output.put(numRemove, results);
                 }
 
-//                output.put(data.chain.toString(), numRemove);
                 if (numRemove < data.minRemove) {
                     data.minRemove = numRemove;
                 }
@@ -81,10 +80,6 @@ public class RemoveInvalidParantheses {
 
             return;
         }
-
-//        if (numRemove > maxRemove) {
-//            return;
-//        }
 
         // Cases at index i:
         // 0. If non-bracket token, add to chain and move ahead
@@ -124,6 +119,9 @@ public class RemoveInvalidParantheses {
         data.backtrack();
     }
 
+    /**
+     * Helper data structure class to reference global data in different parts of recursion.
+     */
     private static class RemoveBracketData {
         public String chain;
         public int minRemove;
