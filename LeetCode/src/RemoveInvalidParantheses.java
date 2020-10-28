@@ -6,8 +6,9 @@ import java.util.Set;
 public class RemoveInvalidParantheses {
     public static void main(String[] args) {
 //        String s = "()())()";
-//        String s = "(a)())()";
-        String s = ")(";
+        String s = "(a)())()";
+//        String s = ")(";
+//        String s = "x(";
 
         List<String> output = removeInvalidParentheses(s);
 
@@ -65,15 +66,31 @@ public class RemoveInvalidParantheses {
         }
 
         // Cases at index i:
+        // 0. If non-bracket token, add to chain and move ahead
         // 1. Remove bracket
         // 2. Keep bracket
+
+        char token = s.charAt(i);
+
+        // 0. Non-bracket token
+        if (token != '(' && token != ')') {
+            currentChain += token;
+            currentChainContainer[0] = currentChain;
+            recursiveRemoveExtraBrackets(s, i+1, output, currentChainContainer,
+                    bracketCount, numRemove, maxRemove);
+
+            // Backtrack
+            currentChain = currentChain.substring(0, currentChain.length() - 1);
+            currentChainContainer[0] = currentChain;
+
+            return;
+        }
 
         // 1. Remove bracket
         recursiveRemoveExtraBrackets(s, i+1, output, currentChainContainer,
                 bracketCount, numRemove + 1, maxRemove);
 
         // 2. Keep bracket
-        char token = s.charAt(i);
         if (token == '(') {
             bracketCount++;
         } else if (token == ')') {
