@@ -1,14 +1,11 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class RemoveInvalidParantheses {
     public static void main(String[] args) {
-        String s = "()())()";
+//        String s = "()())()";
 //        String s = "(a)())()";
 //        String s = ")(";
-//        String s = "x(";
+        String s = "x(";
 
         List<String> output = removeInvalidParentheses(s);
 
@@ -20,12 +17,24 @@ public class RemoveInvalidParantheses {
     public static List<String> removeInvalidParentheses(String s) {
 //        int numExtraBrackets = calcExtraBrackets(s);
 
-        Set<String> output = new HashSet<>();
+        Map<Integer, Set<String>> outputMap = new HashMap<>();
 //        String[] currentChainContainer = new String[1];
 //        currentChainContainer[0] = "";
 
-        recursiveRemoveExtraBrackets(s, 0, output, new RemoveBracketData(),
+        recursiveRemoveExtraBrackets(s, 0, outputMap, new RemoveBracketData(),
                 0, 0);
+
+        int minRemove = Integer.MAX_VALUE;
+        Set<String> output = new HashSet<>();
+        for (Map.Entry<Integer, Set<String>> entry: outputMap.entrySet()) {
+            int numRemove = entry.getKey();
+            Set<String> result = entry.getValue();
+
+            if (numRemove < minRemove) {
+                minRemove = numRemove;
+                output = result;
+            }
+        }
 
         return new ArrayList<>(output);
     }
@@ -44,7 +53,7 @@ public class RemoveInvalidParantheses {
     }
 
     private static void recursiveRemoveExtraBrackets(String s, int i,
-                                                     Set<String> output,
+                                                     Map<Integer, Set<String>> output,
                                                      RemoveBracketData data,
                                                      int bracketCount, int numRemove) {
         if (bracketCount < 0 || numRemove > data.minRemove) {
@@ -54,7 +63,17 @@ public class RemoveInvalidParantheses {
 //        String currentChain = currentChainContainer[0];
         if (i >= s.length()) {
             if (bracketCount == 0) {
-                output.add(data.chain.toString());
+                if (output.containsKey(numRemove)) {
+                    Set<String> results = output.get(numRemove);
+                    results.add(data.chain);
+                } else {
+                    Set<String> results = new HashSet<>();
+                    results.add(data.chain);
+
+                    output.put(numRemove, results);
+                }
+
+//                output.put(data.chain.toString(), numRemove);
                 if (numRemove < data.minRemove) {
                     data.minRemove = numRemove;
                 }
