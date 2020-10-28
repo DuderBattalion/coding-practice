@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class RemoveInvalidParantheses {
     public static void main(String[] args) {
-//        String s = "()())()";
-        String s = "(a)())()";
+        String s = "()())()";
+//        String s = "(a)())()";
 //        String s = ")(";
 //        String s = "x(";
 
@@ -18,14 +18,14 @@ public class RemoveInvalidParantheses {
     }
 
     public static List<String> removeInvalidParentheses(String s) {
-        int numExtraBrackets = calcExtraBrackets(s);
+//        int numExtraBrackets = calcExtraBrackets(s);
 
         Set<String> output = new HashSet<>();
-        String[] currentChainContainer = new String[1];
-        currentChainContainer[0] = "";
+//        String[] currentChainContainer = new String[1];
+//        currentChainContainer[0] = "";
 
-        recursiveRemoveExtraBrackets(s, 0, output, currentChainContainer,
-                0, 0, numExtraBrackets);
+        recursiveRemoveExtraBrackets(s, 0, output, new RemoveBracketData(),
+                0, 0);
 
         return new ArrayList<>(output);
     }
@@ -45,25 +45,27 @@ public class RemoveInvalidParantheses {
 
     private static void recursiveRemoveExtraBrackets(String s, int i,
                                                      Set<String> output,
-                                                     String[] currentChainContainer,
-                                                     int bracketCount, int numRemove,
-                                                     int maxRemove) {
-        if (bracketCount < 0) {
+                                                     RemoveBracketData data,
+                                                     int bracketCount, int numRemove) {
+        if (bracketCount < 0 || numRemove > data.minRemove) {
             return;
         }
 
-        String currentChain = currentChainContainer[0];
+//        String currentChain = currentChainContainer[0];
         if (i >= s.length()) {
             if (bracketCount == 0) {
-                output.add(currentChain.toString());
+                output.add(data.chain.toString());
+                if (numRemove < data.minRemove) {
+                    data.minRemove = numRemove;
+                }
             }
 
             return;
         }
 
-        if (numRemove > maxRemove) {
-            return;
-        }
+//        if (numRemove > maxRemove) {
+//            return;
+//        }
 
         // Cases at index i:
         // 0. If non-bracket token, add to chain and move ahead
@@ -74,21 +76,18 @@ public class RemoveInvalidParantheses {
 
         // 0. Non-bracket token
         if (token != '(' && token != ')') {
-            currentChain += token;
-            currentChainContainer[0] = currentChain;
-            recursiveRemoveExtraBrackets(s, i+1, output, currentChainContainer,
-                    bracketCount, numRemove, maxRemove);
+            data.chain += token;
+            recursiveRemoveExtraBrackets(s, i+1, output, data,
+                    bracketCount, numRemove);
 
             // Backtrack
-            currentChain = currentChain.substring(0, currentChain.length() - 1);
-            currentChainContainer[0] = currentChain;
-
+            data.backtrack();
             return;
         }
 
         // 1. Remove bracket
-        recursiveRemoveExtraBrackets(s, i+1, output, currentChainContainer,
-                bracketCount, numRemove + 1, maxRemove);
+        recursiveRemoveExtraBrackets(s, i+1, output, data,
+                bracketCount, numRemove + 1);
 
         // 2. Keep bracket
         if (token == '(') {
@@ -97,14 +96,26 @@ public class RemoveInvalidParantheses {
             bracketCount--;
         }
 
-        currentChain += token;
-        currentChainContainer[0] = currentChain;
+        data.chain += token;
 
-        recursiveRemoveExtraBrackets(s, i+1, output, currentChainContainer,
-                bracketCount, numRemove, maxRemove);
+        recursiveRemoveExtraBrackets(s, i+1, output, data,
+                bracketCount, numRemove);
 
         // Backtrack
-        currentChain = currentChain.substring(0, currentChain.length() - 1);
-        currentChainContainer[0] = currentChain;
+        data.backtrack();
+    }
+
+    private static class RemoveBracketData {
+        public String chain;
+        public int minRemove;
+
+        public RemoveBracketData() {
+            this.chain = "";
+            this.minRemove = Integer.MAX_VALUE;
+        }
+
+        public void backtrack() {
+            chain = chain.substring(0, chain.length() - 1);
+        }
     }
 }
