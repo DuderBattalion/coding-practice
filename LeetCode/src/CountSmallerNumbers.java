@@ -5,7 +5,9 @@ import java.util.TreeSet;
 
 public class CountSmallerNumbers {
     public static void main(String[] args) {
-        int[] nums = { 5, 2, 6, 1 };
+//        int[] nums = { 5, 2, 6, 1 };
+//        int[] nums = {  };
+        int[] nums = { 5 };
 
         List<Integer> output = countSmaller(nums);
         for (int count: output) {
