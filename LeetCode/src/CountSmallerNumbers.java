@@ -16,42 +16,10 @@ public class CountSmallerNumbers {
         }
     }
 
-//    public static List<Integer> countSmaller(int[] nums) {
-//        TreeMap<Integer, Integer> numSet = new TreeMap<>();
-//        for (int num: nums) {
-//            if (numSet.containsKey(num)) {
-//                int count = numSet.get(num);
-//                numSet.put(num, count + 1);
-//            } else {
-//                numSet.put(num, 1);
-//            }
-//        }
-//
-//        List<Integer> output = new ArrayList<>();
-//        for (int num: nums) {
-//            SortedMap<Integer, Integer> sortedSet = numSet.headMap(num);
-//
-//            int numSmalls = 0;
-//            for (Map.Entry<Integer, Integer> entry: sortedSet.entrySet()) {
-//                int val = entry.getValue();
-//                numSmalls += val;
-//            }
-//
-//            output.add(numSmalls);
-//
-//            if (numSet.containsKey(num)) {
-//                int numCount = numSet.get(num);
-//                if (numCount > 0) {
-//                    numSet.put(num, numCount - 1);
-//                } else {
-//                    numSet.remove(num);
-//                }
-//            }
-//        }
-//
-//        return output;
-//    }
-
+    /**
+     * Algorithm:
+     * Using TreeMao to get nums smaller than num provided.
+     */
     public static List<Integer> countSmaller(int[] nums) {
         TreeSet<MapNumber> numSet = new TreeSet<>();
         for (int i = 0; i < nums.length; i++) {
