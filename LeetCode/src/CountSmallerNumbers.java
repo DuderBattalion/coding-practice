@@ -31,14 +31,22 @@ public class CountSmallerNumbers {
         for (int num: nums) {
             SortedMap<Integer, Integer> sortedSet = numSet.headMap(num);
 
-            int count = 0;
+            int numSmalls = 0;
             for (Map.Entry<Integer, Integer> entry: sortedSet.entrySet()) {
                 int val = entry.getValue();
-                count += val;
+                numSmalls += val;
             }
 
-            output.add(count);
-            numSet.remove(num);
+            output.add(numSmalls);
+
+            if (numSet.containsKey(num)) {
+                int numCount = numSet.get(num);
+                if (numCount > 0) {
+                    numSet.put(num, numCount - 1);
+                } else {
+                    numSet.remove(num);
+                }
+            }
         }
 
         return output;
