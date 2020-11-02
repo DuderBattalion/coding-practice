@@ -19,6 +19,11 @@ public class CountSmallerNumbersWithMergeSort {
         }
     }
 
+    /**
+     * Algorithm
+     * Disclaimer - Tricky solution piggybacking on merge sort. See discussion at:
+     * https://leetcode.com/problems/count-of-smaller-numbers-after-self/discuss/76584/Mergesort-solution
+     */
     public static List<Integer> countSmaller(int[] nums) {
         NumberHelper[] numberHelpers = new NumberHelper[nums.length];
         for (int i = 0; i < nums.length; i++) {
