@@ -1,12 +1,18 @@
 import com.leetcode.util.TreeNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 
 public class CountSmallerNumbersWithBst {
     public static void main(String[] args) {
+        int[] nums = { 5, 2, 6, 1 };
 
+        List<Integer> output = countSmaller(nums);
+        for (int num: output) {
+            System.out.print(num + ", ");
+        }
     }
 
     /**
@@ -18,8 +24,10 @@ public class CountSmallerNumbersWithBst {
             return new ArrayList<>();
         }
 
-        EnhancedTreeNode root = createBst(nums);
-        return getNumberCounts(root);
+        List<Integer> output = createBst(nums);
+        Collections.reverse(output);
+
+        return output;
     }
 
 //    private static List<Integer> getNumberCounts(EnhancedTreeNode root) {
@@ -40,55 +48,53 @@ public class CountSmallerNumbersWithBst {
     private static List<Integer> createBst(int[] nums) {
         List<Integer> smallerNumberCounts = new ArrayList<>();
 
-//        int i = nums.length - 1;
-//        EnhancedTreeNode root = null;
-//        while (i >= 0) {
-//            if (root == null) {
-//                root = new EnhancedTreeNode(nums[i], 0);
-//            } else {
-//                insertNode(nums[i], root);
-//            }
-//
-//            i--;
-//        }
-
+        EnhancedTreeNode root = null;
         for (int i = nums.length - 1; i >= 0; i--) {
+            root = recursiveInsertNode(nums[i], root, 0, smallerNumberCounts);
+        }
 
+        return smallerNumberCounts;
+    }
+
+//    private static EnhancedTreeNode insertNode(int num, EnhancedTreeNode root) {
+//        if (root == null) {
+//            return null;
+//        }
+//
+//        return recursiveInsertNode(num, root, 0);
+//    }
+
+    private static EnhancedTreeNode recursiveInsertNode(int num, EnhancedTreeNode root,
+                                                        int count,
+                                                        List<Integer> smallerNumbersCount) {
+        if (root == null) {
+            smallerNumbersCount.add(count);
+            return new EnhancedTreeNode(num, count, 1);
+        }
+
+        if (num < root.val) {
+            root.left = recursiveInsertNode(num, root.left, count, smallerNumbersCount);
+        } else if (num > root.val){
+            root.right = recursiveInsertNode(num, root.right,
+                    count + root.numCount, smallerNumbersCount);
+        } else {
+            root.numCount++;
         }
 
         return root;
     }
 
-    private static EnhancedTreeNode insertNode(int num, EnhancedTreeNode root) {
-        if (root == null) {
-            return null;
-        }
-
-        return recursiveInsertNode(num, root, 0);
-    }
-
-    private static EnhancedTreeNode recursiveInsertNode(int num, EnhancedTreeNode node, int count) {
-        if (node == null) {
-            return new EnhancedTreeNode(num, count);
-        }
-
-        if (num <= node.val) {
-            node.left = recursiveInsertNode(num, node.left, count);
-        } else {
-            node.right = recursiveInsertNode(num, node.right, count + 1);
-        }
-
-        return node;
-    }
-
     public static class EnhancedTreeNode {
         public int smallNumCount;
+        public int numCount;
         public int val;
         public EnhancedTreeNode left;
         public EnhancedTreeNode right;
 
-        public EnhancedTreeNode(int value, int count) {
+        public EnhancedTreeNode(int value, int count, int numCount) {
             this.smallNumCount = count;
+            this.numCount = numCount;
+
             this.val = value;
             this.left = null;
             this.right = null;
