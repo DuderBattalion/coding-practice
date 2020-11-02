@@ -4,7 +4,8 @@ import java.util.List;
 
 public class CountSmallerNumbersWithMergeSort {
     public static void main(String[] args) {
-        int[] nums = { 5, 2, 6, 1 };
+//        int[] nums = { 5, 2, 6, 1 };
+        int[] nums = { 5, 2, 2, 6, 1 };
 //        int[] nums = {  };
 //        int[] nums = { 5 };
 
@@ -51,44 +52,46 @@ public class CountSmallerNumbersWithMergeSort {
     private static void merge(NumberHelper[] numberHelpers, int start, int end, int[] count) {
         int mid = (start + end) / 2;
 
-        int leftIndex = start;
-        int rightIndex = mid + 1;
+        int leftArrayIndex = start;
+        int rightArrayIndex = mid + 1;
         int smallNumberCount = 0;
 
-        int mergedIndex = 0;
-        NumberHelper[] merged = new NumberHelper[end - start + 1];
+        int mergeArrayIndex = 0;
+        NumberHelper[] mergeArray = new NumberHelper[end - start + 1];
 
-        while (leftIndex <= mid && rightIndex <= end) {
-            if (numberHelpers[rightIndex].value < numberHelpers[leftIndex].value) {
-                merged[mergedIndex] = numberHelpers[rightIndex];
+        while (leftArrayIndex <= mid && rightArrayIndex <= end) {
+            if (numberHelpers[rightArrayIndex].value < numberHelpers[leftArrayIndex].value) {
+                mergeArray[mergeArrayIndex] = numberHelpers[rightArrayIndex];
 
-                rightIndex++;
+                rightArrayIndex++;
                 smallNumberCount++;
             } else {
-                merged[mergedIndex] = numberHelpers[leftIndex];
-                count[numberHelpers[leftIndex].index] += smallNumberCount;
+                mergeArray[mergeArrayIndex] = numberHelpers[leftArrayIndex];
 
-                leftIndex++;
+                int countIndex = numberHelpers[leftArrayIndex].index;
+                count[numberHelpers[leftArrayIndex].index] += smallNumberCount;
+
+                leftArrayIndex++;
             }
 
-            mergedIndex++;
+            mergeArrayIndex++;
         }
 
-        while (leftIndex <= mid) {
-            merged[mergedIndex] = numberHelpers[leftIndex];
-            count[numberHelpers[leftIndex].index] = smallNumberCount;
+        while (leftArrayIndex <= mid) {
+            mergeArray[mergeArrayIndex] = numberHelpers[leftArrayIndex];
+            count[numberHelpers[leftArrayIndex].index] += smallNumberCount;
 
-            leftIndex++;
-            mergedIndex++;
+            leftArrayIndex++;
+            mergeArrayIndex++;
         }
 
-        while (rightIndex <= end) {
-            merged[mergedIndex] = numberHelpers[rightIndex];
-            rightIndex++;
+        while (rightArrayIndex <= end) {
+            mergeArray[mergeArrayIndex] = numberHelpers[rightArrayIndex];
+            rightArrayIndex++;
         }
 
         for (int i = start; i <= end; i++) {
-            numberHelpers[i] = merged[i - start];
+            numberHelpers[i] = mergeArray[i - start];
         }
     }
 
