@@ -5,11 +5,11 @@ import java.util.List;
 public class CountSmallerNumbersWithMergeSort {
     public static void main(String[] args) {
 //        int[] nums = { 5, 2, 6, 1 };
-        int[] nums = { 5, 2, 2, 6, 1 };
+//        int[] nums = { 5, 2, 2, 6, 1 };
 //        int[] nums = {  };
 //        int[] nums = { 5 };
 
-//        int[] nums = { 26,78,27,100,33,67,90,23,66,5,38,7,35,23,52,22,83,51,98,69,81,32,78,28,94,13,2,97,3,76,99,51,9,21,84,66,65,36,100,41 };
+        int[] nums = { 26,78,27,100,33,67,90,23,66,5,38,7,35,23,52,22,83,51,98,69,81,32,78,28,94,13,2,97,3,76,99,51,9,21,84,66,65,36,100,41 };
 
 //        int[] nums = { 84,66,65,36,100,41 };
 
@@ -87,7 +87,9 @@ public class CountSmallerNumbersWithMergeSort {
 
         while (rightArrayIndex <= end) {
             mergeArray[mergeArrayIndex] = numberHelpers[rightArrayIndex];
+
             rightArrayIndex++;
+            mergeArrayIndex++;
         }
 
         for (int i = start; i <= end; i++) {
