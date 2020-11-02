@@ -2,7 +2,17 @@ import com.leetcode.util.TreeNode;
 
 public class Driver {
     public static void main(String[] args) {
-        StringBuilder s = new StringBuilder("a");
-        System.out.println(s.substring(0, s.length() - 1));
+        TreeNode root = null;
+        testNode(root);
+
+        if (root == null) {
+            System.out.println("Root is null");
+        } else {
+            System.out.println(root.val);
+        }
+    }
+
+    private static void testNode(TreeNode node) {
+        node = new TreeNode(5);
     }
 }
