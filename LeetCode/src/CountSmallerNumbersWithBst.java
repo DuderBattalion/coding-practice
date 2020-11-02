@@ -7,7 +7,8 @@ import java.util.PriorityQueue;
 
 public class CountSmallerNumbersWithBst {
     public static void main(String[] args) {
-        int[] nums = { 5, 2, 6, 1 };
+//        int[] nums = { 5, 2, 6, 1 };
+        int[] nums = { 5, 2, 2, 6, 1 };
 
         List<Integer> output = countSmaller(nums);
         for (int num: output) {
@@ -18,6 +19,11 @@ public class CountSmallerNumbersWithBst {
     /**
      * Similar to using a TreeSet in Java. But we implement the BST
      * on our own here.
+     *
+     * Algorithm
+     * Calculate smaller numbers on right while inserting nodes into BST.
+     * Insert nodes from back to front.
+     * Helper data structure to help with duplicate numbers.
      */
     public static List<Integer> countSmaller(int[] nums) {
         if (nums.length == 0) {
@@ -30,21 +36,6 @@ public class CountSmallerNumbersWithBst {
         return output;
     }
 
-//    private static List<Integer> getNumberCounts(EnhancedTreeNode root) {
-//        PriorityQueue<Integer> smallerNumberCounts = new PriorityQueue<>();
-//
-//        populateNumberCounts(root, smallerNumberCounts);
-//    }
-
-//    private static void populateNumberCounts(EnhancedTreeNode node, PriorityQueue<Integer> smallerNumberCounts) {
-//        if (node == null) {
-//            return;
-//        }
-//
-//        smallerNumberCounts.add(node.smallNumCount);
-//
-//    }
-
     private static List<Integer> createBst(int[] nums) {
         List<Integer> smallerNumberCounts = new ArrayList<>();
 
@@ -55,14 +46,6 @@ public class CountSmallerNumbersWithBst {
 
         return smallerNumberCounts;
     }
-
-//    private static EnhancedTreeNode insertNode(int num, EnhancedTreeNode root) {
-//        if (root == null) {
-//            return null;
-//        }
-//
-//        return recursiveInsertNode(num, root, 0);
-//    }
 
     private static EnhancedTreeNode recursiveInsertNode(int num, EnhancedTreeNode root,
                                                         int count,
