@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,14 +24,19 @@ public class CountSmallerNumbersWithMergeSort {
             numberHelpers[i] = new NumberHelper(nums[i], i);
         }
 
-        Integer[] count = new Integer[numberHelpers.length];
+        int[] count = new int[numberHelpers.length];
         modifiedMergeSort(numberHelpers, 0, nums.length - 1, count);
 
-        return Arrays.asList(count);
+        List<Integer> output = new ArrayList<>();
+        for (int num: count) {
+            output.add(num);
+        }
+
+        return output;
     }
 
     private static void modifiedMergeSort(NumberHelper[] numberHelpers, int start, int end,
-                                               Integer[] count) {
+                                               int[] count) {
         if (start >= end) {
             return;
         }
@@ -42,7 +48,7 @@ public class CountSmallerNumbersWithMergeSort {
         merge(numberHelpers, start, end, count);
     }
 
-    private static void merge(NumberHelper[] numberHelpers, int start, int end, Integer[] count) {
+    private static void merge(NumberHelper[] numberHelpers, int start, int end, int[] count) {
         int mid = (start + end) / 2;
 
         int leftIndex = start;
@@ -52,7 +58,7 @@ public class CountSmallerNumbersWithMergeSort {
         int mergedIndex = 0;
         NumberHelper[] merged = new NumberHelper[end - start + 1];
 
-        if (leftIndex <= mid && rightIndex <= end) {
+        while (leftIndex <= mid && rightIndex <= end) {
             if (numberHelpers[rightIndex].value < numberHelpers[leftIndex].value) {
                 merged[mergedIndex] = numberHelpers[rightIndex];
 
@@ -60,7 +66,7 @@ public class CountSmallerNumbersWithMergeSort {
                 smallNumberCount++;
             } else {
                 merged[mergedIndex] = numberHelpers[leftIndex];
-                count[numberHelpers[leftIndex].index] = smallNumberCount;
+                count[numberHelpers[leftIndex].index] += smallNumberCount;
 
                 leftIndex++;
             }
