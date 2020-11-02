@@ -24,7 +24,7 @@ public class CountSmallerNumbersWithMergeSort {
         }
 
         Integer[] count = new Integer[numberHelpers.length];
-        modifiedMergeSort(numberHelpers, 0, 0, count);
+        modifiedMergeSort(numberHelpers, 0, nums.length - 1, count);
 
         return Arrays.asList(count);
     }
@@ -51,7 +51,6 @@ public class CountSmallerNumbersWithMergeSort {
 
         int mergedIndex = 0;
         NumberHelper[] merged = new NumberHelper[end - start + 1];
-
 
         if (leftIndex <= mid && rightIndex <= end) {
             if (numberHelpers[rightIndex].value < numberHelpers[leftIndex].value) {
