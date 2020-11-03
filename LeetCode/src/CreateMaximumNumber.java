@@ -23,8 +23,8 @@ public class CreateMaximumNumber {
 //        int[] nums1 = { 6, 7, 8 };
 //        int[] nums2 = { 9, 7, 2, 9 };
 
-//        int[] nums1 = { 3, 4, 6, 5 };
-//        int[] nums2 = { 9, 1, 2, 5, 8, 3 };
+        int[] nums1 = { 3, 4, 6, 5 };
+        int[] nums2 = { 9, 1, 2, 5, 8, 3 };
 
 //        int[] nums1 = { 6, 7 };
 //        int[] nums2 = { 6, 0, 4 };
@@ -35,27 +35,50 @@ public class CreateMaximumNumber {
 //        int[] nums1 = {  };
 //        int[] nums2 = {  };
 
-        int[] nums1 = { 1,6,5,4,7,3,9,5,3,7,8,4,1,1,4 };
-        int[] nums2 = { 4,3,1,3,5,9 };
+//        int[] nums1 = { 1,6,5,4,7,3,9,5,3,7,8,4,1,1,4 };
+//        int[] nums2 = { 4,3,1,3,5,9 };
 
-        int[] maxNum = maxNumber(nums1, nums2, 21);
+        int[] maxNum = maxNumber(nums1, nums2, 5);
         for (int num: maxNum) {
             System.out.print(num + ", ");
         }
+
+//        int[] first = { 9, 8, 6, 5, 3 };
+//        int[] second = { 9, 6, 5, 8, 3 };
+//        System.out.println(isFirstNumBigger(first, second));
     }
 
+    /**
+     * Disclaimer
+     * Excellent discussion at
+     * https://web.archive.org/web/20160120093629/http://algobox.org/create-maximum-number/
+     *
+     * Algorithm
+     * This is a tricky problem which requires solving two smaller sub problems.
+     *
+     * ## Subproblem 1 - Create maximum number from one array
+     * Given an int[] array and a value k, return the maximum number that can be
+     * generated using k digits. Note that digit order has to be maintained.
+     *
+     * ## Subproblem 2 - Merge two maximum number arrays
+     * Given two int[] arrays - nums1 and nums2, using all the digits, merge the
+     * two num arrays to return the maximum number. Again, necessary to maintain
+     * digit order.
+     *
+     * ## Final solution
+     * Using solutions to subproblems 1 and 2, we can try to get maximum numbers from
+     * both array with i and k - i numbers, and then merge these results to get the final
+     * maximum number. The maximum of these final max numbers will be the solution.
+     */
     public static int[] maxNumber(int[] nums1, int[] nums2, int k) {
-        long maxValue = Long.MIN_VALUE;
-        int[] maxNumber = null;
+        int[] maxNumber = new int[k];
 
         for (int i = 0; i <= k; i++) {
             int[] maxNums1 = getMaximumNumber(nums1, i);
             int[] maxNums2 = getMaximumNumber(nums2, k-i);
 
             int[] mergeNum = mergeMaximumNumbers(maxNums1, maxNums2);
-            long mergeNumVal = getNumericValue(mergeNum);
-            if (mergeNumVal > maxValue) {
-                maxValue = mergeNumVal;
+            if (isFirstNumBigger(mergeNum, maxNumber)) {
                 maxNumber = mergeNum;
             }
         }
@@ -63,6 +86,10 @@ public class CreateMaximumNumber {
         return maxNumber;
     }
 
+    /**
+     * Subproblem 1
+     * Create maximum number from one array
+     */
     private static int[] getMaximumNumber(int[] nums, int k) {
         Deque<Integer> numStack = new ArrayDeque<>(k);
 
@@ -90,6 +117,10 @@ public class CreateMaximumNumber {
         return numArray;
     }
 
+    /**
+     * Subproblem 2
+     * Merge two maximum number arrays
+     */
     private static int[] mergeMaximumNumbers(int[] nums1, int[] nums2) {
         int[] mergedNum = new int[nums1.length + nums2.length];
         int index1 = 0, index2 = 0, mergeIndex = 0;
@@ -105,7 +136,7 @@ public class CreateMaximumNumber {
                 // Equal values - Look ahead to pick value with greater
                 // upcoming number
                 // Ex: { 6, 7 } and { 6, 0, 4 } - pick 6 from { 6, 7 }
-                boolean isFirst = isFirstNumBetter(nums1, index1, nums2, index2);
+                boolean isFirst = isFirstNumArrayBetter(nums1, index1, nums2, index2);
                 if (isFirst) {
                     mergedNum[mergeIndex] = nums1[index1];
                     index1++;
@@ -133,8 +164,15 @@ public class CreateMaximumNumber {
         return mergedNum;
     }
 
-    private static boolean isFirstNumBetter(int[] nums1, int index1,
-                                            int[] nums2, int index2) {
+    /**
+     * Part of subproblem 2 - merging.
+     * Helps the greedy merge algorithm decide which num array to
+     * go with in case both num array 1 and 2 currently have equal values.
+     *
+     * This picks the array with the bigger number on the right.
+     */
+    private static boolean isFirstNumArrayBetter(int[] nums1, int index1,
+                                                 int[] nums2, int index2) {
         Boolean isFirstBetter = null;
         while (index1 < nums1.length && index2 < nums2.length) {
             if (nums1[index1] > nums2[index2]) {
@@ -159,13 +197,21 @@ public class CreateMaximumNumber {
         return isFirstBetter;
     }
 
-    private static long getNumericValue(int[] numArray) {
-        long value = 0, powerIndex = 0;
-        for (int i = numArray.length - 1; i >= 0; i--) {
-            value += numArray[i] * Math.pow(10, powerIndex);
-            powerIndex++;
+    private static boolean isFirstNumBigger(int[] first, int[] second) {
+        if (first.length != second.length) {
+            return first.length > second.length;
         }
 
-        return value;
+        boolean isFirstBigger = true;
+        for (int i = 0; i < first.length; i++) {
+            if (first[i] == second[i]) {
+                continue;
+            }
+
+            isFirstBigger = first[i] > second[i];
+            break;
+        }
+
+        return isFirstBigger;
     }
 }
