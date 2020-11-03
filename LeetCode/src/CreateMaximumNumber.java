@@ -10,21 +10,52 @@ public class CreateMaximumNumber {
 //            System.out.print(num + " ");
 //        }
 
-        int[] nums1 = { 6, 7, 8 };
-        int[] nums2 = { 9, 7, 2, 9 };
+//        int[] nums1 = { 6, 7, 8 };
+//        int[] nums2 = { 9, 7, 2, 9 };
 
-        int[] mergeNum = mergeMaximumNumbers(nums1, nums2);
-        for (int num: mergeNum) {
+//        int[] mergeNum = mergeMaximumNumbers(nums1, nums2);
+//        for (int num: mergeNum) {
+//            System.out.print(num + ", ");
+//        }
+
+//        System.out.println(getNumericValue(nums2));
+
+//        int[] nums1 = { 6, 7, 8 };
+//        int[] nums2 = { 9, 7, 2, 9 };
+
+//        int[] nums1 = { 3, 4, 6, 5 };
+//        int[] nums2 = { 9, 1, 2, 5, 8, 3 };
+
+//        int[] nums1 = { 6, 7 };
+//        int[] nums2 = { 6, 0, 4 };
+
+        int[] nums1 = { 3, 9};
+        int[] nums2 = { 8, 9 };
+
+        int[] maxNum = maxNumber(nums1, nums2, 3);
+        for (int num: maxNum) {
             System.out.print(num + ", ");
         }
     }
 
-//    public static int[] maxNumber(int[] nums1, int[] nums2, int k) {
-//        int[] maxNums1 = getMaximumNumber(nums1, k);
-//        int[] maxNums2 = getMaximumNumber(nums2, k);
-//
-//        return mergeMaximumNumbers(maxNums1, maxNums2);
-//    }
+    public static int[] maxNumber(int[] nums1, int[] nums2, int k) {
+        long maxValue = Long.MIN_VALUE;
+        int[] maxNumber = null;
+
+        for (int i = 0; i <= k; i++) {
+            int[] maxNums1 = getMaximumNumber(nums1, i);
+            int[] maxNums2 = getMaximumNumber(nums2, k-i);
+
+            int[] mergeNum = mergeMaximumNumbers(maxNums1, maxNums2);
+            long mergeNumVal = getNumericValue(mergeNum);
+            if (mergeNumVal > maxValue) {
+                maxValue = mergeNumVal;
+                maxNumber = mergeNum;
+            }
+        }
+
+        return maxNumber;
+    }
 
     private static int[] getMaximumNumber(int[] nums, int k) {
         Deque<Integer> numStack = new ArrayDeque<>(k);
@@ -120,5 +151,15 @@ public class CreateMaximumNumber {
         }
 
         return isFirstBetter;
+    }
+
+    private static long getNumericValue(int[] numArray) {
+        long value = 0, powerIndex = 0;
+        for (int i = numArray.length - 1; i >= 0; i--) {
+            value += numArray[i] * Math.pow(10, powerIndex);
+            powerIndex++;
+        }
+
+        return value;
     }
 }
