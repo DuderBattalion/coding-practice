@@ -29,10 +29,16 @@ public class CreateMaximumNumber {
 //        int[] nums1 = { 6, 7 };
 //        int[] nums2 = { 6, 0, 4 };
 
-        int[] nums1 = { 3, 9};
-        int[] nums2 = { 8, 9 };
+//        int[] nums1 = { 3, 9};
+//        int[] nums2 = { 8, 9 };
 
-        int[] maxNum = maxNumber(nums1, nums2, 3);
+//        int[] nums1 = {  };
+//        int[] nums2 = {  };
+
+        int[] nums1 = { 1,6,5,4,7,3,9,5,3,7,8,4,1,1,4 };
+        int[] nums2 = { 4,3,1,3,5,9 };
+
+        int[] maxNum = maxNumber(nums1, nums2, 21);
         for (int num: maxNum) {
             System.out.print(num + ", ");
         }
