@@ -12,8 +12,8 @@ public class CreateMaximumNumber {
     }
 
 //    public static int[] maxNumber(int[] nums1, int[] nums2, int k) {
-//        int[] maxNums1 = getMaximumNumber(nums1);
-//        int[] maxNums2 = getMaximumNumber(nums2);
+//        int[] maxNums1 = getMaximumNumber(nums1, k);
+//        int[] maxNums2 = getMaximumNumber(nums2, k);
 //
 //        return mergeMaximumNumbers(maxNums1, maxNums2);
 //    }
@@ -23,7 +23,7 @@ public class CreateMaximumNumber {
 
         for (int i = 0; i < nums.length; i++) {
              while (!numStack.isEmpty()
-                     && (numStack.size() + (nums.length - i)) >= k
+                     && (numStack.size() + (nums.length - i)) > k
                      && nums[i] > numStack.peek()) {
                  numStack.pop();
              }
