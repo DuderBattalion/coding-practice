@@ -20,7 +20,7 @@ public class LongestIncreasingPathInMatrix {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 int count = calculateMaxIncreasingPath(matrix, i, j, rows, cols,
-                        0, maxCount, cache);
+                        0, Integer.MIN_VALUE, cache);
                 if (count > maxCount) {
                     maxCount = count;
                 }
@@ -46,7 +46,7 @@ public class LongestIncreasingPathInMatrix {
 
         String key = getSignature(i , j);
         if (cache.containsKey(key)) {
-            return cache.get(key);
+            return count + cache.get(key);
         }
 
 
@@ -63,7 +63,11 @@ public class LongestIncreasingPathInMatrix {
 
         Arrays.sort(counts, Collections.reverseOrder());
 
-        cache.put(key, counts[0]);
-        return counts[0];
+        if (count == 0) {
+            cache.put(key, counts[0]);
+        }
+
+        count += counts[0];
+        return count;
     }
 }
