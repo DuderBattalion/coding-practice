@@ -2,10 +2,16 @@ import java.util.*;
 
 public class LongestIncreasingPathInMatrix {
     public static void main(String[] args) {
+//        int[][] nums = {
+//                { 9, 9, 4 },
+//                { 6, 6, 8 },
+//                { 2, 1, 1 }
+//        };
+
         int[][] nums = {
-                { 9, 9, 4 },
-                { 6, 6, 8 },
-                { 2, 1, 1 }
+                { 3, 4, 5 },
+                { 3, 2, 6 },
+                { 2, 2, 1 }
         };
 
         System.out.println(longestIncreasingPath(nums));
@@ -67,7 +73,6 @@ public class LongestIncreasingPathInMatrix {
             cache.put(key, counts[0]);
         }
 
-        count += counts[0];
-        return count;
+        return counts[0];
     }
 }
