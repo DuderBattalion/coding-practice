@@ -8,18 +8,28 @@ public class LongestIncreasingPathInMatrix {
 //                { 2, 1, 1 }
 //        };
 
-        int[][] nums = {
-                { 3, 4, 5 },
-                { 3, 2, 6 },
-                { 2, 2, 1 }
-        };
+//        int[][] nums = {
+//                { 3, 4, 5 },
+//                { 3, 2, 6 },
+//                { 2, 2, 1 }
+//        };
+
+//        int[][] nums = { };
+        int[][] nums = { { } };
 
         System.out.println(longestIncreasingPath(nums));
     }
 
     public static int longestIncreasingPath(int[][] matrix) {
         int rows = matrix.length;
+        if (rows == 0) {
+            return 0;
+        }
+
         int cols = matrix[0].length;
+        if (cols == 0) {
+            return 0;
+        }
 
         int maxCount = Integer.MIN_VALUE;
         Map<String, Integer> cache = new HashMap<>();
