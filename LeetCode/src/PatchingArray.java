@@ -46,8 +46,11 @@ public class PatchingArray {
 //        System.out.println(getFirstMissingNumber(sortedNumbers, 100));
 //        System.out.println(getFirstMissingNumber(sortedNumbers, 3));
 
-        int[] nums = { 1, 3 };
-        System.out.println(minPatches(nums, 6));
+//        int[] nums = { 1, 3 };
+//        System.out.println(minPatches(nums, 6));
+
+        int[] nums = { 1, 5, 10 };
+        System.out.println(minPatches(nums, 20));
     }
 
     /**
@@ -76,7 +79,7 @@ public class PatchingArray {
             // If complete sum set, but not adding up to range n
             // ex: sums { 1, 2, 3 } with n = 6,
             // next missing number = 4
-            if (smallestMissingNumber < 0 && numberSums.size() != n) {
+            if (smallestMissingNumber < 0 && numberSums.size() < n) {
                 smallestMissingNumber = numberSums.last() + 1;
             }
         }
