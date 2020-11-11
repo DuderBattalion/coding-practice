@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class PatchingArray {
     public static void main(String[] args) {
@@ -20,22 +19,34 @@ public class PatchingArray {
 //        System.out.println(numberSets.size());
 
         // Test - calculateNumberSums()
-        List<List<Integer>> numberSets = new ArrayList<>();
+//        List<List<Integer>> numberSets = new ArrayList<>();
+//
+//        List<Integer> numberSet1 = new ArrayList<>();
+//        numberSet1.add(1);
+//        numberSet1.add(2);
+//        numberSet1.add(3);
+//
+//        List<Integer> numberSet2 = new ArrayList<>();
+//        numberSet2.add(4);
+//        numberSet2.add(5);
+//        numberSet2.add(6);
+//
+//        numberSets.add(numberSet1);
+//        numberSets.add(numberSet2);
+//
+//        System.out.println(calculateNumberSums(numberSets));
 
-        List<Integer> numberSet1 = new ArrayList<>();
-        numberSet1.add(1);
-        numberSet1.add(2);
-        numberSet1.add(3);
+        // Test - getFirstMissingNumber()
+        SortedSet<Integer> sortedNumbers = new TreeSet<>();
+        sortedNumbers.add(3);
+        sortedNumbers.add(2);
+        sortedNumbers.add(2);
+        sortedNumbers.add(1);
+        sortedNumbers.add(5);
 
-        List<Integer> numberSet2 = new ArrayList<>();
-        numberSet2.add(4);
-        numberSet2.add(5);
-        numberSet2.add(6);
+        System.out.println(getFirstMissingNumber(sortedNumbers, 100));
+        System.out.println(getFirstMissingNumber(sortedNumbers, 3));
 
-        numberSets.add(numberSet1);
-        numberSets.add(numberSet2);
-
-        System.out.println(calculateNumberSums(numberSets));
     }
 
     /**
@@ -101,5 +112,34 @@ public class PatchingArray {
         }
 
         return numberSums;
+    }
+
+    // TODO - start index
+    private static int getFirstMissingNumber(SortedSet<Integer> numbers, int n) {
+        if (numbers.isEmpty()) {
+            return -1;
+        }
+
+        Integer prevNum = null;
+        Integer missingNum = null;
+        for (int number: numbers) {
+            if (number > n) {
+                return -1; // No missing numbers found in range.
+            }
+
+            if (prevNum == null) {
+                prevNum = number;
+                continue;
+            }
+
+            if (number == (prevNum + 1)) {
+                prevNum = number;
+            } else {
+                missingNum = prevNum + 1;
+                break;
+            }
+        }
+
+        return missingNum == null ? -1 : missingNum;
     }
 }
