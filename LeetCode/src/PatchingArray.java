@@ -49,8 +49,14 @@ public class PatchingArray {
 //        int[] nums = { 1, 3 };
 //        System.out.println(minPatches(nums, 6));
 
-        int[] nums = { 1, 5, 10 };
-        System.out.println(minPatches(nums, 20));
+//        int[] nums = { 1, 5, 10 };
+//        System.out.println(minPatches(nums, 20));
+
+//        int[] nums = { 1, 2, 2 };
+//        System.out.println(minPatches(nums, 5));
+
+        int[] nums = {  };
+        System.out.println(minPatches(nums, 7));
     }
 
     /**
@@ -130,7 +136,7 @@ public class PatchingArray {
     // TODO - start index
     private static int getFirstMissingNumber(SortedSet<Integer> numbers, int n) {
         if (numbers.isEmpty()) {
-            return -1;
+            return 1;
         }
 
         Integer prevNum = null;
