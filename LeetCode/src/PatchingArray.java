@@ -49,14 +49,14 @@ public class PatchingArray {
 //        int[] nums = { 1, 3 };
 //        System.out.println(minPatches(nums, 6));
 
-//        int[] nums = { 1, 5, 10 };
-//        System.out.println(minPatches(nums, 20));
+        int[] nums = { 1, 5, 10 };
+        System.out.println(minPatches(nums, 20));
 
 //        int[] nums = { 1, 2, 2 };
 //        System.out.println(minPatches(nums, 5));
-
-        int[] nums = {  };
-        System.out.println(minPatches(nums, 7));
+//
+//        int[] nums = {  };
+//        System.out.println(minPatches(nums, 7));
     }
 
     /**
@@ -71,23 +71,23 @@ public class PatchingArray {
      */
     public static int minPatches(int[] nums, int n) {
         List<List<Integer>> numberSets = generatePowerSet(nums);
-        SortedSet<Integer> numberSums = calculateNumberSums(numberSets);
+        Set<Integer> numberSums = calculateNumberSums(numberSets);
 
         int patchCount = 0;
-        int smallestMissingNumber = getFirstMissingNumber(numberSums, n);
-        while (smallestMissingNumber > 0) {
-            numberSets = extendNumberSets(numberSets, smallestMissingNumber);
+        int missingNumber = getFirstMissingNumber(numberSums, 1, n);
+        while (missingNumber > 0) {
+            numberSets = extendNumberSets(numberSets, missingNumber);
             numberSums = calculateNumberSums(numberSets);
             patchCount++;
 
-            smallestMissingNumber = getFirstMissingNumber(numberSums, n);
+            missingNumber = getFirstMissingNumber(numberSums, missingNumber, n);
 
             // If complete sum set, but not adding up to range n
             // ex: sums { 1, 2, 3 } with n = 6,
             // next missing number = 4
-            if (smallestMissingNumber < 0 && numberSums.size() < n) {
-                smallestMissingNumber = numberSums.last() + 1;
-            }
+//            if (missingNumber < 0 && numberSums.size() < n) {
+//                missingNumber = numberSums. + 1;
+//            }
         }
 
         return patchCount;
@@ -118,8 +118,8 @@ public class PatchingArray {
         return powerSet;
     }
 
-    private static SortedSet<Integer> calculateNumberSums(List<List<Integer>> numberSets) {
-        SortedSet<Integer> numberSums = new TreeSet<>();
+    private static Set<Integer> calculateNumberSums(List<List<Integer>> numberSets) {
+        Set<Integer> numberSums = new HashSet<>();
 
         for (List<Integer> numberSet: numberSets) {
             int count = 0;
@@ -134,29 +134,34 @@ public class PatchingArray {
     }
 
     // TODO - start index
-    private static int getFirstMissingNumber(SortedSet<Integer> numbers, int n) {
+    private static int getFirstMissingNumber(Set<Integer> numbers, int start, int n) {
         if (numbers.isEmpty()) {
-            return 1;
+            return start;
         }
 
-        Integer prevNum = null;
+//        Integer prevNum = null;
         Integer missingNum = null;
-        for (int number: numbers) {
-            if (number > n) {
-                return -1; // No missing numbers found in range.
-            }
+        for (int i = start; i <= n; i++) {
+//            if (number > n) {
+//                return -1; // No missing numbers found in range.
+//            }
 
-            if (prevNum == null) {
-                prevNum = number;
-                continue;
-            }
-
-            if (number == (prevNum + 1)) {
-                prevNum = number;
-            } else {
-                missingNum = prevNum + 1;
+            if (!numbers.contains(i)) {
+                missingNum = i;
                 break;
             }
+
+//            if (prevNum == null) {
+//                prevNum = i;
+//                continue;
+//            }
+//
+//            if (i == (prevNum + 1)) {
+//                prevNum = number;
+//            } else {
+//                missingNum = prevNum + 1;
+//                break;
+//            }
         }
 
         return missingNum == null ? -1 : missingNum;
