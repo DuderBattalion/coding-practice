@@ -1,7 +1,7 @@
 package com.leetcode.util;
 
 /**
- * Referenced from GeeoksOfGeeks:
+ * Referenced from GeeksOfGeeks:
  * https://www.geeksforgeeks.org/trie-insert-and-search/
  */
 public class Trie {
@@ -43,19 +43,6 @@ public class Trie {
     }
 
     public boolean searchPrefix(String key) {
-//        boolean isFound = true;
-//
-//        TrieNode node = root;
-//        for (Character token: key.toCharArray()) {
-//            int charIndex = token - 'a';
-//            if (node.children[charIndex] == null) {
-//                isFound = false;
-//                break;
-//            }
-//
-//            node = node.children[charIndex];
-//        }
-
         TrieNode node = findNode(key);
         return (node != null);
     }
@@ -76,19 +63,6 @@ public class Trie {
     }
 
     public boolean search(String key) {
-//        boolean isFound = true;
-//
-//        TrieNode node = root;
-//        for (Character token: key.toCharArray()) {
-//            int charIndex = token - 'a';
-//            if (node.children[charIndex] == null) {
-//                isFound = false;
-//                break;
-//            }
-//
-//            node = node.children[charIndex];
-//        }
-
         TrieNode node = findNode(key);
         return node != null && node.isEndOfWord;
     }
