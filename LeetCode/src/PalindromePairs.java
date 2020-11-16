@@ -6,9 +6,17 @@ public class PalindromePairs {
     public static void main(String[] args) {
         String[] words = { "abcd","dcba","lls","s","sssll" };
 
+        List<List<Integer>> palindromePairs = palindromePairs(words);
+        for (List<Integer> palindromePair: palindromePairs) {
+            for (int index: palindromePair) {
+                System.out.print(index + ", ");
+            }
+
+            System.out.println();
+        }
     }
 
-    public List<List<Integer>> palindromePairs(String[] words) {
+    public static List<List<Integer>> palindromePairs(String[] words) {
         ModifiedTrie reverseWordPrefixes = new ModifiedTrie();
 
         for (int i = 0; i < words.length; i++) {
@@ -17,14 +25,16 @@ public class PalindromePairs {
 
         List<List<Integer>> results = new ArrayList<>();
         for (int i = 0; i < words.length; i++) {
-            String reverseWord = reverseWord(words[i]);
-            ModifiedTrieNode node = reverseWordPrefixes.search(reverseWord);
-            if (node != null && node.isWord) {
+//            String reverseWord = reverseWord(words[i]);
+            ModifiedTrieNode node = reverseWordPrefixes.search(words[i]);
+            if (node != null) {
                 List<Integer> result = new ArrayList<>();
-                result.add(i);
-                result.add(node.wordIndex);
+                if (node.isWord) {
+                    result.add(i);
+                    result.add(node.wordIndex);
 
-                results.add(result);
+                    results.add(result);
+                }
 
                 List<Integer> childPalindromeIndices = node.getChildPalindromeIndices();
                 for (int childIndex: childPalindromeIndices) {
@@ -104,6 +114,10 @@ public class PalindromePairs {
     }
 
     private static boolean isPalindrome(String word, int start, int end) {
+        if (start < 0 || start >= word.length() || end < 0 || end >= word.length()) {
+            return false;
+        }
+
         boolean isPalindrome = true;
         while (start < end) {
             if (word.charAt(start) != word.charAt(end)) {
