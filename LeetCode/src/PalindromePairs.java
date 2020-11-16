@@ -1,10 +1,14 @@
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PalindromePairs {
     public static void main(String[] args) {
-        String[] words = { "abcd","dcba","lls","s","sssll" };
+//        String[] words = { "abcd","dcba","lls","s","sssll" };
+//        String[] words = { "bat", "tab", "cat" };
+        String[] words = { "a", "" };
 
         List<List<Integer>> palindromePairs = palindromePairs(words);
         for (List<Integer> palindromePair: palindromePairs) {
@@ -17,14 +21,44 @@ public class PalindromePairs {
     }
 
     public static List<List<Integer>> palindromePairs(String[] words) {
-        ModifiedTrie reverseWordPrefixes = new ModifiedTrie();
+        List<List<Integer>> results = new ArrayList<>();
 
+        Set<Integer> emptyWordIndices = new HashSet<>();
+        Set<Integer> nonEmptyWordIndices = new HashSet<>();
+
+        ModifiedTrie reverseWordPrefixes = new ModifiedTrie();
         for (int i = 0; i < words.length; i++) {
+            if (words[i].isEmpty()) {
+                emptyWordIndices.add(i);
+                continue;
+            }
+
             reverseWordPrefixes.insert(reverseWord(words[i]), i);
+            nonEmptyWordIndices.add(i);
         }
 
-        List<List<Integer>> results = new ArrayList<>();
+        // Empty words can be added to all other words to make palindrome pairs
+        for (int emptyWordIndex: emptyWordIndices) {
+            for (int nonEmptyWordIndex: nonEmptyWordIndices) {
+                List<Integer> result = new ArrayList<>();
+                result.add(emptyWordIndex);
+                result.add(nonEmptyWordIndex);
+
+                results.add(result);
+
+                result = new ArrayList<>();
+                result.add(nonEmptyWordIndex);
+                result.add(emptyWordIndex);
+
+                results.add(result);
+            }
+        }
+
         for (int i = 0; i < words.length; i++) {
+            if (words[i].isEmpty()) {
+                continue; // TODO - can be replaced with nonEmptyIndices set loop
+            }
+
             ModifiedTrieNode node = reverseWordPrefixes.search(words[i]);
             if (node != null) {
                 List<Integer> result = new ArrayList<>();
