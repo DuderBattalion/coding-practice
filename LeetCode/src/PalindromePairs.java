@@ -8,8 +8,9 @@ public class PalindromePairs {
     public static void main(String[] args) {
 //        String[] words = { "abcd","dcba","lls","s","sssll" };
 //        String[] words = { "bat", "tab", "cat" };
-//        String[] words = { "a", "" };
-        String[] words = { "", ""};
+        String[] words = { "a", "" };
+//        String[] words = { "", ""};
+//        String[] words = { "a", "abc", "aba", ""};
 
         List<List<Integer>> palindromePairs = palindromePairs(words);
         for (List<Integer> palindromePair: palindromePairs) {
@@ -24,40 +25,29 @@ public class PalindromePairs {
     public static List<List<Integer>> palindromePairs(String[] words) {
         List<List<Integer>> results = new ArrayList<>();
 
-        Set<Integer> emptyWordIndices = new HashSet<>();
-        Set<Integer> nonEmptyWordIndices = new HashSet<>();
-
         ModifiedTrie reverseWordPrefixes = new ModifiedTrie();
         for (int i = 0; i < words.length; i++) {
-            if (words[i].isEmpty()) {
-                emptyWordIndices.add(i);
-                continue;
-            }
-
             reverseWordPrefixes.insert(reverseWord(words[i]), i);
-            nonEmptyWordIndices.add(i);
-        }
-
-        // Empty words can be added to all other words to make palindrome pairs
-        for (int emptyWordIndex: emptyWordIndices) {
-            for (int nonEmptyWordIndex: nonEmptyWordIndices) {
-                List<Integer> result = new ArrayList<>();
-                result.add(emptyWordIndex);
-                result.add(nonEmptyWordIndex);
-
-                results.add(result);
-
-                result = new ArrayList<>();
-                result.add(nonEmptyWordIndex);
-                result.add(emptyWordIndex);
-
-                results.add(result);
-            }
         }
 
         for (int i = 0; i < words.length; i++) {
+            // Empty words can be added to all other words to make palindrome pairs
             if (words[i].isEmpty()) {
-                continue; // TODO - can be replaced with nonEmptyIndices set loop
+                for (int palindromeIndex: reverseWordPrefixes.getPalindromeIndices()) {
+                    List<Integer> result = new ArrayList<>();
+                    result.add(i);
+                    result.add(palindromeIndex);
+
+                    results.add(result);
+
+                    result = new ArrayList<>();
+                    result.add(palindromeIndex);
+                    result.add(i);
+
+                    results.add(result);
+                }
+
+                continue;
             }
 
             ModifiedTrieNode node = reverseWordPrefixes.search(words[i]);
@@ -99,7 +89,7 @@ public class PalindromePairs {
                     node.children[index] = new ModifiedTrieNode();
                 }
 
-                if (isPalindrome(word, i+1, word.length() - 1)) {
+                if (isPalindrome(word, i, word.length() - 1)) {
                     node.addChildPalindrome(wordIndex);
                 }
 
@@ -123,6 +113,10 @@ public class PalindromePairs {
             }
 
             return node;
+        }
+
+        public List<Integer> getPalindromeIndices() {
+            return root.childPalindromeIndices;
         }
     }
 
@@ -148,10 +142,6 @@ public class PalindromePairs {
     }
 
     private static boolean isPalindrome(String word, int start, int end) {
-        if (start < 0 || start >= word.length() || end < 0 || end >= word.length()) {
-            return false;
-        }
-
         boolean isPalindrome = true;
         while (start < end) {
             if (word.charAt(start) != word.charAt(end)) {
@@ -169,23 +159,4 @@ public class PalindromePairs {
     private static String reverseWord(String word) {
         return new StringBuilder(word).reverse().toString();
     }
-
-//    private static void addResultIfValid(List<List<Integer>> results, String word,
-//                                  String reverseWord, Map<String, Integer> wordIndexes) {
-//       Integer wordIndex = wordIndexes.get(word);
-//       if (wordIndex == null) {
-//           return;
-//       }
-//
-//       Integer reverseWordIndex = wordIndexes.get(reverseWord);
-//       if (reverseWordIndex == null) {
-//           return;
-//       }
-//
-//       List<Integer> result = new ArrayList<>();
-//       result.add(wordIndex);
-//       result.add(reverseWordIndex);
-//
-//       results.add(result);
-//    }
 }
