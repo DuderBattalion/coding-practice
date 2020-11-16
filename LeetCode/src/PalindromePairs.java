@@ -28,7 +28,7 @@ public class PalindromePairs {
             ModifiedTrieNode node = reverseWordPrefixes.search(words[i]);
             if (node != null) {
                 List<Integer> result = new ArrayList<>();
-                if (node.isWord) {
+                if (node.isWord && node.wordIndex != i) {
                     result.add(i);
                     result.add(node.wordIndex);
 
