@@ -8,7 +8,8 @@ public class PalindromePairs {
     public static void main(String[] args) {
 //        String[] words = { "abcd","dcba","lls","s","sssll" };
 //        String[] words = { "bat", "tab", "cat" };
-        String[] words = { "a", "" };
+//        String[] words = { "a", "" };
+        String[] words = { "", ""};
 
         List<List<Integer>> palindromePairs = palindromePairs(words);
         for (List<Integer> palindromePair: palindromePairs) {
