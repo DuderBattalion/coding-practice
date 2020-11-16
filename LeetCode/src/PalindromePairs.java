@@ -10,7 +10,9 @@ public class PalindromePairs {
 //        String[] words = { "bat", "tab", "cat" };
 //        String[] words = { "a", "" };
 //        String[] words = { "", ""};
+
         String[] words = { "a", "abc", "aba", ""};
+//        String[] words = { "a","aa","aaa" };
 
         List<List<Integer>> palindromePairs = palindromePairs(words);
         for (List<Integer> palindromePair: palindromePairs) {
@@ -31,33 +33,52 @@ public class PalindromePairs {
         }
 
         for (int i = 0; i < words.length; i++) {
-            // Empty words can be added to all other words to make palindrome pairs
-            if (words[i].isEmpty()) {
-                for (int palindromeIndex: reverseWordPrefixes.getPalindromeIndices()) {
-                    addResult(results, i, palindromeIndex);
-                    addResult(results, palindromeIndex, i);
-                }
-
-                continue;
-            }
-
-//            ModifiedTrieNode node = reverseWordPrefixes.search(words[i]);
-//            if (node != null) {
-//                if (node.isWord && node.wordIndex != i) {
-//                    addResult(results, i, node.wordIndex);
+//            // Empty words can be added to all other words to make palindrome pairs
+//            if (words[i].isEmpty()) {
+//                for (int palindromeIndex: reverseWordPrefixes.getPalindromeIndices()) {
+//                    addResult(results, i, palindromeIndex);
+//                    addResult(results, palindromeIndex, i);
 //                }
 //
-//                List<Integer> childPalindromeIndices = node.getChildPalindromeIndices();
-//                for (int childIndex: childPalindromeIndices) {
-//                    addResult(results, i, childIndex);
-//                }
+//                continue;
 //            }
 
-            processPrefixWithChildren(words[i], i, results, reverseWordPrefixes); // abcd + dcba
+//            processPrefixWithChildren(words[i], i, results, reverseWordPrefixes); // abcd + dcba
+//
+//            if (words[i].length() > 1) {
+//                processPrefixOnly(words[i].substring(0, words[i].length() - 1), i, // abcd + cba
+//                        results, reverseWordPrefixes);
+//            }
 
-            if (words[i].length() > 1) {
-                processPrefixOnly(words[i].substring(0, words[i].length() - 1), i, // abcd + cba
-                        results, reverseWordPrefixes);
+            // Case 1: Prefix of string a + palindrome string a  + whole string b
+            String word = words[i];
+            for (int j = 1; j <= word.length(); j++) {
+                String prefix = word.substring(0, j);
+                ModifiedTrieNode node = reverseWordPrefixes.search(prefix);
+                if (node == null || !node.isWord || node.wordIndex == i) {
+                    continue;
+                }
+
+                String suffix = "";
+                if (j < word.length()) {
+                    suffix = word.substring(j, word.length());
+                }
+
+                if (isPalindrome(suffix, 0, suffix.length() - 1)) {
+                    addResult(results, i, node.wordIndex);
+                }
+            }
+
+            // Case 2: Whole word a + palindrome (b) + reverse prefix of b
+            ModifiedTrieNode reversePrefix = reverseWordPrefixes.search(word);
+            if (reversePrefix != null) {
+//                if (reversePrefix.isWord) {
+//                    addResult(results, i, reversePrefix.wordIndex);
+//                }
+
+                for (int childIndex: reversePrefix.getChildPalindromeIndices()) {
+                    addResult(results, i, childIndex);
+                }
             }
         }
 
@@ -173,19 +194,27 @@ public class PalindromePairs {
         }
     }
 
-    private static void processPrefixWithChildren(String prefix, int wordIndex,
+    /**
+     * 1st case : prefix of String a + latter part of a(palindrome) + whole String b = new palindrome.
+     * 2nd case : whole String a + prefix of String b(palindrome) + suffix of String b = new palindrome.
+     */
+    private static void processPrefixWithChildren(String word, int wordIndex,
                                       List<List<Integer>> results,
                                       ModifiedTrie reverseWordPrefixes) {
-        ModifiedTrieNode node = reverseWordPrefixes.search(prefix);
-        if (node != null) {
-            if (node.isWord && node.wordIndex != wordIndex) {
-                addResult(results, wordIndex, node.wordIndex);
-            }
+//        ModifiedTrieNode node = reverseWordPrefixes.search(prefix);
+//        if (node != null) {
+//            if (node.isWord && node.wordIndex != wordIndex) {
+//                addResult(results, wordIndex, node.wordIndex);
+//            }
+//
+//            List<Integer> childPalindromeIndices = node.getChildPalindromeIndices();
+//            for (int childIndex: childPalindromeIndices) {
+//                addResult(results, wordIndex, childIndex);
+//            }
+//        }
 
-            List<Integer> childPalindromeIndices = node.getChildPalindromeIndices();
-            for (int childIndex: childPalindromeIndices) {
-                addResult(results, wordIndex, childIndex);
-            }
-        }
+//        // TODO - impelement both cases
+//        // Case 1: Prefix of string a + Palindrome of a + whole string b
+//        for (int i = 0; i < )
     }
 }
