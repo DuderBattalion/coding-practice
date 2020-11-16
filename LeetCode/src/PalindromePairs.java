@@ -8,9 +8,9 @@ public class PalindromePairs {
     public static void main(String[] args) {
 //        String[] words = { "abcd","dcba","lls","s","sssll" };
 //        String[] words = { "bat", "tab", "cat" };
-        String[] words = { "a", "" };
+//        String[] words = { "a", "" };
 //        String[] words = { "", ""};
-//        String[] words = { "a", "abc", "aba", ""};
+        String[] words = { "a", "abc", "aba", ""};
 
         List<List<Integer>> palindromePairs = palindromePairs(words);
         for (List<Integer> palindromePair: palindromePairs) {
@@ -34,40 +34,30 @@ public class PalindromePairs {
             // Empty words can be added to all other words to make palindrome pairs
             if (words[i].isEmpty()) {
                 for (int palindromeIndex: reverseWordPrefixes.getPalindromeIndices()) {
-                    List<Integer> result = new ArrayList<>();
-                    result.add(i);
-                    result.add(palindromeIndex);
-
-                    results.add(result);
-
-                    result = new ArrayList<>();
-                    result.add(palindromeIndex);
-                    result.add(i);
-
-                    results.add(result);
+                    addResult(results, i, palindromeIndex);
+                    addResult(results, palindromeIndex, i);
                 }
 
                 continue;
             }
 
-            ModifiedTrieNode node = reverseWordPrefixes.search(words[i]);
-            if (node != null) {
-                List<Integer> result = new ArrayList<>();
-                if (node.isWord && node.wordIndex != i) {
-                    result.add(i);
-                    result.add(node.wordIndex);
+//            ModifiedTrieNode node = reverseWordPrefixes.search(words[i]);
+//            if (node != null) {
+//                if (node.isWord && node.wordIndex != i) {
+//                    addResult(results, i, node.wordIndex);
+//                }
+//
+//                List<Integer> childPalindromeIndices = node.getChildPalindromeIndices();
+//                for (int childIndex: childPalindromeIndices) {
+//                    addResult(results, i, childIndex);
+//                }
+//            }
 
-                    results.add(result);
-                }
+            processPrefixWithChildren(words[i], i, results, reverseWordPrefixes); // abcd + dcba
 
-                List<Integer> childPalindromeIndices = node.getChildPalindromeIndices();
-                for (int childIndex: childPalindromeIndices) {
-                    result = new ArrayList<>();
-                    result.add(i);
-                    result.add(childIndex);
-
-                    results.add(result);
-                }
+            if (words[i].length() > 1) {
+                processPrefixOnly(words[i].substring(0, words[i].length() - 1), i, // abcd + cba
+                        results, reverseWordPrefixes);
             }
         }
 
@@ -158,5 +148,44 @@ public class PalindromePairs {
 
     private static String reverseWord(String word) {
         return new StringBuilder(word).reverse().toString();
+    }
+
+    private static void addResult(List<List<Integer>> results, int first, int second) {
+        if (results == null) {
+            return;
+        }
+
+        List<Integer> result = new ArrayList<>();
+        result.add(first);
+        result.add(second);
+
+        results.add(result);
+    }
+
+    private static void processPrefixOnly(String prefix, int wordIndex,
+                                      List<List<Integer>> results,
+                                      ModifiedTrie reverseWordPrefixes) {
+        ModifiedTrieNode node = reverseWordPrefixes.search(prefix);
+        if (node != null) {
+            if (node.isWord && node.wordIndex != wordIndex) {
+                addResult(results, wordIndex, node.wordIndex);
+            }
+        }
+    }
+
+    private static void processPrefixWithChildren(String prefix, int wordIndex,
+                                      List<List<Integer>> results,
+                                      ModifiedTrie reverseWordPrefixes) {
+        ModifiedTrieNode node = reverseWordPrefixes.search(prefix);
+        if (node != null) {
+            if (node.isWord && node.wordIndex != wordIndex) {
+                addResult(results, wordIndex, node.wordIndex);
+            }
+
+            List<Integer> childPalindromeIndices = node.getChildPalindromeIndices();
+            for (int childIndex: childPalindromeIndices) {
+                addResult(results, wordIndex, childIndex);
+            }
+        }
     }
 }
