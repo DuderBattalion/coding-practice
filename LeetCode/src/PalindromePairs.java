@@ -25,7 +25,6 @@ public class PalindromePairs {
 
         List<List<Integer>> results = new ArrayList<>();
         for (int i = 0; i < words.length; i++) {
-//            String reverseWord = reverseWord(words[i]);
             ModifiedTrieNode node = reverseWordPrefixes.search(words[i]);
             if (node != null) {
                 List<Integer> result = new ArrayList<>();
@@ -65,8 +64,8 @@ public class PalindromePairs {
                     node.children[index] = new ModifiedTrieNode();
                 }
 
-                if (isPalindrome(word, i+1, word.length())) {
-                    node.addChildPalindrome(index);
+                if (isPalindrome(word, i+1, word.length() - 1)) {
+                    node.addChildPalindrome(wordIndex);
                 }
 
                 node = node.children[index];
