@@ -10,70 +10,94 @@ public class DataStreamDisjointIntervals {
     public void addNum(int val) {
         Interval interval = new Interval(val, val);
 
-        // Case 1: NUmber already exists
-        if (intervals.contains(interval)) {
+        Interval floor = intervals.floor(interval);
+        Interval ceiling = intervals.ceiling(interval);
+
+        if (isSubset(interval, floor) || isSubset(interval, ceiling)) {
+            // Case 4 - Subset of floor or ceiling, do nothing
             return;
         }
 
-        Interval lowerInterval = intervals.lower(interval);
-        Interval higherInterval = intervals.higher(interval);
+        boolean floorMergeable = isFloorMergeable(interval, floor);
+        boolean ceilingMergeable = isCeilingMergeable(interval, ceiling);
 
-        if (lowerInterval != null && higherInterval != null) {
-            int lowerDiff = val - lowerInterval.end;
-            int higherDiff = higherInterval.start - val;
-
-            if (lowerDiff == 1 && higherDiff == 1) {
-                mergeLowerAndHigher(lowerInterval, higherInterval);
-            } else if (lowerDiff == 1) {
-                mergeLowerInterval(val, lowerInterval);
-            } else if (higherDiff == 1){ // Higher diff == 1
-                mergeHigherInterval(val, higherInterval);
-            } else  {
-                // Case 3: No merge. Just add interval
-                intervals.add(interval);
-            }
-        } else if (lowerInterval != null) {
-            int lowerDiff = val - lowerInterval.end;
-
-            if (lowerDiff == 1) {
-                mergeLowerInterval(val, lowerInterval);
-            } else {
-                intervals.add(interval);
-            }
-        } else if (higherInterval != null) {
-            int higherDiff = higherInterval.start - val;
-
-            if (higherDiff == 1) {
-                mergeHigherInterval(val, higherInterval);
-            } else {
-                intervals.add(interval);
-            }
-        } else {
+        // Cases
+        // 0) No ceiling or floor, add interval
+        // 4) Interval subset of floor or ceiling - do nothing
+        // 1) Interval partially intersects floor and ceiling - merge floor and ceiling
+        // 2) Interval intersects with floor but not ceiling - merge floor and interval
+        // 3) Interval intersects with ceiling but not floor - merge interval and ceiling
+        // 5) Interval is disjoint - add interval
+        if ((floor == null && ceiling == null) || isDisjoint(interval, floor, ceiling)) {
             intervals.add(interval);
+        } else if (floorMergeable && ceilingMergeable) {
+            Interval newInterval = new Interval(floor.start, ceiling.end);
+
+            intervals.remove(floor);
+            intervals.remove(ceiling);
+            intervals.add(newInterval);
+        } else if (floorMergeable) {
+            Interval newInterval = new Interval(floor.start, interval.end);
+
+            intervals.remove(floor);
+            intervals.add(newInterval);
+        } else if (ceilingMergeable) {
+            Interval newInterval = new Interval(interval.start, ceiling.end);
+
+            intervals.remove(ceiling);
+            intervals.add(newInterval);
+        } else {
+            System.out.println("ERROR: This shouldn't happen.");
         }
     }
 
-    private void mergeLowerAndHigher(Interval lowerInterval, Interval higherInterval) {
-        Interval mergedInterval = new Interval(lowerInterval.start, higherInterval.end);
+    private boolean isSubset(Interval interval, Interval parentInterval) {
+        if (parentInterval == null) {
+            return false;
+        }
 
-        intervals.remove(lowerInterval);
-        intervals.remove(higherInterval);
-        intervals.add(mergedInterval);
+        if (interval == null) {
+            return true;
+        }
+
+        return (parentInterval.start <= interval.start && parentInterval.end >= interval.end);
     }
 
-    private void mergeLowerInterval(int val, Interval lowerInterval) {
-        Interval mergedInterval = new Interval(lowerInterval.start, val);
+    private boolean isDisjoint(Interval interval, Interval floor, Interval ceiling) {
+        if (interval == null) {
+            return false;
+        }
 
-        intervals.remove(lowerInterval);
-        intervals.add(mergedInterval);
+        boolean disjoint;
+        if (floor == null && ceiling == null) {
+            disjoint = true;
+        } else if (floor != null && ceiling != null) {
+            disjoint = (floor.end < (interval.start - 1) && ceiling.start > (interval.end + 1));
+        } else if (floor != null) {
+            disjoint = floor.end < (interval.start - 1);
+        } else {
+            disjoint = ceiling.start > (interval.end + 1);
+        }
+
+        return disjoint;
     }
 
-    private void mergeHigherInterval(int val, Interval higherInterval) {
-        Interval mergedInterval = new Interval(val, higherInterval.end);
+    private boolean isFloorMergeable(Interval interval, Interval floor) {
+        if (interval == null || floor == null) {
+            return false;
+        }
 
-        intervals.remove(higherInterval);
-        intervals.add(mergedInterval);
+        return (floor.end >= (interval.start - 1));
     }
+
+    private boolean isCeilingMergeable(Interval interval, Interval ceiling) {
+        if (interval == null || ceiling == null) {
+            return false;
+        }
+
+        return (ceiling.start <= (interval.start + 1));
+    }
+
 
     public int[][] getIntervals() {
         if (intervals.isEmpty()) {
