@@ -14,7 +14,6 @@ public class DataStreamDisjointIntervals {
         Interval ceiling = intervals.ceiling(interval);
 
         if (isSubset(interval, floor) || isSubset(interval, ceiling)) {
-            // Case 4 - Subset of floor or ceiling, do nothing
             return;
         }
 
