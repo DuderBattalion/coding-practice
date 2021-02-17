@@ -2,24 +2,17 @@ public class Driver {
     public static int[] count;
 
     public static void main(String[] args) {
-//        int[] nums = { 1, 3, 7, 2, 6 };
+        int[][] matrix = {
+            {3, 0, 1, 4, 2},
+            {5, 6, 3, 2, 1},
+            {1, 2, 0, 1, 5},
+            {4, 1, 0, 1, 7},
+            {1, 0, 3, 0, 5}
+        };
 
-//        int[] nums = { 1, 3, 7, 2, 6, 3, 4, 2 };
+        RangeSumQuery2DImmutable obj = new RangeSumQuery2DImmutable(matrix);
+        int param1 = obj.sumRegion(1, 2, 2, 4);
 
-//        int[] nums = {  };
-
-        int[] nums = { 1, 1, 1, 2, 3, 2, 3, 5, 4 };
-
-        DataStreamDisjointIntervals dataStream = new DataStreamDisjointIntervals();
-        for (int num: nums) {
-            dataStream.addNum(num);
-
-            int[][] intervals = dataStream.getIntervals();
-            for (int[] interval: intervals) {
-                System.out.print("[ " + interval[0] + ", " + interval[1] + " ],");
-            }
-
-            System.out.println();
-        }
+        System.out.println("Param1: " + param1);
     }
 }
