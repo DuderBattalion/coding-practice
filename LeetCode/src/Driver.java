@@ -1,3 +1,5 @@
+import com.leetcode.util.FenwickTreeSum;
+
 public class Driver {
     public static int[] count;
 
@@ -10,7 +12,10 @@ public class Driver {
             {1, 0, 3, 0, 5}
         };
 
-        RangeSumQuery2DImmutable obj = new RangeSumQuery2DImmutable(matrix);
+//        RangeSumQuery2DImmutable obj = new RangeSumQuery2DImmutable(matrix);
+//        int param1 = obj.sumRegion(1, 2, 2, 4);
+
+        RangeSumQuery2DMutable obj = new RangeSumQuery2DMutable(matrix);
         int param1 = obj.sumRegion(1, 2, 2, 4);
 
         System.out.println("Param1: " + param1);
