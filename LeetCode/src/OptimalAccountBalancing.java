@@ -147,7 +147,8 @@ public class OptimalAccountBalancing {
     }
 
     public static void main(String[] args) {
-        int[][] transactions = {{0,1,10}, {2,0,5}};
+//        int[][] transactions = {{0,1,10}, {2,0,5}};
+        int[][] transactions = {{0,1,10}, {1,0,1}, {1,2,5}, {2,0,5}};
         System.out.println(minTransfers(transactions));
     }
 }
