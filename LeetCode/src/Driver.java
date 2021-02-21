@@ -20,21 +20,49 @@ public class Driver {
 //
 //        System.out.println("Param1: " + param1);
 
-        LFUCache obj = new LFUCache(2);
-        obj.put(1, 1);
-        obj.put(2, 2);
+        // Case 1:
+//        LFUCache obj = new LFUCache(2);
+//        obj.put(1, 1);
+//        obj.put(2, 2);
+//
+//        System.out.println("GET 1: " + obj.get(1));
+//
+//        obj.put(3, 3);
+//
+//        System.out.println("GET 2: " + obj.get(2));
+//        System.out.println("GET 3: " + obj.get(3));
+//
+//        obj.put(4, 4);
+//
+//        System.out.println("GET 1: " + obj.get(1));
+//        System.out.println("GET 3: " + obj.get(3));
+//        System.out.println("GET 4: " + obj.get(4));
 
-        System.out.println("GET 1: " + obj.get(1));
+        // Case 3:
+        LFUCache obj = new LFUCache(3);
+        doPut(2, 2, obj);
+        doPut(1, 1, obj);
 
-        obj.put(3, 3);
+        doGet(2, obj);
+        doGet(1, obj);
+        doGet(2, obj);
 
-        System.out.println("GET 2: " + obj.get(2));
-        System.out.println("GET 3: " + obj.get(3));
+        doPut(3, 3, obj);
+        doPut(4, 4, obj);
 
-        obj.put(4, 4);
+        doGet(3, obj);
+        doGet(2, obj);
+        doGet(1, obj);
+        doGet(4, obj);
+    }
 
-        System.out.println("GET 1: " + obj.get(1));
-        System.out.println("GET 3: " + obj.get(3));
-        System.out.println("GET 4: " + obj.get(4));
+    private static void doPut(int key, int val, LFUCache obj) {
+        obj.put(key, val);
+        System.out.print("null, ");
+    }
+
+    private static void doGet(int key, LFUCache obj) {
+        int val = obj.get(key);
+        System.out.print(val + ", ");
     }
 }

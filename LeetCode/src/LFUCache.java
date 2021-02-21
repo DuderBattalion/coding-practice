@@ -63,6 +63,8 @@ public class LFUCache {
 
         public void remove(Item item) {
             item.prev.next = item.next;
+            item.prev = null;
+            item.next = null;
         }
     }
 
@@ -107,14 +109,12 @@ public class LFUCache {
 
         item.frequency++;
 
-        if (!frequencyBuckets.containsKey(item.frequency)) {
-//            DoublyLinkedList newList = new DoublyLinkedList();
-//            frequencyBuckets.put(item.frequency, newList);
-
-            initFrequencyList(item.frequency);
+        items = frequencyBuckets.get(item.frequency);
+        if (items == null) {
+            items = initFrequencyList(item.frequency);
+            frequencyBuckets.put(item.frequency, items);
         }
 
-        items = frequencyBuckets.get(item.frequency);
         items.push(item);
     }
 
@@ -162,6 +162,7 @@ public class LFUCache {
         DoublyLinkedList items = frequencyBuckets.get(1);
         if (items == null) {
             items = initFrequencyList(1);
+            frequencyBuckets.put(1, items);
         }
 
         items.push(item);
