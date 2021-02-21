@@ -63,7 +63,7 @@ public class OptimalAccountBalancing {
             if (balance > 0) {
                 splitHelper.positiveBalances.add(balance);
             } else if (balance < 0) {
-                splitHelper.negativeBalances.add(balance);
+                splitHelper.negativeBalances.add(Math.abs(balance));
             }
 
             // Note: we skipped zero balances
@@ -96,49 +96,44 @@ public class OptimalAccountBalancing {
             return;
         }
 
-        // Try to match positive balance with all negative balances
         int positiveBalance = positiveBalances.get(0);
+        for (int i = 0; i < negativeBalances.size(); i++){
+//            int positiveBalance = positiveBalances.removeFirst();
+//            int negativeBalance = negativeBalancesIter.next();
+//            negativeBalancesIter.remove();
 
-        ListIterator<Integer> negativeBalancesIter = negativeBalances.listIterator();
-        while (negativeBalancesIter.hasNext()){
-            int negativeBalance = negativeBalancesIter.next();
-
-            if (positiveBalance > Math.abs(negativeBalance)) {
+            int negativeBalance = negativeBalances.get(i);
+            if (positiveBalance > negativeBalance) {
                 // Case 1: Reduce positive balance by negative balance, and null out negative balance
-                int newPositiveBalance = positiveBalance + negativeBalance;
+                int newPositiveBalance = positiveBalance - negativeBalance;
 
-                negativeBalancesIter.remove();
                 positiveBalances.set(0, newPositiveBalance);
-                matchWithMinTx(positiveBalances, negativeBalances,
-                        count + 1, minTxs);
-
-                // Backtrack
-                positiveBalances.set(0, positiveBalance);
+                negativeBalances.remove(i);
             } else if (positiveBalance < Math.abs(negativeBalance)) {
                 // Case 2: Reduce negative balance by positive balance
                 // Null out positive balance
-                int newNegativeBalance = negativeBalance + positiveBalance;
+                int newNegativeBalance = negativeBalance - positiveBalance;
+//                negativeBalances.addFirst(newNegativeBalance);
 
-//                positiveBalances.remove(0);
-                positiveBalances.removeFirst();
-                negativeBalancesIter.set(newNegativeBalance);
-                matchWithMinTx(positiveBalances, negativeBalances, count + 1, minTxs);
-
-                // Backtrack
-//                positiveBalances.set(0, positiveBalance);
-                positiveBalances.addFirst(positiveBalance);
-                negativeBalancesIter.set(negativeBalance);
+                positiveBalances.remove(0);
+                negativeBalances.set(i, newNegativeBalance);
             } else {
-                // Case 3: Positive and negative balances cancel each other out
-//                positiveBalances.remove(0);
-                positiveBalances.removeFirst();
-                negativeBalancesIter.remove();
-                matchWithMinTx(positiveBalances, negativeBalances, count + 1, minTxs);
+                positiveBalances.remove(0);
+                negativeBalances.remove(i);
+            }
 
-                // Backtrack
-//                positiveBalances.set(0, positiveBalance);
-                positiveBalances.addFirst(positiveBalance);
-                negativeBalancesIter.add(negativeBalance);
+            matchWithMinTx(positiveBalances, negativeBalances, count + 1, minTxs);
+
+            // Backtrack
+            if (positiveBalance > negativeBalance) {
+                positiveBalances.set(0, positiveBalance);
+                negativeBalances.add(i, negativeBalance);
+            } else if (positiveBalance < negativeBalance) {
+                positiveBalances.add(0, positiveBalance);
+                negativeBalances.set(i, negativeBalance);
+            } else {
+                positiveBalances.add(0, positiveBalance);
+                negativeBalances.add(0, negativeBalance);
             }
         }
     }
