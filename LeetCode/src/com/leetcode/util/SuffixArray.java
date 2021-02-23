@@ -78,7 +78,7 @@ public class SuffixArray {
     Arrays.sort(suffixes);
   }
 
-  public static class Suffix implements Comparable<Suffix> {
+  public class Suffix implements Comparable<Suffix> {
     private final String text;
     private final int index;
 
@@ -144,7 +144,7 @@ public class SuffixArray {
   }
 
   // longest common prefix of s and t
-  private static int lcpSuffix(Suffix s, Suffix t) {
+  private int lcpSuffix(Suffix s, Suffix t) {
     int n = Math.min(s.length(), t.length());
     for (int i = 0; i < n; i++) {
       if (s.charAt(i) != t.charAt(i)) return i;
@@ -183,7 +183,7 @@ public class SuffixArray {
   }
 
   // compare query string to suffix
-  private static int compare(String query, Suffix suffix) {
+  private int compare(String query, Suffix suffix) {
     int n = Math.min(query.length(), suffix.length());
     for (int i = 0; i < n; i++) {
       if (query.charAt(i) < suffix.charAt(i)) return -1;
