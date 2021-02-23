@@ -1,5 +1,7 @@
 import com.leetcode.util.SuffixArray;
 
+import java.util.regex.Pattern;
+
 public class EncodeStringWithShortestLength {
 
     /**
@@ -26,7 +28,7 @@ public class EncodeStringWithShortestLength {
                     String encodedLrs = encode(lrs);
                     String encodedSubstring = String.format("%d[%s]", repetition, encodedLrs);
 
-                    encodedString = s.replaceAll(substring, encodedSubstring);
+                    encodedString = s.replaceAll(Pattern.quote(substring), encodedSubstring);
                     break;
                 }
             }
@@ -73,7 +75,10 @@ public class EncodeStringWithShortestLength {
     }
 
     public static void main(String[] args) {
-        String s = "abcabcdabcdabc";
+//        String s = "abcabcdabcdabc";
+//        System.out.println(encode(s));
+
+        String s = "abbbabbbcabbbabbbc";
         System.out.println(encode(s));
     }
 }
