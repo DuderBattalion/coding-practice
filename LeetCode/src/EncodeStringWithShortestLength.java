@@ -12,24 +12,28 @@ public class EncodeStringWithShortestLength {
      * Keep doing this till no change.
      */
     public static String encode(String s) {
-        SuffixArray suffixArray = new SuffixArray(s);
+//        SuffixArray suffixArray = new SuffixArray(s);
 
         String encodedString = "";
-        for (SuffixArray.Suffix suffix: suffixArray.suffixes) {
-            String lrs = findLrs(suffix.toString());
-            if (lrs.length() < 2) {
-                continue;
+//        for (SuffixArray.Suffix suffix: suffixArray.suffixes) {
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i; j < s.length(); j++) {
+                String substring = s.substring(i, j+1);
+                String lrs = findLrs(substring);
+                if (lrs.length() < 2) {
+                    continue;
+                }
+
+                int repetition = calculateLrsRepetition(substring, lrs);
+                if (repetition > 1) {
+                    String encodedLrs = encode(lrs);
+                    String encodedSubstring = String.format("%d[%s]", repetition, encodedLrs);
+                    encodedString = s.replaceAll(substring, encodedSubstring);
+
+                    break;
+                }
             }
 
-            String substring = suffix.toString();
-            int repetition = calculateLrsRepetition(substring, lrs);
-            if (repetition > 1) {
-                String encodedLrs = encode(lrs);
-                String encodedSubstring = String.format("%d[%s]", repetition, encodedLrs);
-                encodedString = s.replaceAll(substring, encodedSubstring);
-
-                break;
-            }
         }
 
         if (encodedString.isEmpty()) {
