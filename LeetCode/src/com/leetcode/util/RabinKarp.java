@@ -4,7 +4,6 @@ public class RabinKarp {
     private int prime = 101;
 
     public int search(String text, String pattern) {
-        int textLength = text.length();
         int patternLength = pattern.length();
 
         char[] textChars = text.toCharArray();
