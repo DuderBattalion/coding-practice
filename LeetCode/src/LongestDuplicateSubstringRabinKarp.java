@@ -1,6 +1,11 @@
+import java.util.HashSet;
+import java.util.Set;
+
 public class LongestDuplicateSubstringRabinKarp {
+    private static int prime = 101;
+
     public static void main(String[] args) {
-        System.out.println(longestDupSubstring("banana"));
+        System.out.println(longestDupSubstring("xyzabcuioabcefg"));
     }
 
 
@@ -13,6 +18,7 @@ public class LongestDuplicateSubstringRabinKarp {
      */
     public static String longestDupSubstring(String s) {
         int sLen = s.length();
+        char[] sChars = s.toCharArray();
 
         int left = 0, right = sLen;
         String longestDuplicate = "";
@@ -38,16 +44,47 @@ public class LongestDuplicateSubstringRabinKarp {
             return "";
         }
 
-        String duplicate = "";
-        for (int i = 0; i < s.length() - substringLength; i++) {
-            int j = i + substringLength - 1;
-//            String substring = cache[i][j];
-            String substring = s.substring(i, j + 1);
-            if (s.indexOf(substring, i + 1) > 0) {
-                duplicate = substring;
-            }
-        }
+        char[] sChars = s.toCharArray();
+        Set<Long> hashCache = new HashSet<>();
 
-        return duplicate;
+        long initHash = createHash(sChars, substringLength);
+        hashCache.add(initHash);
+
+        long oldHash = initHash;
+        int matchIndex = -1;
+        for (int i = 1; i <= s.length() - substringLength; i++) {
+            long newHash = recalculateHash(sChars, i - 1,
+                    (i - 1) + substringLength, oldHash, substringLength);
+
+//            String subStr = s.substring(i, (i - 1) + substringLength + 1);
+//            System.out.println(subStr + ": " + newHash);
+
+            if (hashCache.contains(newHash)) { // TODO - Fix collision event
+                matchIndex = i;
+                break;
+            }
+
+            hashCache.add(newHash);
+            oldHash = newHash;
+        }
+        return matchIndex >= 0
+                ? s.substring(matchIndex, matchIndex + substringLength) : "";
+    }
+
+    // Rabin karp
+    private static long recalculateHash(char[] str, int oldIndex, int newIndex,
+                                        long oldHash, int patternLen) {
+        long newHash = oldHash - str[oldIndex];
+        newHash = newHash/prime;
+        newHash += str[newIndex]*Math.pow(prime, patternLen - 1);
+        return newHash;
+    }
+
+    private static long createHash(char[] str, int end){
+        long hash = 0;
+        for (int i = 0 ; i < end; i++) {
+            hash += str[i]*Math.pow(prime,i);
+        }
+        return hash;
     }
 }
