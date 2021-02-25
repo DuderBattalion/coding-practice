@@ -1,6 +1,6 @@
-public class LongestDuplicateSubstring {
+public class LongestDuplicateSubstringRabinKarp {
     public static void main(String[] args) {
-        System.out.println(longestDupSubstring("abcefgabcdef"));
+        System.out.println(longestDupSubstring("banana"));
     }
 
 
@@ -13,13 +13,12 @@ public class LongestDuplicateSubstring {
      */
     public static String longestDupSubstring(String s) {
         int sLen = s.length();
-        String[][] substringCache = initSubstringCache(s);
 
         int left = 0, right = sLen;
         String longestDuplicate = "";
         while (left <= right) {
             int mid = left + (right - left) / 2;
-            String duplicate = findDuplicate(s, mid, substringCache);
+            String duplicate = findDuplicate(s, mid);
             if (duplicate.isEmpty()) {
                 right = mid - 1;
             } else {
@@ -34,19 +33,7 @@ public class LongestDuplicateSubstring {
         return longestDuplicate;
     }
 
-    private static String[][] initSubstringCache(String s) {
-        int sLength = s.length();
-        String[][] cache = new String[sLength][sLength];
-        for (int i = 0; i < sLength; i++) {
-            for (int j = i; j < sLength; j++) {
-                cache[i][j] = s.substring(i, j+1); // include jth index
-            }
-        }
-
-        return cache;
-    }
-
-    private static String findDuplicate(String s, int substringLength, String[][] cache) {
+    private static String findDuplicate(String s, int substringLength) {
         if (substringLength <= 0) {
             return "";
         }
@@ -54,7 +41,8 @@ public class LongestDuplicateSubstring {
         String duplicate = "";
         for (int i = 0; i < s.length() - substringLength; i++) {
             int j = i + substringLength - 1;
-            String substring = cache[i][j];
+//            String substring = cache[i][j];
+            String substring = s.substring(i, j + 1);
             if (s.indexOf(substring, i + 1) > 0) {
                 duplicate = substring;
             }
@@ -62,5 +50,4 @@ public class LongestDuplicateSubstring {
 
         return duplicate;
     }
-
 }

@@ -1,9 +1,9 @@
 package com.leetcode.util;
 
 public class RabinKarp {
-    private int prime = 101;
+    private static int prime = 101;
 
-    public int search(String text, String pattern) {
+    public static int search(String text, String pattern) {
         int patternLength = pattern.length();
 
         char[] textChars = text.toCharArray();
@@ -25,7 +25,7 @@ public class RabinKarp {
         return matchIndex;
     }
 
-    private long initHash(char[] chars, int size) {
+    private static long initHash(char[] chars, int size) {
         long hash = 0;
         for (int i = 0; i < size; i++) {
             hash += chars[i] * Math.pow(prime, i);
@@ -34,7 +34,7 @@ public class RabinKarp {
         return hash;
     }
 
-    private boolean isEqual(char[] pattern, char[] text, int start) {
+    private static boolean isEqual(char[] pattern, char[] text, int start) {
         boolean isEqual = true;
         for (int i = start; i < start + pattern.length; i++) {
             if (pattern[i - start] != text[i]) {
@@ -46,7 +46,7 @@ public class RabinKarp {
         return isEqual;
     }
 
-    private long rollingHash(char[] textChars, long oldHash, int oldIndex, int patternLength) {
+    private static long rollingHash(char[] textChars, long oldHash, int oldIndex, int patternLength) {
         int newIndex = oldIndex + patternLength;
 
         long newHash = oldHash - textChars[oldIndex];
