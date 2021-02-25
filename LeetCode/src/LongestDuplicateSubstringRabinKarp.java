@@ -1,11 +1,14 @@
+import java.math.BigInteger;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class LongestDuplicateSubstringRabinKarp {
-    private static int prime = 101;
+    private static long prime = BigInteger.probablePrime(31, new Random()).longValue();
+    private static long mod = BigInteger.probablePrime(31, new Random()).longValue();
 
     public static void main(String[] args) {
-        System.out.println(longestDupSubstring("xyzabcuioabcefg"));
+        System.out.println(longestDupSubstring("nnpxouomcofdjuujloanjimymadkuepightrfodmauhrsy"));
     }
 
 
@@ -47,44 +50,71 @@ public class LongestDuplicateSubstringRabinKarp {
         char[] sChars = s.toCharArray();
         Set<Long> hashCache = new HashSet<>();
 
-        long initHash = createHash(sChars, substringLength);
+        long initHash = initHash(sChars, substringLength);
         hashCache.add(initHash);
 
         long oldHash = initHash;
         int matchIndex = -1;
         for (int i = 1; i <= s.length() - substringLength; i++) {
-            long newHash = recalculateHash(sChars, i - 1,
-                    (i - 1) + substringLength, oldHash, substringLength);
+            long rollingHash = rollingHash(sChars, oldHash, i - 1, substringLength);
 
 //            String subStr = s.substring(i, (i - 1) + substringLength + 1);
-//            System.out.println(subStr + ": " + newHash);
+//            System.out.println(subStr + ": " + rollingHash);
 
-            if (hashCache.contains(newHash)) { // TODO - Fix collision event
+            if (hashCache.contains(rollingHash)) { // TODO - Fix collision event
                 matchIndex = i;
                 break;
             }
 
-            hashCache.add(newHash);
-            oldHash = newHash;
+            hashCache.add(rollingHash);
+            oldHash = rollingHash;
         }
         return matchIndex >= 0
                 ? s.substring(matchIndex, matchIndex + substringLength) : "";
     }
 
     // Rabin karp
-    private static long recalculateHash(char[] str, int oldIndex, int newIndex,
-                                        long oldHash, int patternLen) {
-        long newHash = oldHash - str[oldIndex];
-        newHash = newHash/prime;
-        newHash += str[newIndex]*Math.pow(prime, patternLen - 1);
-        return newHash;
+    private static long initHash(char[] chars, int size) {
+        StringBuffer buf = new StringBuffer();
+
+        long hash = 0;
+        for (int i = 0; i < size; i++) {
+            hash += (chars[i] * Math.pow(prime, i)) % mod;
+
+            buf.append(chars[i]);
+        }
+
+        System.out.println(buf.toString() + ": " + hash);
+
+        return hash;
     }
 
-    private static long createHash(char[] str, int end){
-        long hash = 0;
-        for (int i = 0 ; i < end; i++) {
-            hash += str[i]*Math.pow(prime,i);
+    private static boolean isEqual(char[] pattern, char[] text, int start) {
+        boolean isEqual = true;
+        for (int i = start; i < start + pattern.length; i++) {
+            if (pattern[i - start] != text[i]) {
+                isEqual = false;
+                break;
+            }
         }
-        return hash;
+
+        return isEqual;
+    }
+
+    private static long rollingHash(char[] textChars, long oldHash, int oldIndex, int patternLength) {
+        int newIndex = oldIndex + patternLength;
+
+        long newHash = oldHash - textChars[oldIndex];
+        newHash = newHash / prime;
+        newHash += (textChars[newIndex] * Math.pow(prime, patternLength - 1)) % mod;
+
+        StringBuffer buf = new StringBuffer();
+        for (int i = oldIndex + 1; i <= oldIndex + patternLength; i++) {
+            buf.append(textChars[i]);
+        }
+
+        System.out.println(buf.toString() + ": " + newHash);
+
+        return newHash;
     }
 }
