@@ -34,7 +34,7 @@ class EncodeStringWithShortestLength {
         }
 
         // Case 2: Encode string
-        String stringEncoding = compressString(s);
+        String stringEncoding = compressString(s, cache);
 
         // Case 3: Split into substrings
         String minSubEncoding = "";
@@ -59,15 +59,19 @@ class EncodeStringWithShortestLength {
         return minString;
     }
 
-    private static String compressString(String s) {
+    private static String compressString(String s, Map<String, String> cache) {
         String repeatingSubstring = "";
         int index = (s + s).indexOf(s, 1);
         if (index >= 0) {
             repeatingSubstring = s.substring(0, index);
         }
 
+        String encodedString = repeatingSubstring;
         int repCount = s.length() / repeatingSubstring.length();
-        String encodedString = String.format("%d[%s]", repCount, repeatingSubstring);
+        if (repCount > 1) {
+            repeatingSubstring = encodeRecursive(repeatingSubstring, cache);
+            encodedString = String.format("%d[%s]", repCount, repeatingSubstring);
+        }
 
         return encodedString.length() < s.length() ? encodedString : s;
     }
