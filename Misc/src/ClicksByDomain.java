@@ -71,7 +71,7 @@ n: number of domains in the input
             String key = entry.getKey();
             int val = entry.getValue();
 
-            System.out.println(String.format("%s: %d", key, val));
+            System.out.printf("%s: %d%n", key, val);
         }
     }
 
