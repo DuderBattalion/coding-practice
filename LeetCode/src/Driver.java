@@ -1,12 +1,9 @@
-import com.leetcode.util.FenwickTreeSum;
-import com.leetcode.util.RabinKarp;
 import com.leetcode.util.UnionFind;
-
-import java.util.regex.Pattern;
+import com.leetcode.util.UnionFindOptimized;
 
 public class Driver {
     public static void main(String[] args) {
-        UnionFind unionFind = new UnionFind(5);
+        UnionFindOptimized unionFind = new UnionFindOptimized(5);
         unionFind.union(1, 2);
         unionFind.union(2, 3);
 
